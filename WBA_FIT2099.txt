@@ -12,7 +12,7 @@ Member 2: Morad Hossam AbdelHamid Abou Shadi (29799260)
 
 
 Member 3: Lai Khairenn (29959381)
-
+I accept this WBA
 
 Work Breakdown:
 Class diagram: Nur Farhanah, Morad Abou Shadi, Lai Khairenn
