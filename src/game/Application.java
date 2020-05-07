@@ -49,7 +49,7 @@ public class Application {
 		GameMap gameMap = new GameMap(groundFactory, map );
 		world.addGameMap(gameMap);
 		
-		Actor player = new Player("Player", '@', 100);
+		Actor player = new Player("Player", '@', 500);
 		world.addPlayer(player, gameMap.at(42, 15));
 		
 	    // Place some random humans
@@ -66,7 +66,7 @@ public class Application {
 		}
 		
 		// place a simple weapon
-		gameMap.at(74, 20).addItem(new Plank());
+		gameMap.at(45, 20).addItem(new Plank());
 		
 		// FIXME: Add more zombies!
 		gameMap.at(30, 20).addActor(new Zombie("Groan"));
