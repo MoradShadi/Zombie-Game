@@ -9,6 +9,7 @@ import edu.monash.fit2099.engine.Display;
 import edu.monash.fit2099.engine.DoNothingAction;
 import edu.monash.fit2099.engine.GameMap;
 import edu.monash.fit2099.engine.IntrinsicWeapon;
+import edu.monash.fit2099.engine.MoveActorAction;
 
 /**
  * A Zombie.
@@ -56,6 +57,16 @@ public class Zombie extends ZombieActor {
 	 */
 	@Override
 	public Action playTurn(Actions actions, Action lastAction, GameMap map, Display display) {
+		boolean oneLegAction = legCount() == 1 && lastAction instanceof MoveActorAction;
+		if (oneLegAction || !hasLeg()) { 
+			//If zombie only has one leg and previous action is a MoveActorAction, it cannot move this turn
+			Action action = behaviours[0].getAction(this, map);
+			if (action != null) {
+				return action;
+			}
+			return new DoNothingAction();
+		}
+
 		for (Behaviour behaviour : behaviours) {
 			Action action = behaviour.getAction(this, map);
 			if (action != null)
