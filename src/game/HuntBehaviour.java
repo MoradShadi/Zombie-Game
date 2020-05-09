@@ -90,6 +90,12 @@ public class HuntBehaviour implements Behaviour {
 
 	@Override
 	public Action getAction(Actor actor, GameMap map) {
+		if (actor.hasCapability(ZombieCapability.UNDEAD)) {
+			Zombie zombie = (Zombie) actor;
+			if (!zombie.hasLeg()) {
+				return null;
+			}
+		}
 		return hunt(actor, map.locationOf(actor));
 	}
 
