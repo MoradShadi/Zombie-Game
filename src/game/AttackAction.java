@@ -2,8 +2,6 @@ package game;
 
 import java.util.Random;
 
-import com.sun.glass.ui.View.Capability;
-
 import edu.monash.fit2099.engine.Action;
 import edu.monash.fit2099.engine.Actions;
 import edu.monash.fit2099.engine.Actor;
