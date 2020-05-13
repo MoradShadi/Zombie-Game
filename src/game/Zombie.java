@@ -20,7 +20,7 @@ import edu.monash.fit2099.engine.MoveActorAction;
  *
  */
 public class Zombie extends ZombieActor {
-	Random rand = new Random();
+	private Random rand = new Random();
 	
 	private Behaviour[] behaviours = {
 			new AttackBehaviour(ZombieCapability.ALIVE),

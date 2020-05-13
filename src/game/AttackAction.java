@@ -9,7 +9,6 @@ import edu.monash.fit2099.engine.Actions;
 import edu.monash.fit2099.engine.Actor;
 import edu.monash.fit2099.engine.Exit;
 import edu.monash.fit2099.engine.GameMap;
-import edu.monash.fit2099.engine.Ground;
 import edu.monash.fit2099.engine.Item;
 import edu.monash.fit2099.engine.Location;
 import edu.monash.fit2099.engine.Weapon;
@@ -88,8 +87,15 @@ public class AttackAction extends Action {
 		}
 		
 		if (!target.isConscious()) {
-			Item corpse = new PortableItem("dead " + target, '%');
-			map.locationOf(target).addItem(corpse);
+			if (target instanceof Human) {
+				Corpse humanCorpse = new Corpse(target + "'s corpse");
+				map.locationOf(target).addItem(humanCorpse);
+			}
+			else {
+				Item corpse = new PortableItem("dead " + target, '%');
+				map.locationOf(target).addItem(corpse);
+				
+			}
 			
 			Actions dropActions = new Actions();
 			for (Item item : target.getInventory())
@@ -146,10 +152,10 @@ public class AttackAction extends Action {
 	
 	private void dropLimbOnMap(Zombie targetZombie, ArrayList<ZombieLimb> lostLimbs, GameMap map) {
 		Location zombieLocation = map.locationOf(targetZombie);
-		List<Exit> exits = zombieLocation.getExits();
+		List<Exit> allAdjacentLocations = zombieLocation.getExits();
 		ArrayList<Location> validAdjacentLocations = new ArrayList<Location>();
 		
-		for (Exit exit : exits) {
+		for (Exit exit : allAdjacentLocations) {
 			Location adjacentLocation = exit.getDestination();
 			boolean walkableGround = adjacentLocation.getGround().canActorEnter(targetZombie);
 			if (walkableGround) {
