@@ -42,9 +42,9 @@ public class AttackAction extends Action {
 
 		Weapon weapon = actor.getWeapon();
 
-//		if (rand.nextBoolean()) { 
-//			return actor + " misses " + target + ".";
-//		}
+		if (rand.nextBoolean()) { 
+			return actor + " misses " + target + ".";
+		}
 
 		int damage = weapon.damage();
 		String result = actor + " " + weapon.verb() + " " + target + " for " + damage + " damage.";
@@ -52,7 +52,7 @@ public class AttackAction extends Action {
 		target.hurt(damage);
 		
 		double rollLoseLimb = rand.nextDouble();
-		if (target.hasCapability(ZombieCapability.UNDEAD) && rollLoseLimb <= 0.95) { // Change this percentage back --------------------------------
+		if (target.hasCapability(ZombieCapability.UNDEAD) && rollLoseLimb <= 0.95) {
 			Zombie targetZombie = (Zombie) target;
 			boolean loseArm = false;
 			boolean loseLeg = false;
