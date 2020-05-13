@@ -91,21 +91,52 @@ public class Zombie extends ZombieActor {
 		return legs.size() > 0;
 	}
 	
-	public void removeArm(int numOfArmLost) {
+	public ArrayList<ZombieLimb> removeLimbs(int numOfArmLost, int numOfLegLost) {
+		ArrayList<ZombieLimb> lostLimbs = new ArrayList<ZombieLimb>(numOfArmLost + numOfLegLost);
+		
+		if (numOfArmLost > 0) {
+			ArrayList<ZombieArm> lostArms = removeArm(numOfArmLost);
+			for (ZombieArm lostArm : lostArms) {
+				lostLimbs.add(lostArm);
+			}
+		}
+		
+		if (numOfLegLost > 0) {
+			ArrayList<ZombieLeg> lostLegs = removeLeg(numOfLegLost);
+			for (ZombieLeg lostLeg : lostLegs) {
+				lostLimbs.add(lostLeg);
+			}
+		}
+		
+		return lostLimbs;
+	}
+	
+	private ArrayList<ZombieArm> removeArm(int numOfArmLost) {
+		ArrayList<ZombieArm> lostArms = new ArrayList<ZombieArm>(numOfArmLost);
+		
 		for (int i = 0; i < numOfArmLost; i++) {
+			lostArms.add(arms.get(0));
 			arms.remove(0);
 		}
+		
 		if (armCount() == 1) {
 			if (rand.nextBoolean()) {
 				//continue implement drop weapon (need to allow zombie carry weapon first)
 			}
 		}
+		
+		return lostArms;
 	}
 	
-	public void removeLeg(int numOfLegLost) {
+	private ArrayList<ZombieLeg> removeLeg(int numOfLegLost) {
+		ArrayList<ZombieLeg> lostLegs = new ArrayList<ZombieLeg>(numOfLegLost);
+		
 		for (int i = 0; i < numOfLegLost; i++) {
+			lostLegs.add(legs.get(0));
 			legs.remove(0);
 		}
+		
+		return lostLegs;
 	}
 	
 }
