@@ -52,7 +52,7 @@ public class AttackAction extends Action {
 		target.hurt(damage);
 		
 		double rollLoseLimb = rand.nextDouble();
-		if (target.hasCapability(ZombieCapability.UNDEAD) && rollLoseLimb <= 0.95) {
+		if (target.hasCapability(ZombieCapability.UNDEAD) && rollLoseLimb <= 0.25) {
 			Zombie targetZombie = (Zombie) target;
 			boolean loseArm = false;
 			boolean loseLeg = false;
