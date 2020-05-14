@@ -62,6 +62,9 @@ public class Zombie extends ZombieActor {
 	 */
 	@Override
 	public Action playTurn(Actions actions, Action lastAction, GameMap map, Display display) {
+		double x = Math.random();
+		if (x <= 0.1)
+			System.out.println(this.name+ " says BRAAAAAAINS");
 		boolean oneLegAction = legCount() == 1 && lastAction instanceof MoveActorAction;
 		if (oneLegAction || !hasLeg()) { 
 			//If zombie only has one leg and previous action is a MoveActorAction, it cannot move this turn
