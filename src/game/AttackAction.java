@@ -40,6 +40,14 @@ public class AttackAction extends Action {
 	public String execute(Actor actor, GameMap map) {
 
 		Weapon weapon = actor.getWeapon();
+		double x = Math.random();
+		if ((actor instanceof Zombie) && (actor.getWeapon().verb() =="Punches"))
+			if (x>=0.35)
+				return actor + " misses " + target + ".";
+		
+		if ((actor instanceof Zombie) && (actor.getWeapon().verb() =="Bites"))
+			if (x>=0.5)
+				return actor + " misses " + target + ".";
 
 		if (rand.nextBoolean()) { 
 			return actor + " misses " + target + ".";

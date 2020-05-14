@@ -3,6 +3,7 @@ package game;
 import java.util.ArrayList;
 import java.util.Random;
 
+
 import edu.monash.fit2099.engine.Action;
 import edu.monash.fit2099.engine.Actions;
 import edu.monash.fit2099.engine.Display;
@@ -43,7 +44,11 @@ public class Zombie extends ZombieActor {
 
 	@Override
 	public IntrinsicWeapon getIntrinsicWeapon() {
-		return new IntrinsicWeapon(10, "punches");
+		double x = Math.random();
+		if (x <= 0.5)
+			return new IntrinsicWeapon(10, "punches");
+		else
+			return new IntrinsicWeapon(20,"Bites");
 	}
 
 	/**
