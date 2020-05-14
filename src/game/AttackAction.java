@@ -48,6 +48,8 @@ public class AttackAction extends Action {
 		if ((actor instanceof Zombie) && (actor.getWeapon().verb() =="Bites"))
 			if (x>=0.5)
 				return actor + " misses " + target + ".";
+			else
+				actor.heal(5);
 
 		if (rand.nextBoolean()) { 
 			return actor + " misses " + target + ".";
