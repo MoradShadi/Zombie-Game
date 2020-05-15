@@ -3,19 +3,40 @@ package game;
 import edu.monash.fit2099.engine.Action;
 import edu.monash.fit2099.engine.Actor;
 import edu.monash.fit2099.engine.GameMap;
+import edu.monash.fit2099.engine.Item;
 
 public class CraftWeaponAction extends Action {
-
+	protected Item item;
+	
+	public CraftWeaponAction(ZombieLeg leg){
+		item = leg;
+	}
+	
+	public CraftWeaponAction(ZombieArm arm){
+		item = arm;
+	}
+	
 	@Override
 	public String execute(Actor actor, GameMap map) {
-		// TODO Auto-generated method stub
-		return null;
+		if (item instanceof ZombieLeg) {
+			actor.removeItemFromInventory(item);
+			ZombieMace mace = new ZombieMace();
+			item = mace;
+
+		}
+		else if (item instanceof ZombieArm){
+			actor.removeItemFromInventory(item);
+			ZombieClub club = new ZombieClub();
+			item = club;
+		}
+		actor.addItemToInventory(item);		
+		return menuDescription(actor);
 	}
 
 	@Override
 	public String menuDescription(Actor actor) {
 		// TODO Auto-generated method stub
-		return null;
+		return actor + "crafted a " + item;
 	}
 
 }
