@@ -10,7 +10,9 @@ import edu.monash.fit2099.engine.Display;
 import edu.monash.fit2099.engine.DoNothingAction;
 import edu.monash.fit2099.engine.GameMap;
 import edu.monash.fit2099.engine.IntrinsicWeapon;
+import edu.monash.fit2099.engine.Item;
 import edu.monash.fit2099.engine.MoveActorAction;
+import edu.monash.fit2099.engine.Weapon;
 
 /**
  * A Zombie.
@@ -41,14 +43,38 @@ public class Zombie extends ZombieActor {
 		arms.add(new ZombieArm());
 	}
 	
+	@Override
+	public Weapon getWeapon() {
+		if (rand.nextBoolean()) {
+			//50% base chance to miss
+			return null;
+		}
+		
+		for (Item item : inventory) {
+			if (item.asWeapon() != null)
+				return item.asWeapon();
+		}
+		
+		IntrinsicWeapon intrinsicWeapon = getIntrinsicWeapon();
+		if (intrinsicWeapon.verb() == "bites") {
+			if (rand.nextBoolean()) {
+				//Further 50% chance to miss bite, so chance of bite to hit is 50% * 50% = 25%
+				heal(5);
+				return intrinsicWeapon;
+			}
+		}
+		return intrinsicWeapon;
+	}
+	
 
 	@Override
 	public IntrinsicWeapon getIntrinsicWeapon() {
-		double x = Math.random();
-		if (x <= 0.5)
+		if (rand.nextBoolean()) {
 			return new IntrinsicWeapon(10, "punches");
-		else
-			return new IntrinsicWeapon(20,"Bites");
+		}
+		else {
+			return new IntrinsicWeapon(20,"bites");
+		}
 	}
 
 	/**

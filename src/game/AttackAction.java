@@ -40,18 +40,8 @@ public class AttackAction extends Action {
 	public String execute(Actor actor, GameMap map) {
 
 		Weapon weapon = actor.getWeapon();
-		double x = Math.random();
-		if ((actor instanceof Zombie) && (actor.getWeapon().verb() =="Punches"))
-			if (x>=0.35)
-				return actor + " misses " + target + ".";
 		
-		if ((actor instanceof Zombie) && (actor.getWeapon().verb() =="Bites"))
-			if (x>=0.5)
-				return actor + " misses " + target + ".";
-			else
-				actor.heal(5);
-
-		if (rand.nextBoolean()) { 
+		if (weapon == null) {
 			return actor + " misses " + target + ".";
 		}
 
@@ -61,7 +51,7 @@ public class AttackAction extends Action {
 		target.hurt(damage);
 		
 		double rollLoseLimb = rand.nextDouble();
-		if (target.hasCapability(ZombieCapability.UNDEAD) && rollLoseLimb <= 0.25) {
+		if (target instanceof Zombie && rollLoseLimb <= 0.25) {
 			Zombie targetZombie = (Zombie) target;
 			boolean loseArm = false;
 			boolean loseLeg = false;

@@ -1,15 +1,19 @@
 package game;
 
+import java.util.Random;
+
 import edu.monash.fit2099.engine.Action;
 import edu.monash.fit2099.engine.Actions;
 import edu.monash.fit2099.engine.Display;
 import edu.monash.fit2099.engine.GameMap;
 import edu.monash.fit2099.engine.Menu;
+import edu.monash.fit2099.engine.Weapon;
 
 /**
  * Class representing the Player.
  */
 public class Player extends Human {
+	private Random rand = new Random();
 
 	private Menu menu = new Menu();
 
@@ -22,6 +26,15 @@ public class Player extends Human {
 	 */
 	public Player(String name, char displayChar, int hitPoints) {
 		super(name, displayChar, hitPoints);
+	}
+	
+	@Override
+	public Weapon getWeapon() {
+		if (rand.nextBoolean()) {
+			//base 50% chance to miss attack
+			return null;
+		}
+		return super.getWeapon();
 	}
 
 	@Override
