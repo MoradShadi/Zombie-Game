@@ -42,6 +42,7 @@ public class AttackAction extends Action {
 		Weapon weapon = actor.getWeapon();
 		
 		if (weapon == null) {
+			//if getWeapon returns null, it means the actor has missed his attack.
 			return actor + " misses " + target + ".";
 		}
 

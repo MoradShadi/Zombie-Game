@@ -50,20 +50,21 @@ public class Zombie extends ZombieActor {
 			return null;
 		}
 		
-		for (Item item : inventory) {
-			if (item.asWeapon() != null)
-				return item.asWeapon();
-		}
+		Weapon zombieWeapon = super.getWeapon();
 		
-		IntrinsicWeapon intrinsicWeapon = getIntrinsicWeapon();
-		if (intrinsicWeapon.verb() == "bites") {
+		if (zombieWeapon.verb() == "bites") {
 			if (rand.nextBoolean()) {
-				//Further 50% chance to miss bite, so chance of bite to hit is 50% * 50% = 25%
+				//bite has further 50% chance to miss, so overall it has 50% * 50% = 25% chance to hit
+				//other weapons or punch have normal base 50% chance to hit
+				return null;
+			}
+			else {
+				//if the bite doesn't miss, it heals the zombie for 5 hp
 				heal(5);
-				return intrinsicWeapon;
 			}
 		}
-		return intrinsicWeapon;
+		
+		return zombieWeapon;
 	}
 	
 
