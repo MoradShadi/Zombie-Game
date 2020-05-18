@@ -10,7 +10,6 @@ import edu.monash.fit2099.engine.Display;
 import edu.monash.fit2099.engine.DoNothingAction;
 import edu.monash.fit2099.engine.GameMap;
 import edu.monash.fit2099.engine.IntrinsicWeapon;
-import edu.monash.fit2099.engine.Item;
 import edu.monash.fit2099.engine.MoveActorAction;
 import edu.monash.fit2099.engine.Weapon;
 
@@ -43,6 +42,19 @@ public class Zombie extends ZombieActor {
 		arms.add(new ZombieArm());
 	}
 	
+	
+	/**
+	 * Get the weapon this Zombie is using and determine if the Zombie misses the attack.
+	 * 
+	 * The Zombie has a 50% chance to miss the attack, so return null if Zombie misses.
+	 * If the attack is approved and if the current Zombie is carrying weapons, returns 
+	 * the first one in the inventory. Otherwise, returns the Zombie's natural fighting 
+	 * equipment e.g. punch or bite. However, if the Zombie decides to bite, it has a 
+	 * further 50% chance to miss, so an overall chance of only 25% to hit the bite attack.
+	 * If the bite attack hits successfully, heal the Zombie for 5 health.
+	 *
+	 * @return the Actor's weapon or natural
+	 */
 	@Override
 	public Weapon getWeapon() {
 		if (rand.nextBoolean()) {
@@ -89,9 +101,10 @@ public class Zombie extends ZombieActor {
 	 */
 	@Override
 	public Action playTurn(Actions actions, Action lastAction, GameMap map, Display display) {
-		double x = Math.random();
-		if (x <= 0.1)
+		double brainsDialogueChance = rand.nextDouble();
+		if (brainsDialogueChance <= 0.1)
 			System.out.println(this.name+ " says BRAAAAAAINS");
+		
 		boolean oneLegAction = legCount() == 1 && lastAction instanceof MoveActorAction;
 		if (oneLegAction || !hasLeg()) { 
 			//If zombie only has one leg and previous action is a MoveActorAction, it cannot move this turn

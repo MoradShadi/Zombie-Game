@@ -28,6 +28,15 @@ public class Player extends Human {
 		super(name, displayChar, hitPoints);
 	}
 	
+	/**
+	 * Get the weapon this Player is using and determine if the Player misses the attack.
+	 * 
+	 * If the attack is approved and if the current Player is carrying weapons, 
+	 * returns the first one in the inventory. Otherwise, returns the Player's 
+	 * natural fighting equipment e.g. fists.
+	 *
+	 * @return the Actor's weapon or natural
+	 */
 	@Override
 	public Weapon getWeapon() {
 		if (rand.nextBoolean()) {
