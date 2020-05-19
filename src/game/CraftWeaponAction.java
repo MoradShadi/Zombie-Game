@@ -5,16 +5,14 @@ import edu.monash.fit2099.engine.Actor;
 import edu.monash.fit2099.engine.GameMap;
 import edu.monash.fit2099.engine.Item;
 
+
 public class CraftWeaponAction extends Action {
 	protected Item item;
 	
-	public CraftWeaponAction(ZombieLeg leg){
-		item = leg;
+	public CraftWeaponAction(Item item){
+			this.item = item;
 	}
 	
-	public CraftWeaponAction(ZombieArm arm){
-		item = arm;
-	}
 	
 	@Override
 	public String execute(Actor actor, GameMap map) {
@@ -36,7 +34,7 @@ public class CraftWeaponAction extends Action {
 	@Override
 	public String menuDescription(Actor actor) {
 		// TODO Auto-generated method stub
-		return actor + "crafted a " + item;
+		return actor + " crafts " + item;
 	}
 
 }
