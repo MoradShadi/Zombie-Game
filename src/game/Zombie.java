@@ -11,6 +11,7 @@ import edu.monash.fit2099.engine.DoNothingAction;
 import edu.monash.fit2099.engine.GameMap;
 import edu.monash.fit2099.engine.IntrinsicWeapon;
 import edu.monash.fit2099.engine.MoveActorAction;
+import edu.monash.fit2099.engine.PickUpItemAction;
 import edu.monash.fit2099.engine.Weapon;
 
 /**
@@ -25,6 +26,7 @@ public class Zombie extends ZombieActor {
 	private Random rand = new Random();
 	
 	private Behaviour[] behaviours = {
+			new PickUpWeaponBehaviour(),
 			new AttackBehaviour(ZombieCapability.ALIVE),
 			new HuntBehaviour(Human.class, 10),
 			new WanderBehaviour()
@@ -101,6 +103,7 @@ public class Zombie extends ZombieActor {
 	 */
 	@Override
 	public Action playTurn(Actions actions, Action lastAction, GameMap map, Display display) {
+		
 		double brainsDialogueChance = rand.nextDouble();
 		if (brainsDialogueChance <= 0.1)
 			System.out.println(this.name+ " says BRAAAAAAINS");
@@ -108,15 +111,25 @@ public class Zombie extends ZombieActor {
 		boolean oneLegAction = legCount() == 1 && lastAction instanceof MoveActorAction;
 		if (oneLegAction || !hasLeg()) { 
 			//If zombie only has one leg and previous action is a MoveActorAction, it cannot move this turn
-			Action action = behaviours[0].getAction(this, map);
+			Action action = behaviours[1].getAction(this, map);
 			if (action != null) {
 				return action;
 			}
 			return new DoNothingAction();
 		}
+		
+		if (lastAction instanceof PickUpItemAction) {
+			Action action = behaviours[2].getAction(this, map);
+			if (action != null) {
+				return action;
+				}
+			return new DoNothingAction();
+		}
 
 		for (Behaviour behaviour : behaviours) {
 			Action action = behaviour.getAction(this, map);
+			if (behaviour instanceof PickUpWeaponBehaviour && !this.hasArm())
+				action = null;
 			if (action != null)
 				return action;
 		}
