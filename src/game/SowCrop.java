@@ -7,7 +7,6 @@ public class SowCrop {
 	Location map;
 	
 	public SowCrop(int x, int y, GameMap gameMap) {
-		map = gameMap.at(x, y);
 		Crop crop = new Crop(20, map);
 		gameMap.at(x, y).setGround(crop);
 	}
