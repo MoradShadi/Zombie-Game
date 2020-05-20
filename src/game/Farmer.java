@@ -63,21 +63,27 @@ public class Farmer extends Human {
 		// location for left
 		int x_left = x - 1;
 		int x_right = x + 1;
+		Harvest harvest = new Harvest();
 			
 		Ground ground_l = map[x_left][y].getGround();
 		Ground ground_r = map[x_right][y].getGround();
 			
 		if(ground_l.getDisplayChar() == '^') {
-
+			Crop crop = (Crop) ground_l;
+			harvest.farmerHarvest(crop, gameMap);
 		}
 		
 		if(ground_r.getDisplayChar() == '^') {
-			double sowChance = rand.nextDouble();
-
-			if (sowChance <= 0.33) {
-				new SowCrop(x_left, y, gameMap);
-			}	
-		}		
+			Crop crop = (Crop) ground_r;
+			harvest.farmerHarvest(crop, gameMap);	
+		}
+		
+		Ground ground = map[x][y].getGround();
+		
+		if (ground.getDisplayChar() == '^') {
+			Crop crop = (Crop) ground;
+			harvest.farmerHarvest(crop, gameMap);
+		}
 		
 	}
 	

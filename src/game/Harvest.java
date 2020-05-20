@@ -11,11 +11,15 @@ public class Harvest {
 		map = crop.getLocation();
 		
 		Food food = new Food();
+		food.getDropAction();
+		
 		}
 	
 	
-	public void playerHarvest(Crop crop, GameMap gameMap) {
+	public void playerHarvest(Player player, Crop crop, GameMap gameMap) {
 		crop.setTurn(20);
 		map = crop.getLocation();
+		
+		player.addItemToInventory(new Food());
 	}
 }
