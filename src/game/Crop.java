@@ -42,4 +42,8 @@ public class Crop extends Ground {
 		return turn;
 	}
 	
+	public void setTurn(int turn) {
+		this.turn = turn;
+	}
+	
 }
