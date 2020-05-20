@@ -41,10 +41,10 @@ public class Player extends Human {
 	 */
 	@Override
 	public Weapon getWeapon() {
-		if (rand.nextBoolean()) {
-			//base 50% chance to miss attack
-			return null;
-		}
+//		if (rand.nextBoolean()) {
+//			//base 50% chance to miss attack
+//			return null;
+//		}
 		return super.getWeapon();
 	}
 

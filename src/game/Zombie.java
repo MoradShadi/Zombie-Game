@@ -141,24 +141,85 @@ public class Zombie extends ZombieActor {
 		return legs.size() > 0;
 	}
 	
-	public ArrayList<ZombieLimb> removeLimbs(int numOfArmLost, int numOfLegLost) {
-		ArrayList<ZombieLimb> lostLimbs = new ArrayList<ZombieLimb>(numOfArmLost + numOfLegLost);
+	public ArrayList<ZombieLimb> zombieHurt(int points) {
+		hurt(points);
 		
-		if (numOfArmLost > 0) {
-			ArrayList<ZombieArm> lostArms = removeArm(numOfArmLost);
-			for (ZombieArm lostArm : lostArms) {
-				lostLimbs.add(lostArm);
+		ArrayList<ZombieLimb> droppedLimbs = loseLimbs();
+		return droppedLimbs;
+	}
+	
+	private ArrayList<ZombieLimb> loseLimbs() {
+		double rollLoseLimb = rand.nextDouble();
+		ArrayList<ZombieLimb> droppedLimbs = null;
+		
+		if (rollLoseLimb <= 0.25) {
+			boolean loseArm = false;
+			boolean loseLeg = false;
+			
+			if (hasArm() && hasLeg()) { //If zombie has at least one arm and one leg, then it has chance to lose both an arm and a leg
+				boolean rollArmOrLeg = rand.nextBoolean();
+				boolean loseArmAndLeg;
+				
+				if (rollArmOrLeg) {
+					loseArm = true;
+					loseArmAndLeg = rand.nextDouble() < 0.25;
+					if (loseArmAndLeg) { //25% chance to lose leg also 
+						loseLeg = true;
+					}
+				}
+				else {
+					loseLeg = true;
+					loseArmAndLeg = rand.nextDouble() < 0.25;
+					if (loseArmAndLeg) { //25% chance to lose arm also
+						loseArm = true;
+					}
+				}
+			}
+			else if (hasArm()) { //If zombie has arm only then it can't lose any legs, can only lose arm
+				loseArm = true;
+			}
+			else if (hasLeg()) { //If zombie has leg only then it can't lose any arm, can only lose leg
+				loseLeg = true;
+			}
+			
+			droppedLimbs = removeLimbs(loseArm, loseLeg);
+		}
+		return droppedLimbs;
+	}
+	
+	private ArrayList<ZombieLimb> removeLimbs(boolean loseArm, boolean loseLeg) {
+		ArrayList<ZombieLimb> droppedLimbs = new ArrayList<ZombieLimb>();
+		ArrayList<ZombieArm> droppedArms = new ArrayList<ZombieArm>();
+		ArrayList<ZombieLeg> droppedLegs = new ArrayList<ZombieLeg>();
+		
+		if (loseArm) {
+			boolean loseTwoArms = (armCount() == 2) && (rand.nextDouble() < 0.25); //25% chance to lose two arms instead of one
+			if (loseTwoArms) {
+				droppedArms = removeArm(2);
+			}
+			else {
+				droppedArms = removeArm(1);
 			}
 		}
 		
-		if (numOfLegLost > 0) {
-			ArrayList<ZombieLeg> lostLegs = removeLeg(numOfLegLost);
-			for (ZombieLeg lostLeg : lostLegs) {
-				lostLimbs.add(lostLeg);
+		if (loseLeg) {
+			boolean loseTwoLegs = (legCount() == 2) && (rand.nextDouble() < 0.25); //25% chance to lose two legs instead of one
+			if (loseTwoLegs) {
+				droppedLegs = removeLeg(2);
+			}
+			else {
+				droppedLegs = removeLeg(1);
 			}
 		}
 		
-		return lostLimbs;
+		for (ZombieArm arm : droppedArms) {
+			droppedLimbs.add(arm);
+		}
+		for (ZombieLeg leg : droppedLegs) {
+			droppedLimbs.add(leg);
+		}
+		
+		return droppedLimbs;
 	}
 	
 	private ArrayList<ZombieArm> removeArm(int numOfArmLost) {
@@ -175,6 +236,7 @@ public class Zombie extends ZombieActor {
 			}
 		}
 		
+		System.out.println(this + " lost " + numOfArmLost + " arm(s)");
 		return lostArms;
 	}
 	
@@ -186,6 +248,7 @@ public class Zombie extends ZombieActor {
 			legs.remove(0);
 		}
 		
+		System.out.println(this + " lost " + numOfLegLost + " leg(s)");
 		return lostLegs;
 	}
 	
