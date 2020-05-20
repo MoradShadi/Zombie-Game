@@ -82,19 +82,19 @@ public class Application {
 		// adding farmers
 		ArrayList <Actor> farmers = new ArrayList <> ();
 		Actor farmer1 = new Farmer("Farmer 1");
-		gameMap.at(30, 20).addActor(farmer1);
+		gameMap.at(30, 16).addActor(farmer1);
 		farmers.add(farmer1);
 		
 		Actor farmer2 = new Farmer("Farmer 2");
-		gameMap.at(30,  18).addActor(farmer2);
+		gameMap.at(20,  18).addActor(farmer2);
 		farmers.add(farmer2);
 		
 		Actor farmer3 = new Farmer("Farmer 3");
-		gameMap.at(10,  4).addActor(farmer3);
+		gameMap.at(10,  9).addActor(farmer3);
 		farmers.add(farmer3);
 		
 		Actor farmer4 = new Farmer("Farmer 4");
-		gameMap.at(50, 18).addActor(farmer4);
+		gameMap.at(60, 18).addActor(farmer4);
 		farmers.add(farmer4);
 		
 		world.run();
