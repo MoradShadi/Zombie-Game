@@ -77,13 +77,17 @@ public class Application {
 		gameMap.at(62, 12).addActor(new Zombie("Aaargh"));
 		
 		// adding farmers
-		gameMap.at(30, 20).addActor(new Farmer("Farmer 1"));
+		Actor farmer1 = new Farmer("Farmer 1");
+		gameMap.at(5, 20).addActor(farmer1);
 		
-		gameMap.at(30,  18).addActor(new Farmer("Farmer 2"));
+		Actor farmer2 = new Farmer("Farmer 2");
+		gameMap.at(10,  7).addActor(farmer2);
 		
-		gameMap.at(10,  4).addActor(new Farmer("Farmer 3"));
+		Actor farmer3 = new Farmer("Farmer 3");
+		gameMap.at(10,  2).addActor(farmer3);
 		
-		gameMap.at(50, 18).addActor(new Farmer("Farmer 4"));
+		Actor farmer4 = new Farmer("Farmer 4");
+		gameMap.at(40, 13).addActor(farmer4);
 		
 		world.run();
 		
