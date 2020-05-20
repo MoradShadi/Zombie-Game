@@ -58,4 +58,27 @@ public class Farmer extends Human {
 			}
 		}
 	}
+	
+	public void harvestCrop(int x, int y, GameMap gameMap) {
+		// location for left
+		int x_left = x - 1;
+		int x_right = x + 1;
+			
+		Ground ground_l = map[x_left][y].getGround();
+		Ground ground_r = map[x_right][y].getGround();
+			
+		if(ground_l.getDisplayChar() == '^') {
+
+		}
+		
+		if(ground_r.getDisplayChar() == '^') {
+			double sowChance = rand.nextDouble();
+
+			if (sowChance <= 0.33) {
+				new SowCrop(x_left, y, gameMap);
+			}	
+		}		
+		
+	}
+	
 }
