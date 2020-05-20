@@ -107,29 +107,18 @@ public class Zombie extends ZombieActor {
 		double brainsDialogueChance = rand.nextDouble();
 		if (brainsDialogueChance <= 0.1)
 			System.out.println(this.name+ " says BRAAAAAAINS");
-		
-		boolean oneLegAction = legCount() == 1 && lastAction instanceof MoveActorAction;
-		if (oneLegAction || !hasLeg()) { 
-			//If zombie only has one leg and previous action is a MoveActorAction, it cannot move this turn
-			Action action = behaviours[1].getAction(this, map);
-			if (action != null) {
-				return action;
-			}
-			return new DoNothingAction();
-		}
-		
-		if (lastAction instanceof PickUpItemAction) {
-			Action action = behaviours[2].getAction(this, map);
-			if (action != null) {
-				return action;
-				}
-			return new DoNothingAction();
-		}
 
 		for (Behaviour behaviour : behaviours) {
 			Action action = behaviour.getAction(this, map);
-			if (behaviour instanceof PickUpWeaponBehaviour && !this.hasArm())
+			
+			if (lastAction instanceof PickUpItemAction && action instanceof PickUpItemAction) {
 				action = null;
+			}
+			
+			if (action instanceof MoveActorAction && cannotMove(lastAction)) {
+				action = null;
+			}
+			
 			if (action != null)
 				return action;
 		}
@@ -198,6 +187,19 @@ public class Zombie extends ZombieActor {
 		}
 		
 		return lostLegs;
+	}
+	
+	private boolean cannotMove(Action lastAction) {
+		boolean stopMovement = false;
+		boolean oneLegMovement = legCount() == 1 && lastAction instanceof MoveActorAction;
+		
+		//If zombie only has one leg and previous action is a MoveActorAction, it cannot move this turn, so it cannot hunt or wander,
+		//only can attack unless there is weapon on ground, then picking up weapon has precedence 
+		if (oneLegMovement || !hasLeg()) {
+			stopMovement = true;
+		}
+		
+		return stopMovement;
 	}
 	
 }

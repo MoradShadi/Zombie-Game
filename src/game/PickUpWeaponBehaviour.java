@@ -17,16 +17,19 @@ public class PickUpWeaponBehaviour implements Behaviour {
 	
 	@Override
 	public Action getAction(Actor actor, GameMap map) {
-		List<Item> items = new ArrayList<Item>(map.locationOf(actor).getItems());
-		List<Item> inventory = new ArrayList<Item>(actor.getInventory());
+		Zombie zombie = (Zombie) actor;
+		ArrayList<Item> items = new ArrayList<Item>(map.locationOf(zombie).getItems());
+		ArrayList<Item> inventory = new ArrayList<Item>(zombie.getInventory());
 
-		for (Item item: items) {
-			if (item instanceof WeaponItem) 
-				for(Item item2: inventory) {
-					if(item2 instanceof WeaponItem)
-						  new DropItemAction(item2).execute(actor, map);
-				}
-				return new PickUpItemAction(item);
+		if (zombie.hasArm()) {
+			for (Item groundItem: items) {
+				if (groundItem instanceof WeaponItem) 
+					for(Item inventoryItem: inventory) {
+						if(inventoryItem instanceof WeaponItem)
+							  new DropItemAction(inventoryItem).execute(zombie, map);
+					}
+					return new PickUpItemAction(groundItem);
+			}
 		}
 		return null;
 	}
