@@ -245,7 +245,7 @@ public class Zombie extends ZombieActor {
 		if (armCount() == 1 && hasWeapon()) {
 			dropWeapon = rand.nextBoolean();
 		}
-		else if (!hasArm()) {
+		else if (!hasArm() && hasWeapon()) {
 			dropWeapon = true;
 		}
 		if (dropWeapon) {
