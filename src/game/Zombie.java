@@ -27,6 +27,8 @@ import edu.monash.fit2099.engine.Weapon;
 public class Zombie extends ZombieActor {
 	private Random rand = new Random();
 	
+	private double punchChance;
+	
 	private Behaviour[] behaviours = {
 			new PickUpWeaponBehaviour(),
 			new AttackBehaviour(ZombieCapability.ALIVE),
@@ -40,10 +42,21 @@ public class Zombie extends ZombieActor {
 	
 	public Zombie(String name) {
 		super(name, 'Z', 100, ZombieCapability.UNDEAD);
+		setPunchChance(0.5);
 		legs.add(new ZombieLeg());
 		legs.add(new ZombieLeg());
 		arms.add(new ZombieArm());
 		arms.add(new ZombieArm());
+	}
+	
+	private void setPunchChance(double newChance) {
+		if (newChance >= 0) {
+			this.punchChance = newChance;
+		}
+	}
+	
+	private double getPunchChance() {
+		return this.punchChance;
 	}
 	
 	
@@ -88,7 +101,8 @@ public class Zombie extends ZombieActor {
 
 	@Override
 	public IntrinsicWeapon getIntrinsicWeapon() {
-		if (rand.nextBoolean()) {
+		double rollIntrinsicWeapon = rand.nextDouble();
+		if (rollIntrinsicWeapon < getPunchChance()) {
 			return new IntrinsicWeapon(10, "punches");
 		}
 		else {
@@ -242,13 +256,19 @@ public class Zombie extends ZombieActor {
 			arms.remove(0);
 		}
 		
-		//After rmeoving arm, check if zombie will drop the weapon.
+		//After rmeoving arm, reduce punch chance and check if zombie will drop the weapon.
 		boolean dropWeapon = false;
-		if (armCount() == 1 && hasWeapon()) {
-			dropWeapon = rand.nextBoolean();
+		if (armCount() == 1) {
+			setPunchChance(0.25); //punch chance is halved if lose one arm
+			if (hasWeapon()) {
+				dropWeapon = rand.nextBoolean(); //if zombie also has weapon, then 50% chance to drop weapon
+			}	
 		}
-		else if (!hasArm() && hasWeapon()) {
-			dropWeapon = true;
+		else if (!hasArm()) {
+			setPunchChance(0); //cannot punch if no arms remaining
+			if (hasWeapon()) {
+				dropWeapon = true; //if zombie has weapon, drop the weapons
+			}
 		}
 		if (dropWeapon) {
 			Item zombieWeapon = inventory.get(0);
