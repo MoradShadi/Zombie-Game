@@ -38,4 +38,8 @@ public class Crop extends Ground {
 		return riped;
 	}
 	
+	public int getTurn() {
+		return turn;
+	}
+	
 }
