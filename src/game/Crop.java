@@ -1,30 +1,41 @@
 package game;
 
 import edu.monash.fit2099.engine.Ground;
+import edu.monash.fit2099.engine.Location;
 
 /**
  * A class that represents bare dirt.
  */
 public class Crop extends Ground {
-	int turn;
-	boolean riped;
+	private int turn;
+	private boolean riped;
+	private Location[][] map;
+	private int x;
+	private int y;
 	
-	public Crop(int turns) {
+	public Crop(int turns, Location location) {
 		super('^');
 		this.turn = turns;
+		map[x][y] = location;
 	}
 	
 	public void boostRipen() {
 		turn -= 10;
-		if (turn <= 0) {
-			riped = true;
-		}
 	}
 	
 	public void normalRipen() {
 		turn -= 1;
+	}
+	
+	public Location getLocation() {
+		return map[x][y];
+	}
+	
+	public boolean isRipe() {
 		if (turn <= 0) {
 			riped = true;
 		}
+		return riped;
 	}
+	
 }
