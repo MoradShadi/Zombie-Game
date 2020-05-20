@@ -43,10 +43,10 @@ public class Player extends Human {
 	public Weapon getWeapon() {
 		//We override the getWeapon method for all characters so that there is more adjustability for the miss rate for each character
 		//and we can encapsulate the miss rate for each character in their own class
-//		if (rand.nextBoolean()) {
-//			//base 50% chance to miss attack
-//			return null;
-//		}
+		if (rand.nextBoolean()) {
+			//base 50% chance to miss attack
+			return null;
+		}
 		return super.getWeapon();
 	}
 
