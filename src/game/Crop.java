@@ -19,8 +19,9 @@ public class Crop extends Ground {
 		map[x][y] = location;
 	}
 	
-	public void boostRipen() {
+	public int boostRipen() {
 		turn -= 10;
+		return turn;
 	}
 	
 	public void normalRipen() {
