@@ -99,24 +99,5 @@ public class Application {
 		
 		world.run();
 		
-		Random rand = new Random();
-		
-		double sowingChance = rand.nextDouble();
-		
-		for (Actor farmer: farmers) {
-			do {
-				x = (int) Math.floor(Math.random() * 20.0 + 30.0);
-				y = (int) Math.floor(Math.random() * 7.0 + 5.0);
-			} 
-			
-			while (gameMap.at(x, y).containsAnActor());
-			if(gameMap.contains(farmer)){
-				if (sowingChance <= 0.33) {
-					new SowCrop(x, y, gameMap);
-				}
-					
-			}
 		}
-	}
-	
 }
