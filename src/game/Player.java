@@ -92,4 +92,13 @@ public class Player extends Human {
 		}
 		
 	}
+	
+	public void eatFood(Player player) {
+		inventory = player.getInventory();
+		for(Item item: inventory) {
+			if (item.getDisplayChar() == 'o') {
+				player.eatFood(player);;
+			}
+		}
+	}
 }
