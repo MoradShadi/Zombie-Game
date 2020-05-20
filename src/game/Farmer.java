@@ -54,14 +54,8 @@ public class Farmer extends Human {
 		if(ground.getDisplayChar() == '^') {
 			Crop crop = (Crop) ground;
 			if(crop.isRipe() == false) {
-				crop.boostRipen();
+				new Fertilize(crop, gameMap);
 			}
 		}
-		
-		double sowingChance = rand.nextDouble();
-		
-		if (sowingChance <= 0.33) {
-			new SowCrop(x, y, gameMap);
-		}	
 	}
 }
