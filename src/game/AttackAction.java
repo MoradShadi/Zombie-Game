@@ -51,9 +51,9 @@ public class AttackAction extends Action {
 
 		if (target instanceof Zombie) {
 			Zombie targetZombie = (Zombie) target;
-			ArrayList<ZombieLimb> droppedZombieLimbs = targetZombie.zombieHurt(damage);
-			if (droppedZombieLimbs != null) {
-				dropLimbOnMap(targetZombie, droppedZombieLimbs, map);
+			ArrayList<Item> droppedZombieLimbsAndWeapons = targetZombie.zombieHurt(damage);
+			if (droppedZombieLimbsAndWeapons != null) {
+				dropLimbOnMap(targetZombie, droppedZombieLimbsAndWeapons, map);
 			}	
 		}
 		else {
@@ -89,7 +89,7 @@ public class AttackAction extends Action {
 		return actor + " attacks " + target;
 	}
 	
-	private void dropLimbOnMap(Zombie targetZombie, ArrayList<ZombieLimb> lostLimbs, GameMap map) {
+	private void dropLimbOnMap(Zombie targetZombie, ArrayList<Item> droppedLimbsAndWeapons, GameMap map) {
 		Location zombieLocation = map.locationOf(targetZombie);
 		List<Exit> allAdjacentLocations = zombieLocation.getExits();
 		ArrayList<Location> validAdjacentLocations = new ArrayList<Location>();
@@ -98,14 +98,16 @@ public class AttackAction extends Action {
 			Location adjacentLocation = exit.getDestination();
 			boolean walkableGround = adjacentLocation.getGround().canActorEnter(targetZombie);
 			if (walkableGround) {
+				//The adjacent location is valid if Actors can walk on it so that they can pick up the limb as weapon
 				validAdjacentLocations.add(adjacentLocation);
 			}
 		}
 		
 		int numOfValidGrounds = validAdjacentLocations.size();
-		for (ZombieLimb droppedLimb : lostLimbs) {
+		for (Item droppedItem : droppedLimbsAndWeapons) {
 			int randomIndex = rand.nextInt(numOfValidGrounds);
-			validAdjacentLocations.get(randomIndex).addItem(droppedLimb);
+			//Drop the limb on a random valid location beside the zombie
+			validAdjacentLocations.get(randomIndex).addItem(droppedItem);
 		}
 	}
 }

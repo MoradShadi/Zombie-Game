@@ -10,9 +10,11 @@ import edu.monash.fit2099.engine.Display;
 import edu.monash.fit2099.engine.DoNothingAction;
 import edu.monash.fit2099.engine.GameMap;
 import edu.monash.fit2099.engine.IntrinsicWeapon;
+import edu.monash.fit2099.engine.Item;
 import edu.monash.fit2099.engine.MoveActorAction;
 import edu.monash.fit2099.engine.PickUpItemAction;
 import edu.monash.fit2099.engine.Weapon;
+import edu.monash.fit2099.engine.WeaponItem;
 
 /**
  * A Zombie.
@@ -141,18 +143,26 @@ public class Zombie extends ZombieActor {
 		return legs.size() > 0;
 	}
 	
-	public ArrayList<ZombieLimb> zombieHurt(int points) {
-		hurt(points);
-		
-		ArrayList<ZombieLimb> droppedLimbs = loseLimbs();
-		return droppedLimbs;
+	private boolean hasWeapon() {
+		Weapon inventoryItem = inventory.get(0).asWeapon(); //zombie can only pick up one item at a time
+		if (inventoryItem != null) {
+			return true;
+		}
+		return false;
 	}
 	
-	private ArrayList<ZombieLimb> loseLimbs() {
-		double rollLoseLimb = rand.nextDouble();
-		ArrayList<ZombieLimb> droppedLimbs = null;
+	public ArrayList<Item> zombieHurt(int points) {
+		hurt(points);
 		
-		if (rollLoseLimb <= 0.25) {
+		ArrayList<Item> droppedLimbsAndWeapons = loseLimbs();
+		return droppedLimbsAndWeapons;
+	}
+	
+	private ArrayList<Item> loseLimbs() {
+		double rollLoseLimb = rand.nextDouble();
+		ArrayList<Item> droppedLimbsAndWeapons = null;
+		
+		if (rollLoseLimb <= 0.95) {
 			boolean loseArm = false;
 			boolean loseLeg = false;
 			
@@ -182,23 +192,23 @@ public class Zombie extends ZombieActor {
 				loseLeg = true;
 			}
 			
-			droppedLimbs = removeLimbs(loseArm, loseLeg);
+			droppedLimbsAndWeapons = removeLimbs(loseArm, loseLeg);
 		}
-		return droppedLimbs;
+		return droppedLimbsAndWeapons;
 	}
 	
-	private ArrayList<ZombieLimb> removeLimbs(boolean loseArm, boolean loseLeg) {
-		ArrayList<ZombieLimb> droppedLimbs = new ArrayList<ZombieLimb>();
-		ArrayList<ZombieArm> droppedArms = new ArrayList<ZombieArm>();
+	private ArrayList<Item> removeLimbs(boolean loseArm, boolean loseLeg) {
+		ArrayList<Item> droppedLimbsAndWeapons = new ArrayList<Item>();
+		ArrayList<Item> droppedArmsAndWeapons = new ArrayList<Item>();
 		ArrayList<ZombieLeg> droppedLegs = new ArrayList<ZombieLeg>();
 		
 		if (loseArm) {
 			boolean loseTwoArms = (armCount() == 2) && (rand.nextDouble() < 0.25); //25% chance to lose two arms instead of one
 			if (loseTwoArms) {
-				droppedArms = removeArm(2);
+				droppedArmsAndWeapons = removeArm(2);
 			}
 			else {
-				droppedArms = removeArm(1);
+				droppedArmsAndWeapons = removeArm(1);
 			}
 		}
 		
@@ -212,32 +222,40 @@ public class Zombie extends ZombieActor {
 			}
 		}
 		
-		for (ZombieArm arm : droppedArms) {
-			droppedLimbs.add(arm);
+		for (Item armOrWeapon : droppedArmsAndWeapons) {
+			droppedLimbsAndWeapons.add(armOrWeapon);
 		}
 		for (ZombieLeg leg : droppedLegs) {
-			droppedLimbs.add(leg);
+			droppedLimbsAndWeapons.add(leg);
 		}
 		
-		return droppedLimbs;
+		return droppedLimbsAndWeapons;
 	}
 	
-	private ArrayList<ZombieArm> removeArm(int numOfArmLost) {
-		ArrayList<ZombieArm> lostArms = new ArrayList<ZombieArm>(numOfArmLost);
+	private ArrayList<Item> removeArm(int numOfArmLost) {
+		ArrayList<Item> lostArmsAndWeapons = new ArrayList<Item>(numOfArmLost);
 		
 		for (int i = 0; i < numOfArmLost; i++) {
-			lostArms.add(arms.get(0));
+			lostArmsAndWeapons.add(arms.get(0));
 			arms.remove(0);
 		}
 		
-		if (armCount() == 1) {
-			if (rand.nextBoolean()) {
-				//continue implement drop weapon (need to allow zombie carry weapon first)
-			}
+		//After rmeoving arm, check if zombie will drop the weapon.
+		boolean dropWeapon = false;
+		if (armCount() == 1 && hasWeapon()) {
+			dropWeapon = rand.nextBoolean();
+		}
+		else if (!hasArm()) {
+			dropWeapon = true;
+		}
+		if (dropWeapon) {
+			Item zombieWeapon = inventory.get(0);
+			lostArmsAndWeapons.add(zombieWeapon);
+			System.out.println(this + " dropped its " + zombieWeapon);
 		}
 		
 		System.out.println(this + " lost " + numOfArmLost + " arm(s)");
-		return lostArms;
+		return lostArmsAndWeapons;
 	}
 	
 	private ArrayList<ZombieLeg> removeLeg(int numOfLegLost) {
