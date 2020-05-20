@@ -1,16 +1,13 @@
 package game;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import edu.monash.fit2099.engine.Actor;
-import edu.monash.fit2099.engine.ActorLocations;
 import edu.monash.fit2099.engine.Display;
 import edu.monash.fit2099.engine.FancyGroundFactory;
 import edu.monash.fit2099.engine.GameMap;
 import edu.monash.fit2099.engine.World;
-import java.util.Random;
 
 /**
  * The main class for the zombie apocalypse game.
@@ -80,22 +77,13 @@ public class Application {
 		gameMap.at(62, 12).addActor(new Zombie("Aaargh"));
 		
 		// adding farmers
-		ArrayList <Actor> farmers = new ArrayList <> ();
-		Actor farmer1 = new Farmer("Farmer 1");
-		gameMap.at(30, 20).addActor(farmer1);
-		farmers.add(farmer1);
+		gameMap.at(30, 20).addActor(new Farmer("Farmer 1"));
 		
-		Actor farmer2 = new Farmer("Farmer 2");
-		gameMap.at(30,  18).addActor(farmer2);
-		farmers.add(farmer2);
+		gameMap.at(30,  18).addActor(new Farmer("Farmer 2"));
 		
-		Actor farmer3 = new Farmer("Farmer 3");
-		gameMap.at(10,  4).addActor(farmer3);
-		farmers.add(farmer3);
+		gameMap.at(10,  4).addActor(new Farmer("Farmer 3"));
 		
-		Actor farmer4 = new Farmer("Farmer 4");
-		gameMap.at(50, 18).addActor(farmer4);
-		farmers.add(farmer4);
+		gameMap.at(50, 18).addActor(new Farmer("Farmer 4"));
 		
 		world.run();
 		
