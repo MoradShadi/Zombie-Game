@@ -1,6 +1,7 @@
 package game;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 
@@ -14,7 +15,6 @@ import edu.monash.fit2099.engine.Item;
 import edu.monash.fit2099.engine.MoveActorAction;
 import edu.monash.fit2099.engine.PickUpItemAction;
 import edu.monash.fit2099.engine.Weapon;
-import edu.monash.fit2099.engine.WeaponItem;
 
 /**
  * A Zombie.
@@ -57,10 +57,12 @@ public class Zombie extends ZombieActor {
 	 * further 50% chance to miss, so an overall chance of only 25% to hit the bite attack.
 	 * If the bite attack hits successfully, heal the Zombie for 5 health.
 	 *
-	 * @return the Actor's weapon or natural
+	 * @return the Actor's weapon or natural attack
 	 */
 	@Override
 	public Weapon getWeapon() {
+		//We override the getWeapon method for all characters so that there is more adjustability for the miss rate for each character
+		//and we can encapsulate the miss rate for each character in their own class
 		if (rand.nextBoolean()) {
 			//50% base chance to miss
 			return null;
@@ -71,7 +73,7 @@ public class Zombie extends ZombieActor {
 		if (zombieWeapon.verb() == "bites") {
 			if (rand.nextBoolean()) {
 				//bite has further 50% chance to miss, so overall it has 50% * 50% = 25% chance to hit
-				//other weapons or punch have normal base 50% chance to hit
+				//other weapons and normal punch have normal base 50% chance to hit
 				return null;
 			}
 			else {
@@ -144,11 +146,11 @@ public class Zombie extends ZombieActor {
 	}
 	
 	private boolean hasWeapon() {
-		Weapon inventoryItem = inventory.get(0).asWeapon(); //zombie can only pick up one item at a time
-		if (inventoryItem != null) {
-			return true;
+		List<Item> zombieInventory = getInventory(); //zombie can only pick up one item at a time
+		if (zombieInventory.isEmpty()) {
+			return false;
 		}
-		return false;
+		return true;
 	}
 	
 	public ArrayList<Item> zombieHurt(int points) {
