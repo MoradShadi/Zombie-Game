@@ -1,17 +1,22 @@
 package game;
 
-import java.util.Random;
-
+import edu.monash.fit2099.engine.Action;
+import edu.monash.fit2099.engine.Actions;
+import edu.monash.fit2099.engine.Display;
+import edu.monash.fit2099.engine.DoNothingAction;
 import edu.monash.fit2099.engine.GameMap;
-import edu.monash.fit2099.engine.Ground;
-import edu.monash.fit2099.engine.Location;
 
 /**
  * Class representing the Player.
  */
 public class Farmer extends Human {
-	private Random rand = new Random();
-	private Location[][] map;
+	private Behaviour[] behaviours = {
+			new PickUpWeaponBehaviour(),
+			new WanderBehaviour(),
+			new Harvest(),
+			new SowCrop(),
+			new Fertilize()
+	};
 
 	/**
 	 * Constructor.
@@ -24,67 +29,17 @@ public class Farmer extends Human {
 		super(name, 'F', 50);
 	}
 	
-	public void sowChance(int x, int y, GameMap gameMap) {
-		// location for left
-		int x_left = x - 1;
-		int x_right = x + 1;
-			
-		Ground ground_l = map[x_left][y].getGround();
-		Ground ground_r = map[x_right][y].getGround();
-			
-		if(ground_l.getDisplayChar() == '.') {
-			double sowChance = rand.nextDouble();
-
-			if (sowChance <= 0.33) {
-				new SowCrop(x_left, y, gameMap);
+	@Override
+	public Action playTurn(Actions actions, Action lastAction, GameMap map, Display display) {
+		for (Behaviour behaviour : behaviours) {
+			System.out.println("BEHAVIOUR" + behaviour);
+			Action action = behaviour.getAction(this, map);
+			System.out.println("This" + this);
+			if (action != null) {
+				System.out.println("NO NULL " + behaviour);
+				return action;
 			}
 		}
-		
-		if(ground_r.getDisplayChar() == '.') {
-			double sowChance = rand.nextDouble();
-
-			if (sowChance <= 0.33) {
-				new SowCrop(x_left, y, gameMap);
-			}	
-		}
+		return new DoNothingAction();
 	}
-	
-	public void fertilizeCrop(int x, int y, GameMap gameMap) {
-		Ground ground = map[x][y].getGround();
-		if(ground.getDisplayChar() == '^') {
-			Crop crop = (Crop) ground;
-			if(crop.isRipe() == false) {
-				new Fertilize(crop, gameMap);
-			}
-		}
-	}
-	
-	public void harvestCrop(int x, int y, GameMap gameMap) {
-		// location for left
-		int x_left = x - 1;
-		int x_right = x + 1;
-		Harvest harvest = new Harvest();
-			
-		Ground ground_l = map[x_left][y].getGround();
-		Ground ground_r = map[x_right][y].getGround();
-			
-		if(ground_l.getDisplayChar() == '^') {
-			Crop crop = (Crop) ground_l;
-			harvest.farmerHarvest(crop, gameMap);
-		}
-		
-		if(ground_r.getDisplayChar() == '^') {
-			Crop crop = (Crop) ground_r;
-			harvest.farmerHarvest(crop, gameMap);	
-		}
-		
-		Ground ground = map[x][y].getGround();
-		
-		if (ground.getDisplayChar() == '^') {
-			Crop crop = (Crop) ground;
-			harvest.farmerHarvest(crop, gameMap);
-		}
-		
-	}
-	
 }
