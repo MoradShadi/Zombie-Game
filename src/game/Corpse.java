@@ -26,7 +26,7 @@ public class Corpse extends PortableItem {
 		if (turnCount == turnsNeeded) {
 			actor.removeItemFromInventory(this);
 			Location corpseReviveLocation = getRandomAdjacentLocation(currentLocation, actor);
-			corpseReviveLocation.addActor(new Zombie("Ex-human"));
+			corpseReviveLocation.addActor(new Zombie(name + " zombie"));
 			System.out.println(name + " has turned into a zombie!");
 		}
 		
@@ -37,7 +37,7 @@ public class Corpse extends PortableItem {
 	public void tick(Location currentLocation) {
 		if (turnCount == turnsNeeded) {
 			currentLocation.removeItem(this);
-			currentLocation.addActor(new Zombie("Ex-human2"));
+			currentLocation.addActor(new Zombie(name + " zombie"));
 			System.out.println(name + " has turned into a zombie!");
 		}
 		

@@ -7,7 +7,7 @@ import edu.monash.fit2099.engine.Item;
 
 
 public class CraftWeaponAction extends Action {
-	protected Item oldWeapon;
+	private Item oldWeapon;
 	
 	public CraftWeaponAction(Item weapon){
 			this.oldWeapon = weapon;

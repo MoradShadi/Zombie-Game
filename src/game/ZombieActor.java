@@ -24,4 +24,11 @@ public abstract class ZombieActor extends Actor {
 			list.add(new AttackAction(this));
 		return list;
 	}
+	
+	public boolean isDamaged() {
+		if (this.hitPoints < this.maxHitPoints) {
+			return true;
+		}
+		return false;
+	}
 }

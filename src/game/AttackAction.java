@@ -103,9 +103,8 @@ public class AttackAction extends Action {
 			}
 		}
 		
-		int numOfValidGrounds = validAdjacentLocations.size();
 		for (Item droppedItem : droppedLimbsAndWeapons) {
-			int randomIndex = rand.nextInt(numOfValidGrounds);
+			int randomIndex = rand.nextInt(validAdjacentLocations.size());
 			//Drop the limb on a random valid location beside the zombie
 			validAdjacentLocations.get(randomIndex).addItem(droppedItem);
 		}

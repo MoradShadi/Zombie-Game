@@ -1,13 +1,20 @@
 package game;
 
-import edu.monash.fit2099.engine.Item;
+import java.util.List;
+
+import edu.monash.fit2099.engine.Action;
 
 /**
- * A class that represents bare dirt.
+ * A class that represents food.
  */
-
-public class Food extends Item {
+public class Food extends PortableItem {
 	public Food() {
-		super("Food", 'o', true);
+		super("Food", 'o');
+	}
+	
+	@Override
+	public List<Action> getAllowableActions() {
+		allowableActions.add(new EatFoodAction(this));
+		return allowableActions.getUnmodifiableActionList();
 	}
 }

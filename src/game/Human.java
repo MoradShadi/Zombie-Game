@@ -1,7 +1,5 @@
 package game;
 
-import java.util.List;
-
 import edu.monash.fit2099.engine.Action;
 import edu.monash.fit2099.engine.Actions;
 import edu.monash.fit2099.engine.Display;
@@ -16,7 +14,7 @@ import edu.monash.fit2099.engine.Item;
  *
  */
 public class Human extends ZombieActor {
-	private Behaviour behaviour = new WanderBehaviour();
+	Behaviour behaviour = new WanderBehaviour();
 
 	/**
 	 * The default constructor creates default Humans
@@ -42,16 +40,23 @@ public class Human extends ZombieActor {
 	@Override
 	public Action playTurn(Actions actions, Action lastAction, GameMap gameMap, Display display) {
 		// FIXME humans are pretty dumb, maybe they should at least run away from zombies?
-		List<Item> items = gameMap.locationOf(this).getItems();
-		for(Item item: items) {
-			if(item.getDisplayChar() == 'o') {
-				gameMap.locationOf(this).removeItem(item);
-				this.heal(10);
-				System.out.println("A human just ate food. Healed by 10 points.");
+		if (this.isDamaged()) {
+			Food food = this.getFood();
+			if (food != null) {
+				return new EatFoodAction(food);
 			}
 		}
 		
 		return behaviour.getAction(this, gameMap);
+	}
+	
+	private Food getFood() {
+		for (Item item : this.getInventory()) {
+			if (item instanceof Food) {
+				return (Food) item;
+			}
+		}
+		return null;
 	}
 
 }

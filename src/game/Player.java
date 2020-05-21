@@ -16,7 +16,6 @@ import edu.monash.fit2099.engine.Weapon;
  */
 public class Player extends Human {
 	private Random rand = new Random();
-	private Behaviour harvestCrop = new Harvest();
 
 	private Menu menu = new Menu();
 	
@@ -53,67 +52,15 @@ public class Player extends Human {
 	@Override
 	public Action playTurn(Actions actions, Action lastAction, GameMap map, Display display) {
 		// Handle multi-turn Actions
-		List<Item> items = this.getInventory();
-		Action action = harvestCrop.getAction(this, map);
-		
-		if (action != null) {
-			harvestCrop.getAction(this, map);
-		}
-		
-		inventory = this.getInventory();
-		
-		for(Item item: inventory) {
-			if (item.getDisplayChar() == 'o') {
-				this.removeItemFromInventory(item);
-				this.heal(10);
-				System.out.println("Player ate the food. Player healed by 10 points.");
-			}
-		}
-			
+		List<Item> items = this.getInventory();	
 		for (Item item: items) {
-			if (item instanceof ZombieLeg || item instanceof ZombieArm)
+			if (item.hasCapability(CraftableWeaponCapability.CRAFTABLE))
 				actions.add(new CraftWeaponAction(item));
 		}
+		
 		if (lastAction.getNextAction() != null)
 			return lastAction.getNextAction();
 		return menu.showMenu(this, actions, display);
 	}
 	
-	/*public void harvestCrop(int x, int y, GameMap gameMap, Player player) {
-		// location for left
-		int x_left = x - 1;
-		int x_right = x + 1;
-		Harvest harvest = new Harvest();	
-		
-		Ground ground_l = map[x_left][y].getGround();
-		Ground ground_r = map[x_right][y].getGround();
-			
-		if(ground_l.getDisplayChar() == '^') {
-			Crop crop = (Crop) ground_l;
-			harvest.playerHarvest(player, crop, gameMap);
-		}
-		
-		if(ground_r.getDisplayChar() == '^') {
-			Crop crop = (Crop) ground_r;
-			harvest.playerHarvest(player, crop, gameMap);	
-		}
-		
-		Ground ground = map[x][y].getGround();
-		
-		if (ground.getDisplayChar() == '^') {
-			Crop crop = (Crop) ground;
-			harvest.playerHarvest(player, crop, gameMap);
-		}
-		
-	}*/
-	
-	public void eatFood(Player player) {
-		inventory = player.getInventory();
-		for(Item item: inventory) {
-			if (item.getDisplayChar() == 'o') {
-				player.removeItemFromInventory(item);
-				player.heal(10);
-			}
-		}
-	}
 }
