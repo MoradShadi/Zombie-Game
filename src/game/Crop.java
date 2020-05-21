@@ -4,7 +4,7 @@ import edu.monash.fit2099.engine.Ground;
 import edu.monash.fit2099.engine.Location;
 
 /**
- * A class that represents bare dirt.
+ * A class that represents a crop.
  */
 public class Crop extends Ground {
 	private int turn;

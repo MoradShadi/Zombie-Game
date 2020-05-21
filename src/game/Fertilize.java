@@ -17,11 +17,12 @@ public class Fertilize implements Behaviour {
 	@Override
 	public Action getAction(Actor actor, GameMap gameMap) {
 		// TODO Auto-generated method stub
-		location = gameMap.locationOf(actor);
+		Farmer farmer = (Farmer) actor;
+		location = gameMap.locationOf(farmer);
 		int x = location.x();
 		int y = location.y();
 		
-		Ground ground = map[x][y].getGround();
+		Ground ground = gameMap.at(x, y).getGround();
 		if(ground.getDisplayChar() == '^') {
 			Crop crop = (Crop) ground;
 			if(crop.isRipe() == false) {
