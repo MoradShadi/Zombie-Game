@@ -12,55 +12,109 @@ public class Harvest implements Behaviour {
 	Location location;
 	Location[][] map;
 	
-	public Action farmerHarvest(Crop crop, GameMap gameMap) {
+	public void farmerHarvest(Crop crop, GameMap gameMap) {
 		crop.setTurn(20);
 		
 		Food food = new Food();
-		return food.getDropAction();
+		
+		System.out.println("A crop is harvested.");
+		
+		food.getDropAction();
+		
 		}
 
-	public Action playerHarvest(Player player, Crop crop, GameMap gameMap) {
+	public void playerHarvest(Player player, Crop crop, GameMap gameMap) {
 		crop.setTurn(20);
 		
 		Item food = new Food();
 		
-		return new PickUpItemAction(food);
+		System.out.println("PLayer " + player + " harvested a crop.");
+		
+		new PickUpItemAction(food);
 	}
 
 
 	@Override
 	public Action getAction(Actor actor, GameMap gameMap) {
 		// TODO Auto-generated method stub
-		location = gameMap.locationOf(actor);
 		if(actor.getDisplayChar() == 'F') {
+			Farmer farmer = (Farmer) actor;
+			location = gameMap.locationOf(farmer);
+			
 			int x_left = location.x() - 1;
 			int x_right = location.x() + 1;
 			int x = location.x();
 			int y = location.y();
 			
-			Ground ground_l = map[x_left][y].getGround();
-			Ground ground_r = map[x_right][y].getGround();
+			if(x_left >= 0) {
+				Ground ground_l = gameMap.at(x_left, y).getGround();
 				
-			if(ground_l.getDisplayChar() == '^') {
-				Crop crop = (Crop) ground_l;
-				this.farmerHarvest(crop, gameMap);
-				crop.setTurn(20);
+				if(ground_l.getDisplayChar() == '^') {
+					Crop crop = (Crop) ground_l;
+					crop.setTurn(20);
+					farmerHarvest(crop, gameMap);
+				}
 			}
 			
-			if(ground_r.getDisplayChar() == '^') {
-				Crop crop = (Crop) ground_r;
-				this.farmerHarvest(crop, gameMap);
-				crop.setTurn(20);
+			if(x_right >= 0) {
+				Ground ground_r = gameMap.at(x_right, y).getGround();
+				
+				if(ground_r.getDisplayChar() == '^') {
+					Crop crop = (Crop) ground_r;
+					crop.setTurn(20);
+					farmerHarvest(crop, gameMap);
+				}
 			}
 			
-			Ground ground = map[x][y].getGround();
+			Ground ground = gameMap.at(x, y).getGround();
 			
 			if (ground.getDisplayChar() == '^') {
 				Crop crop = (Crop) ground;
 				crop.setTurn(20);
-				return this.farmerHarvest(crop, gameMap);
+				farmerHarvest(crop, gameMap);
 			}
 		}
-		return getAction(null, null);
+		
+		else {
+			Player player = (Player) actor;
+			location = gameMap.locationOf(player);
+			
+			int x_left = location.x() - 1;
+			int x_right = location.x() + 1;
+			int x = location.x();
+			int y = location.y();
+			
+			if(x_left >= 0) {
+				Ground ground_l = gameMap.at(x_left, y).getGround();
+				
+				if(ground_l.getDisplayChar() == '^') {
+					Crop crop = (Crop) ground_l;
+					if(crop.isRipe()) {
+						playerHarvest(player, crop, gameMap);
+					}
+				}
+			}
+			
+			if(x_right >= 0) {
+				Ground ground_r = gameMap.at(x_right, y).getGround();
+				
+				if(ground_r.getDisplayChar() == '^') {
+					Crop crop = (Crop) ground_r;
+					if(crop.isRipe()) {
+						playerHarvest(player, crop, gameMap);
+					}
+				}
+			}
+			
+			Ground ground = gameMap.at(x, y).getGround();
+			
+			if (ground.getDisplayChar() == '^') {
+				Crop crop = (Crop) ground;
+				if(crop.isRipe()) {
+					playerHarvest(player, crop, gameMap);
+				}
+			}
+		}
+		return null;
 	}
 }
