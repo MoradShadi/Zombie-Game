@@ -53,7 +53,7 @@ public class Corpse extends PortableItem {
 			for (Exit exit : allAdjacentLocations) {
 				Location adjacentLocation = exit.getDestination();
 				boolean walkableGround = adjacentLocation.getGround().canActorEnter(actor);
-				boolean notOccupied = adjacentLocation.containsAnActor();
+				boolean notOccupied = !adjacentLocation.containsAnActor();
 				if (walkableGround && notOccupied) {
 					validAdjacentLocations.add(adjacentLocation);
 				}

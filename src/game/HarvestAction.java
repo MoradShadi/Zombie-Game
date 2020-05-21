@@ -30,7 +30,7 @@ public class HarvestAction extends Action {
 	@Override
 	public String menuDescription(Actor actor) {
 		// TODO Auto-generated method stub
-		return actor + " harvested a crop.";
+		return actor + " harvests a crop.";
 	}
 	
 	private void dropFoodHarvest(Location locationOfCrop) {

@@ -19,6 +19,11 @@ public class Player extends Human {
 
 	private Menu menu = new Menu();
 	
+	private Behaviour[] behaviours = {
+			new EatFoodBehaviour(),
+			new HarvestBehaviour()
+	};
+	
 
 	/**
 	 * Constructor.
@@ -54,9 +59,18 @@ public class Player extends Human {
 		// Handle multi-turn Actions
 		List<Item> items = this.getInventory();	
 		for (Item item: items) {
-			if (item.hasCapability(CraftableWeaponCapability.CRAFTABLE))
+			if (item.hasCapability(CraftableWeaponCapability.CRAFTABLE)) {
 				actions.add(new CraftWeaponAction(item));
+			}
 		}
+		
+		for (Behaviour behaviour : behaviours) {
+			Action action = behaviour.getAction(this, map);
+			if (action != null) {
+				actions.add(action);
+			}
+		}
+			
 		
 		if (lastAction.getNextAction() != null)
 			return lastAction.getNextAction();

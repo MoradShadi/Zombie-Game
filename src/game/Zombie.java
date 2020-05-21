@@ -30,7 +30,7 @@ public class Zombie extends ZombieActor {
 	private double punchChance;
 	
 	private Behaviour[] behaviours = {
-			new ZombiePickUpWeaponBehaviour(),
+			new PickUpWeaponBehaviour(),
 			new AttackBehaviour(ZombieCapability.ALIVE),
 			new HuntBehaviour(Human.class, 10),
 			new WanderBehaviour()

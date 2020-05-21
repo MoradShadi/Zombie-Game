@@ -3,6 +3,7 @@ package game;
 import edu.monash.fit2099.engine.Action;
 import edu.monash.fit2099.engine.Actions;
 import edu.monash.fit2099.engine.Display;
+import edu.monash.fit2099.engine.DoNothingAction;
 import edu.monash.fit2099.engine.GameMap;
 
 /**
@@ -35,6 +36,6 @@ public class Farmer extends Human {
 				return action;
 			}
 		}
-		return null;
+		return new DoNothingAction();
 	}
 }

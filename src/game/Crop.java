@@ -13,7 +13,7 @@ public class Crop extends Ground {
 	public Crop() {
 		super('^');
 		turnCount = 0;
-		turnsNeeded = 20;
+		turnsNeeded = 3;
 	}
 	
 	public void fertilize() {

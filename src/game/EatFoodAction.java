@@ -25,7 +25,7 @@ public class EatFoodAction extends Action {
 	@Override
 	public String menuDescription(Actor actor) {
 		// TODO Auto-generated method stub
-		return actor + " ate food to restore 10 health.";
+		return actor + " eats food to restore 10 health.";
 	}
 
 }

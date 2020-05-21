@@ -1,6 +1,6 @@
 package game;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import edu.monash.fit2099.engine.Action;
 import edu.monash.fit2099.engine.Actor;
@@ -11,14 +11,14 @@ import edu.monash.fit2099.engine.PickUpItemAction;
 import edu.monash.fit2099.engine.WeaponItem;
 
 
-public class ZombiePickUpWeaponBehaviour implements Behaviour {
+public class PickUpWeaponBehaviour implements Behaviour {
 
 	
 	@Override
 	public Action getAction(Actor actor, GameMap map) {
 		Zombie zombie = (Zombie) actor;
-		ArrayList<Item> items = new ArrayList<Item>(map.locationOf(zombie).getItems());
-		ArrayList<Item> inventory = new ArrayList<Item>(zombie.getInventory());
+		List<Item> items = map.locationOf(zombie).getItems();
+		List<Item> inventory = zombie.getInventory();
 
 		if (zombie.hasArm()) {
 			for (Item groundItem: items) {
