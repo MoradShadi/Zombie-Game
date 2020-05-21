@@ -16,7 +16,8 @@ public class Crop extends Ground {
 	public Crop(int turns, Location location) {
 		super('^');
 		this.turn = turns;
-		map[x][y] = location;
+		x = location.x();
+		y = location.y();
 	}
 	
 	public int boostRipen() {
