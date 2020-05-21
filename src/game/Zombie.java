@@ -1,6 +1,7 @@
 package game;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 
@@ -10,6 +11,7 @@ import edu.monash.fit2099.engine.Display;
 import edu.monash.fit2099.engine.DoNothingAction;
 import edu.monash.fit2099.engine.GameMap;
 import edu.monash.fit2099.engine.IntrinsicWeapon;
+import edu.monash.fit2099.engine.Item;
 import edu.monash.fit2099.engine.MoveActorAction;
 import edu.monash.fit2099.engine.PickUpItemAction;
 import edu.monash.fit2099.engine.Weapon;
@@ -25,6 +27,8 @@ import edu.monash.fit2099.engine.Weapon;
 public class Zombie extends ZombieActor {
 	private Random rand = new Random();
 	
+	private double punchChance;
+	
 	private Behaviour[] behaviours = {
 			new PickUpWeaponBehaviour(),
 			new AttackBehaviour(ZombieCapability.ALIVE),
@@ -38,10 +42,21 @@ public class Zombie extends ZombieActor {
 	
 	public Zombie(String name) {
 		super(name, 'Z', 100, ZombieCapability.UNDEAD);
+		setPunchChance(0.5);
 		legs.add(new ZombieLeg());
 		legs.add(new ZombieLeg());
 		arms.add(new ZombieArm());
 		arms.add(new ZombieArm());
+	}
+	
+	private void setPunchChance(double newChance) {
+		if (newChance >= 0) {
+			this.punchChance = newChance;
+		}
+	}
+	
+	private double getPunchChance() {
+		return this.punchChance;
 	}
 	
 	
@@ -55,10 +70,12 @@ public class Zombie extends ZombieActor {
 	 * further 50% chance to miss, so an overall chance of only 25% to hit the bite attack.
 	 * If the bite attack hits successfully, heal the Zombie for 5 health.
 	 *
-	 * @return the Actor's weapon or natural
+	 * @return the Actor's weapon or natural attack
 	 */
 	@Override
 	public Weapon getWeapon() {
+		//We override the getWeapon method for all characters so that there is more adjustability for the miss rate for each character
+		//and we can encapsulate the miss rate for each character in their own class
 		if (rand.nextBoolean()) {
 			//50% base chance to miss
 			return null;
@@ -69,7 +86,7 @@ public class Zombie extends ZombieActor {
 		if (zombieWeapon.verb() == "bites") {
 			if (rand.nextBoolean()) {
 				//bite has further 50% chance to miss, so overall it has 50% * 50% = 25% chance to hit
-				//other weapons or punch have normal base 50% chance to hit
+				//other weapons and normal punch have normal base 50% chance to hit
 				return null;
 			}
 			else {
@@ -84,7 +101,8 @@ public class Zombie extends ZombieActor {
 
 	@Override
 	public IntrinsicWeapon getIntrinsicWeapon() {
-		if (rand.nextBoolean()) {
+		double rollIntrinsicWeapon = rand.nextDouble();
+		if (rollIntrinsicWeapon < getPunchChance()) {
 			return new IntrinsicWeapon(10, "punches");
 		}
 		else {
@@ -107,29 +125,18 @@ public class Zombie extends ZombieActor {
 		double brainsDialogueChance = rand.nextDouble();
 		if (brainsDialogueChance <= 0.1)
 			System.out.println(this.name+ " says BRAAAAAAINS");
-		
-		boolean oneLegAction = legCount() == 1 && lastAction instanceof MoveActorAction;
-		if (oneLegAction || !hasLeg()) { 
-			//If zombie only has one leg and previous action is a MoveActorAction, it cannot move this turn
-			Action action = behaviours[1].getAction(this, map);
-			if (action != null) {
-				return action;
-			}
-			return new DoNothingAction();
-		}
-		
-		if (lastAction instanceof PickUpItemAction) {
-			Action action = behaviours[2].getAction(this, map);
-			if (action != null) {
-				return action;
-				}
-			return new DoNothingAction();
-		}
 
 		for (Behaviour behaviour : behaviours) {
 			Action action = behaviour.getAction(this, map);
-			if (behaviour instanceof PickUpWeaponBehaviour && !this.hasArm())
+			
+			if (lastAction instanceof PickUpItemAction && action instanceof PickUpItemAction) {
 				action = null;
+			}
+			
+			if (action instanceof MoveActorAction && cannotMove(lastAction)) {
+				action = null;
+			}
+			
 			if (action != null)
 				return action;
 		}
@@ -152,41 +159,125 @@ public class Zombie extends ZombieActor {
 		return legs.size() > 0;
 	}
 	
-	public ArrayList<ZombieLimb> removeLimbs(int numOfArmLost, int numOfLegLost) {
-		ArrayList<ZombieLimb> lostLimbs = new ArrayList<ZombieLimb>(numOfArmLost + numOfLegLost);
-		
-		if (numOfArmLost > 0) {
-			ArrayList<ZombieArm> lostArms = removeArm(numOfArmLost);
-			for (ZombieArm lostArm : lostArms) {
-				lostLimbs.add(lostArm);
-			}
+	private boolean hasWeapon() {
+		List<Item> zombieInventory = getInventory(); //zombie can only pick up one item at a time
+		if (zombieInventory.isEmpty()) {
+			return false;
 		}
-		
-		if (numOfLegLost > 0) {
-			ArrayList<ZombieLeg> lostLegs = removeLeg(numOfLegLost);
-			for (ZombieLeg lostLeg : lostLegs) {
-				lostLimbs.add(lostLeg);
-			}
-		}
-		
-		return lostLimbs;
+		return true;
 	}
 	
-	private ArrayList<ZombieArm> removeArm(int numOfArmLost) {
-		ArrayList<ZombieArm> lostArms = new ArrayList<ZombieArm>(numOfArmLost);
+	public ArrayList<Item> zombieHurt(int points) {
+		hurt(points);
+		
+		ArrayList<Item> droppedLimbsAndWeapons = loseLimbs();
+		return droppedLimbsAndWeapons;
+	}
+	
+	private ArrayList<Item> loseLimbs() {
+		double rollLoseLimb = rand.nextDouble();
+		ArrayList<Item> droppedLimbsAndWeapons = null;
+		
+		if (rollLoseLimb <= 0.95) {
+			boolean loseArm = false;
+			boolean loseLeg = false;
+			
+			if (hasArm() && hasLeg()) { //If zombie has at least one arm and one leg, then it has chance to lose both an arm and a leg
+				boolean rollArmOrLeg = rand.nextBoolean();
+				boolean loseArmAndLeg;
+				
+				if (rollArmOrLeg) {
+					loseArm = true;
+					loseArmAndLeg = rand.nextDouble() < 0.25;
+					if (loseArmAndLeg) { //25% chance to lose leg also 
+						loseLeg = true;
+					}
+				}
+				else {
+					loseLeg = true;
+					loseArmAndLeg = rand.nextDouble() < 0.25;
+					if (loseArmAndLeg) { //25% chance to lose arm also
+						loseArm = true;
+					}
+				}
+			}
+			else if (hasArm()) { //If zombie has arm only then it can't lose any legs, can only lose arm
+				loseArm = true;
+			}
+			else if (hasLeg()) { //If zombie has leg only then it can't lose any arm, can only lose leg
+				loseLeg = true;
+			}
+			
+			droppedLimbsAndWeapons = removeLimbs(loseArm, loseLeg);
+		}
+		return droppedLimbsAndWeapons;
+	}
+	
+	private ArrayList<Item> removeLimbs(boolean loseArm, boolean loseLeg) {
+		ArrayList<Item> droppedLimbsAndWeapons = new ArrayList<Item>();
+		ArrayList<Item> droppedArmsAndWeapons = new ArrayList<Item>();
+		ArrayList<ZombieLeg> droppedLegs = new ArrayList<ZombieLeg>();
+		
+		if (loseArm) {
+			boolean loseTwoArms = (armCount() == 2) && (rand.nextDouble() < 0.25); //25% chance to lose two arms instead of one
+			if (loseTwoArms) {
+				droppedArmsAndWeapons = removeArm(2);
+			}
+			else {
+				droppedArmsAndWeapons = removeArm(1);
+			}
+		}
+		
+		if (loseLeg) {
+			boolean loseTwoLegs = (legCount() == 2) && (rand.nextDouble() < 0.25); //25% chance to lose two legs instead of one
+			if (loseTwoLegs) {
+				droppedLegs = removeLeg(2);
+			}
+			else {
+				droppedLegs = removeLeg(1);
+			}
+		}
+		
+		for (Item armOrWeapon : droppedArmsAndWeapons) {
+			droppedLimbsAndWeapons.add(armOrWeapon);
+		}
+		for (ZombieLeg leg : droppedLegs) {
+			droppedLimbsAndWeapons.add(leg);
+		}
+		
+		return droppedLimbsAndWeapons;
+	}
+	
+	private ArrayList<Item> removeArm(int numOfArmLost) {
+		ArrayList<Item> lostArmsAndWeapons = new ArrayList<Item>(numOfArmLost);
 		
 		for (int i = 0; i < numOfArmLost; i++) {
-			lostArms.add(arms.get(0));
+			lostArmsAndWeapons.add(arms.get(0));
 			arms.remove(0);
 		}
 		
+		//After rmeoving arm, reduce punch chance and check if zombie will drop the weapon.
+		boolean dropWeapon = false;
 		if (armCount() == 1) {
-			if (rand.nextBoolean()) {
-				//continue implement drop weapon (need to allow zombie carry weapon first)
+			setPunchChance(0.25); //punch chance is halved if lose one arm
+			if (hasWeapon()) {
+				dropWeapon = rand.nextBoolean(); //if zombie also has weapon, then 50% chance to drop weapon
+			}	
+		}
+		else if (!hasArm()) {
+			setPunchChance(0); //cannot punch if no arms remaining
+			if (hasWeapon()) {
+				dropWeapon = true; //if zombie has weapon, drop the weapons
 			}
 		}
+		if (dropWeapon) {
+			Item zombieWeapon = inventory.get(0);
+			lostArmsAndWeapons.add(zombieWeapon);
+			System.out.println(this + " dropped its " + zombieWeapon);
+		}
 		
-		return lostArms;
+		System.out.println(this + " lost " + numOfArmLost + " arm(s)");
+		return lostArmsAndWeapons;
 	}
 	
 	private ArrayList<ZombieLeg> removeLeg(int numOfLegLost) {
@@ -197,7 +288,21 @@ public class Zombie extends ZombieActor {
 			legs.remove(0);
 		}
 		
+		System.out.println(this + " lost " + numOfLegLost + " leg(s)");
 		return lostLegs;
+	}
+	
+	private boolean cannotMove(Action lastAction) {
+		boolean stopMovement = false;
+		boolean oneLegMovement = legCount() == 1 && lastAction instanceof MoveActorAction;
+		
+		//If zombie only has one leg and previous action is a MoveActorAction, it cannot move this turn, so it cannot hunt or wander,
+		//only can attack unless there is weapon on ground, then picking up weapon has precedence 
+		if (oneLegMovement || !hasLeg()) {
+			stopMovement = true;
+		}
+		
+		return stopMovement;
 	}
 	
 }

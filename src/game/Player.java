@@ -41,10 +41,12 @@ public class Player extends Human {
 	 * returns the first one in the inventory. Otherwise, returns the Player's 
 	 * natural fighting equipment e.g. fists.
 	 *
-	 * @return the Actor's weapon or natural
+	 * @return the Actor's weapon or natural attack
 	 */
 	@Override
 	public Weapon getWeapon() {
+		//We override the getWeapon method for all characters so that there is more adjustability for the miss rate for each character
+		//and we can encapsulate the miss rate for each character in their own class
 		if (rand.nextBoolean()) {
 			//base 50% chance to miss attack
 			return null;
@@ -57,7 +59,7 @@ public class Player extends Human {
 		// Handle multi-turn Actions
 		List<Item> items = this.getInventory();
 		for (Item item: items) {
-			if (item instanceof ZombieLeg || item instanceof ZombieArm)
+			if (item.hasCapability(CraftableWeaponCapability.CRAFTABLE))
 				actions.add(new CraftWeaponAction(item));
 		}
 		if (lastAction.getNextAction() != null)

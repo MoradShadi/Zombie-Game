@@ -49,42 +49,15 @@ public class AttackAction extends Action {
 		int damage = weapon.damage();
 		String result = actor + " " + weapon.verb() + " " + target + " for " + damage + " damage.";
 
-		target.hurt(damage);
-		
-		double rollLoseLimb = rand.nextDouble();
-		if (target instanceof Zombie && rollLoseLimb <= 0.25) {
+		if (target instanceof Zombie) {
 			Zombie targetZombie = (Zombie) target;
-			boolean loseArm = false;
-			boolean loseLeg = false;
-			
-			if (targetZombie.hasArm() && targetZombie.hasLeg()) {
-				boolean rollArmOrLeg = rand.nextBoolean();
-				double rollArmAndLeg;
-				
-				if (rollArmOrLeg) {
-					loseArm = true;
-					rollArmAndLeg = rand.nextDouble();
-					if (rollArmAndLeg <= 0.25) { //25% chance to lose leg also 
-						loseLeg = true;
-					}
-				}
-				else {
-					loseLeg = true;
-					rollArmAndLeg = rand.nextDouble();
-					if (rollArmAndLeg <= 0.25) { //25% chance to lose arm also
-						loseArm = true;
-					}
-				}
-				result += loseLimb(targetZombie, loseArm, loseLeg, map);
-			}
-			else if (targetZombie.hasArm()) {
-				loseArm = true;
-				result += loseLimb(targetZombie, loseArm, loseLeg, map);
-			}
-			else if (targetZombie.hasLeg()) {
-				loseLeg = true;
-				result += loseLimb(targetZombie, loseArm, loseLeg, map);
-			}
+			ArrayList<Item> droppedZombieLimbsAndWeapons = targetZombie.zombieHurt(damage);
+			if (droppedZombieLimbsAndWeapons != null) {
+				dropLimbOnMap(targetZombie, droppedZombieLimbsAndWeapons, map);
+			}	
+		}
+		else {
+			target.hurt(damage);
 		}
 		
 		if (!target.isConscious()) {
@@ -116,42 +89,7 @@ public class AttackAction extends Action {
 		return actor + " attacks " + target;
 	}
 	
-	private String loseLimb(Zombie targetZombie, boolean loseArm, boolean loseLeg, GameMap map) {
-		String outputStr = "";
-		int numOfArmLost = 0;
-		int numOfLegLost = 0;
-		
-		if (targetZombie.hasArm() && loseArm) {
-			double rollLoseTwoArms = rand.nextDouble(); //25% chance to lose 2 arms instead of one
-			if (rollLoseTwoArms <= 0.25 && targetZombie.armCount() == 2) {
-				numOfArmLost = 2;
-				outputStr += System.lineSeparator() + targetZombie + " lost 2 arms.";
-			}
-			else {
-				numOfArmLost = 1;
-				outputStr += System.lineSeparator() + targetZombie + " lost 1 arm.";
-			}
-		}
-		
-		if (targetZombie.hasLeg() && loseLeg) {
-			double rollLoseTwoLegs = rand.nextDouble(); //25% chance to lose 2 legs instead of one
-			if (rollLoseTwoLegs <= 0.25 && targetZombie.legCount() == 2) {
-				numOfLegLost = 2;
-				outputStr += System.lineSeparator() + targetZombie + " lost 2 legs.";
-			}
-			else {
-				numOfLegLost = 1;
-				outputStr += System.lineSeparator() + targetZombie + " lost 1 leg.";
-			}
-		}
-		
-		ArrayList<ZombieLimb> lostLimbs = targetZombie.removeLimbs(numOfArmLost, numOfLegLost);
-		dropLimbOnMap(targetZombie, lostLimbs, map);
-		
-		return outputStr;
-	}
-	
-	private void dropLimbOnMap(Zombie targetZombie, ArrayList<ZombieLimb> lostLimbs, GameMap map) {
+	private void dropLimbOnMap(Zombie targetZombie, ArrayList<Item> droppedLimbsAndWeapons, GameMap map) {
 		Location zombieLocation = map.locationOf(targetZombie);
 		List<Exit> allAdjacentLocations = zombieLocation.getExits();
 		ArrayList<Location> validAdjacentLocations = new ArrayList<Location>();
@@ -160,14 +98,16 @@ public class AttackAction extends Action {
 			Location adjacentLocation = exit.getDestination();
 			boolean walkableGround = adjacentLocation.getGround().canActorEnter(targetZombie);
 			if (walkableGround) {
+				//The adjacent location is valid if Actors can walk on it so that they can pick up the limb as weapon
 				validAdjacentLocations.add(adjacentLocation);
 			}
 		}
 		
 		int numOfValidGrounds = validAdjacentLocations.size();
-		for (ZombieLimb droppedLimb : lostLimbs) {
+		for (Item droppedItem : droppedLimbsAndWeapons) {
 			int randomIndex = rand.nextInt(numOfValidGrounds);
-			validAdjacentLocations.get(randomIndex).addItem(droppedLimb);
+			//Drop the limb on a random valid location beside the zombie
+			validAdjacentLocations.get(randomIndex).addItem(droppedItem);
 		}
 	}
 }
