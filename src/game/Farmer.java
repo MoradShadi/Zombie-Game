@@ -31,6 +31,7 @@ public class Farmer extends Human {
 	@Override
 	public Action playTurn(Actions actions, Action lastAction, GameMap map, Display display) {
 		for (Behaviour behaviour : behaviours) {
+			//First priority is harvesting food, second is fertilizing, third is planting crop, fourth is wander
 			Action action = behaviour.getAction(this, map);
 			if (action != null) {
 				return action;
