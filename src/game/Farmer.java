@@ -7,7 +7,7 @@ import edu.monash.fit2099.engine.DoNothingAction;
 import edu.monash.fit2099.engine.GameMap;
 
 /**
- * Class representing the Player.
+ * Class representing the Farmer.
  */
 public class Farmer extends Human {
 	private Behaviour[] behaviours = {
