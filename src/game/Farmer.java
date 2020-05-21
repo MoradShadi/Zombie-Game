@@ -11,7 +11,6 @@ import edu.monash.fit2099.engine.GameMap;
  */
 public class Farmer extends Human {
 	private Behaviour[] behaviours = {
-			new PickUpWeaponBehaviour(),
 			new WanderBehaviour(),
 			new Harvest(),
 			new SowCrop(),
