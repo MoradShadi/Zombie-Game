@@ -1,9 +1,12 @@
 package game;
 
+import java.util.List;
+
 import edu.monash.fit2099.engine.Action;
 import edu.monash.fit2099.engine.Actions;
 import edu.monash.fit2099.engine.Display;
 import edu.monash.fit2099.engine.GameMap;
+import edu.monash.fit2099.engine.Item;
 
 /**
  * Class representing an ordinary human.
@@ -37,9 +40,18 @@ public class Human extends ZombieActor {
 	}
 
 	@Override
-	public Action playTurn(Actions actions, Action lastAction, GameMap map, Display display) {
+	public Action playTurn(Actions actions, Action lastAction, GameMap gameMap, Display display) {
 		// FIXME humans are pretty dumb, maybe they should at least run away from zombies?
-		return behaviour.getAction(this, map);
+		List<Item> items = gameMap.locationOf(this).getItems();
+		for(Item item: items) {
+			if(item.getDisplayChar() == 'o') {
+				gameMap.locationOf(this).removeItem(item);
+				this.heal(10);
+				System.out.println("A human just ate food. Healed by 10 points.");
+			}
+		}
+		
+		return behaviour.getAction(this, gameMap);
 	}
 
 }
