@@ -1,20 +1,21 @@
 package game;
 
+import java.util.ArrayList;
 import edu.monash.fit2099.engine.Action;
 import edu.monash.fit2099.engine.Actions;
 import edu.monash.fit2099.engine.Display;
-import edu.monash.fit2099.engine.DoNothingAction;
 import edu.monash.fit2099.engine.GameMap;
 
 /**
  * Class representing the Farmer.
  */
 public class Farmer extends Human {
+	private ArrayList<SowCrop> sowCrops = new ArrayList<>();
 	private Behaviour[] behaviours = {
-			new WanderBehaviour(),
 			new Harvest(),
 			new SowCrop(),
-			new Fertilize()
+			new Fertilize(),
+			new WanderBehaviour()
 	};
 
 	/**
@@ -30,15 +31,19 @@ public class Farmer extends Human {
 	
 	@Override
 	public Action playTurn(Actions actions, Action lastAction, GameMap map, Display display) {
+		for(SowCrop sowCrop: sowCrops) {
+			for(Crop crop: sowCrop.crops) {
+				if(!crop.isRipe()) {
+					crop.normalRipen();
+				}
+			}
+		}
 		for (Behaviour behaviour : behaviours) {
-			System.out.println("BEHAVIOUR" + behaviour);
 			Action action = behaviour.getAction(this, map);
-			System.out.println("This" + this);
 			if (action != null) {
-				System.out.println("NO NULL " + behaviour);
 				return action;
 			}
 		}
-		return new DoNothingAction();
+		return null;
 	}
 }
