@@ -1,7 +1,6 @@
 package game;
 
 import edu.monash.fit2099.engine.WeaponItem;
-import edu.monash.fit2099.interfaces.CraftableWeapon;
 
 public abstract class ZombieLimb extends WeaponItem implements CraftableWeapon{
 

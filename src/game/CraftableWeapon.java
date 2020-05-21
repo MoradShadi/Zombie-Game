@@ -1,4 +1,4 @@
-package edu.monash.fit2099.interfaces;
+package game;
 
 import edu.monash.fit2099.engine.Item;
 

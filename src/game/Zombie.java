@@ -296,8 +296,7 @@ public class Zombie extends ZombieActor {
 		boolean stopMovement = false;
 		boolean oneLegMovement = legCount() == 1 && lastAction instanceof MoveActorAction;
 		
-		//If zombie only has one leg and previous action is a MoveActorAction, it cannot move this turn, so it cannot hunt or wander,
-		//only can attack unless there is weapon on ground, then picking up weapon has precedence 
+		//If zombie only has one leg and previous action is a MoveActorAction, it cannot move this turn, so it cannot hunt or wander
 		if (oneLegMovement || !hasLeg()) {
 			stopMovement = true;
 		}
