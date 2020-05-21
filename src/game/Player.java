@@ -7,9 +7,7 @@ import edu.monash.fit2099.engine.Action;
 import edu.monash.fit2099.engine.Actions;
 import edu.monash.fit2099.engine.Display;
 import edu.monash.fit2099.engine.GameMap;
-import edu.monash.fit2099.engine.Ground;
 import edu.monash.fit2099.engine.Item;
-import edu.monash.fit2099.engine.Location;
 import edu.monash.fit2099.engine.Menu;
 import edu.monash.fit2099.engine.Weapon;
 
@@ -18,10 +16,10 @@ import edu.monash.fit2099.engine.Weapon;
  */
 public class Player extends Human {
 	private Random rand = new Random();
+	private Behaviour harvestCrop = new Harvest();
 
 	private Menu menu = new Menu();
 	
-	private Location[][] map;
 
 	/**
 	 * Constructor.
@@ -56,6 +54,22 @@ public class Player extends Human {
 	public Action playTurn(Actions actions, Action lastAction, GameMap map, Display display) {
 		// Handle multi-turn Actions
 		List<Item> items = this.getInventory();
+		Action action = harvestCrop.getAction(this, map);
+		
+		if (action != null) {
+			harvestCrop.getAction(this, map);
+		}
+		
+		inventory = this.getInventory();
+		
+		for(Item item: inventory) {
+			if (item.getDisplayChar() == 'o') {
+				this.removeItemFromInventory(item);
+				this.heal(10);
+				System.out.println("Player ate the food. Player healed by 10 points.");
+			}
+		}
+			
 		for (Item item: items) {
 			if (item instanceof ZombieLeg || item instanceof ZombieArm)
 				actions.add(new CraftWeaponAction(item));
@@ -65,7 +79,7 @@ public class Player extends Human {
 		return menu.showMenu(this, actions, display);
 	}
 	
-	public void harvestCrop(int x, int y, GameMap gameMap, Player player) {
+	/*public void harvestCrop(int x, int y, GameMap gameMap, Player player) {
 		// location for left
 		int x_left = x - 1;
 		int x_right = x + 1;
@@ -91,7 +105,7 @@ public class Player extends Human {
 			harvest.playerHarvest(player, crop, gameMap);
 		}
 		
-	}
+	}*/
 	
 	public void eatFood(Player player) {
 		inventory = player.getInventory();
