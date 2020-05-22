@@ -10,15 +10,29 @@ import edu.monash.fit2099.engine.GameMap;
 import edu.monash.fit2099.engine.Ground;
 import edu.monash.fit2099.engine.Location;
 
+/**
+ * Returns a SowCropAction that will make the Actor sows a crop.
+ */
 public class SowCropBehaviour implements Behaviour {
 	double sowCropChance;
 
 	private Random rand = new Random();
 	
+	/**
+	 * Constructor.
+	 * 
+	 */
 	public SowCropBehaviour() {
 		sowCropChance = 0.33;
 	}
 
+	/**
+	 * Override method to get the action.
+	 *
+	 * @param  actor The actor performing the action.
+	 * @param  gameMap   The map the actor is on.
+	 * @return the SowCropAction to be performed.
+	 */
 	@Override
 	public Action getAction(Actor actor, GameMap gameMap) {
 		// TODO Auto-generated method stub

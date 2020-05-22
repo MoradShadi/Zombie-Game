@@ -10,12 +10,18 @@ public class Crop extends Ground {
 	private int turnCount;
 	private int turnsNeeded;
 	
+	/**
+	 * Constructor.
+	 */
 	public Crop() {
 		super('^');
 		turnCount = 0;
 		turnsNeeded = 3;
 	}
 	
+	/**
+	 * Fertilize the crop to boost its turn by 10 turns.
+	 */
 	public void fertilize() {
 		if (!isRipe()) {
 			turnCount += 10;
@@ -25,6 +31,11 @@ public class Crop extends Ground {
 		}
 	}
 	
+	/**
+	 * Override method. Increment the turn normally if it's not ripe yet
+	 *
+	 * @param location Location of the crop
+	 */
 	@Override
 	public void tick(Location location) {
 		if (!isRipe()) {
@@ -32,6 +43,11 @@ public class Crop extends Ground {
 		}
 	}
 	
+	/**
+	 * Returns "true" if the crop is ripe or false if else.
+	 *
+	 * @return true if the crop is ripe or false if else.
+	 */
 	public boolean isRipe() {
 		return turnCount == turnsNeeded;
 	}
