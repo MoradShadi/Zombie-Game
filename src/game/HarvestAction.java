@@ -32,9 +32,12 @@ public class HarvestAction extends Action {
 	public String execute(Actor actor, GameMap map) {
 		// TODO Auto-generated method stub
 		locationOfCrop.setGround(new Dirt());
+		
+		//farmer will drop food on ground after harvesting
 		if (actor instanceof Farmer) {
 			dropFoodHarvest(locationOfCrop);
 		}
+		//all other actors, including humans, will add food to inventory for them to eat after harvesting
 		else {
 			addInventoryHarvest(actor);
 		}
