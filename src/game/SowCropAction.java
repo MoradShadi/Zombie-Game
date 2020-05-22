@@ -22,7 +22,7 @@ public class SowCropAction extends Action {
 	}
 
 	/**
-	 * Override method to perform the action.
+	 * Plant a crop at the actors location.
 	 *
 	 * @param actor The actor performing the action.
 	 * @param map The map the actor is on.
