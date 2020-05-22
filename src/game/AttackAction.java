@@ -36,6 +36,17 @@ public class AttackAction extends Action {
 		this.target = target;
 	}
 
+	/**
+	 * Perform the attacking Action on the target if the attack does not miss.
+	 * If the atack target is a human, hurt the target
+	 * If the attack target is a zombie, hurt the target then check if the zombie dropped any limbs or weapons and drop them on the map accordingly.
+	 * If a human is attacked and it dies, then turns the human into a Corpse that will turn into a zombie after some turns.
+	 * If a zombie is attacked and dies, create a normal corpse.
+	 *
+	 * @param actor The actor performing the action.
+	 * @param map The map the actor is on.
+	 * @return a description of what happened that can be displayed to the user.
+	 */
 	@Override
 	public String execute(Actor actor, GameMap map) {
 
@@ -89,11 +100,20 @@ public class AttackAction extends Action {
 		return actor + " attacks " + target;
 	}
 	
+	/**
+	 * Place the limbs and weapon that is dropped when the the zombie is attacked onto random adjacent locations
+	 * beside the zombie, so that other actors have a chance to pick it up too.
+	 * 
+	 * @param targetZombie the zombie that lost its limbs and weapon
+	 * @param droppedLimbsAndWeapons the limbs and weapons that are dropped
+	 * @param map the map that the zombie is on
+	 */
 	private void dropWeaponOnMap(Zombie targetZombie, ArrayList<Item> droppedLimbsAndWeapons, GameMap map) {
 		Location zombieLocation = map.locationOf(targetZombie);
 		List<Exit> allAdjacentLocations = zombieLocation.getExits();
 		ArrayList<Location> validAdjacentLocations = new ArrayList<Location>();
 		
+		//Get all the valid adjacent locations to put an item
 		for (Exit exit : allAdjacentLocations) {
 			Location adjacentLocation = exit.getDestination();
 			boolean walkableGround = adjacentLocation.getGround().canActorEnter(targetZombie);
@@ -103,6 +123,7 @@ public class AttackAction extends Action {
 			}
 		}
 		
+		//Add all the items onto a random valid location
 		for (Item droppedItem : droppedLimbsAndWeapons) {
 			int randomIndex = rand.nextInt(validAdjacentLocations.size());
 			//Drop the limb on a random valid location beside the zombie

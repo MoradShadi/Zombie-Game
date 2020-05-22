@@ -8,12 +8,24 @@ import edu.monash.fit2099.engine.Actor;
 import edu.monash.fit2099.engine.Exit;
 import edu.monash.fit2099.engine.Location;
 
+/**
+ * Special portable item to represent human corpses that can turn into a zombie. The number of turns needed for it to
+ * turn into a zombie is a randomly generated number between 5 to 10 turns.
+ * 
+ * @author User
+ *
+ */
 public class Corpse extends PortableItem {
 	private Random rand = new Random();
 	
 	private int turnCount;
 	private int turnsNeeded;
 
+	/**
+	 * Constructor
+	 * 
+	 * @param name name of the Corpse
+	 */
 	public Corpse(String name) {
 		super(name, 'C');
 		// TODO Auto-generated constructor stub
@@ -21,6 +33,19 @@ public class Corpse extends PortableItem {
 		turnsNeeded = rand.nextInt(6) + 5; //Generates a random number from 0-5, then add 5, so it essentially generates a random number from 5-10 
 	}
 	
+	/**
+	 * Inform the carried Corpse that a turn has passed.
+	 * This method is called once per turn if the Corpse is being carried.
+	 * It will check if enough turns have passed for it to turn into a Zombie.
+	 * If it has enough turns to turn into a Zombie, then remove the Corpse from the
+	 * actors inventory and place a Zmobie at a random valid adjacent location
+	 * beside the actor holding it.
+	 * If it does not become a Zombie, then increase the turn count by 1 to keep track of
+	 * how many turns have passed.
+	 *
+     * @param currentLocation The location of the actor carrying this Item.
+     * @param actor The actor carrying this Item.
+	 */
 	@Override
 	public void tick(Location currentLocation, Actor actor) {
 		if (turnCount == turnsNeeded) {
@@ -33,6 +58,17 @@ public class Corpse extends PortableItem {
 		turnCount++;
 	}
 	
+	/**
+     * Informs the Corpse that a turn has passed 
+     * This method is called once per turn if the Corpse is on the ground.
+	 * It will check if enough turns have passed for it to turn into a Zombie.
+	 * If it has enough turns to turn into a Zombie, then remove the Corpse from the
+	 * item location and place a Zmobie at that location.
+	 * If it does not become a Zombie, then increase the turn count by 1 to keep track of
+	 * how many turns have passed.
+	 * 
+     * @param currentLocation The location of the ground on which we lie.
+     */
 	@Override
 	public void tick(Location currentLocation) {
 		if (turnCount == turnsNeeded) {
@@ -44,6 +80,13 @@ public class Corpse extends PortableItem {
 		turnCount++;
 	}
 	
+	/**
+	 * Gets a random adjacent location beside the actor
+	 * 
+	 * @param currentLocation location of the actor
+	 * @param actor the actor who's adjacent location is needed
+	 * @return
+	 */
 	private Location getRandomAdjacentLocation(Location currentLocation, Actor actor) {
 		List<Exit> allAdjacentLocations = currentLocation.getExits();
 		ArrayList<Location> validAdjacentLocations = new ArrayList<Location>();

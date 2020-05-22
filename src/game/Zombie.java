@@ -29,6 +29,8 @@ public class Zombie extends ZombieActor {
 	
 	private double punchChance;
 	
+	private double loseLimbChance;
+	
 	private Behaviour[] behaviours = {
 			new PickUpWeaponBehaviour(),
 			new AttackBehaviour(ZombieCapability.ALIVE),
@@ -43,14 +45,21 @@ public class Zombie extends ZombieActor {
 	public Zombie(String name) {
 		super(name, 'Z', 100, ZombieCapability.UNDEAD);
 		setPunchChance(0.5);
+		loseLimbChance = 0.25;
 		legs.add(new ZombieLeg());
 		legs.add(new ZombieLeg());
 		arms.add(new ZombieArm());
 		arms.add(new ZombieArm());
 	}
 	
+	/**
+	 * Change the chance for the zombie to punch as opposed to other intrinsic attacks
+	 * The new punch chance must be between 0 and 100 (inclusive)
+	 * 
+	 * @param newChance new punch chance of zombie
+	 */
 	private void setPunchChance(double newChance) {
-		if (newChance >= 0) {
+		if (newChance >= 0 && newChance <= 100) {
 			this.punchChance = newChance;
 		}
 	}
@@ -64,8 +73,8 @@ public class Zombie extends ZombieActor {
 	 * Get the weapon this Zombie is using and determine if the Zombie misses the attack.
 	 * 
 	 * The Zombie has a 50% chance to miss the attack, so return null if Zombie misses.
-	 * If the attack is approved and if the current Zombie is carrying weapons, returns 
-	 * the first one in the inventory. Otherwise, returns the Zombie's natural fighting 
+	 * If the attack hits and if the current Zombie is carrying a weapons, then return
+	 * that weapon. Otherwise, returns the Zombie's natural fighting 
 	 * equipment e.g. punch or bite. However, if the Zombie decides to bite, it has a 
 	 * further 50% chance to miss, so an overall chance of only 25% to hit the bite attack.
 	 * If the bite attack hits successfully, heal the Zombie for 5 health.
@@ -99,6 +108,14 @@ public class Zombie extends ZombieActor {
 	}
 	
 
+	/**
+	 * Creates and returns an intrinsic weapon.
+	 *
+	 * The Zombie has 2 possible intrinsic weapons, which is the ounch and bite.
+	 * Each of them have a 50% chance of being use by default
+	 *
+	 * @return a freshly-instantiated IntrinsicWeapon
+	 */
 	@Override
 	public IntrinsicWeapon getIntrinsicWeapon() {
 		double rollIntrinsicWeapon = rand.nextDouble();
@@ -111,7 +128,12 @@ public class Zombie extends ZombieActor {
 	}
 
 	/**
-	 * If a Zombie can attack, it will.  If not, it will chase any human within 10 spaces.  
+	 * Give the zombie a 10% chance of saying 'BRAAAAAAINS'
+	 * The precedence for zombie actions can be seen in the order of arrangement for its behaviours.
+	 * First priority for zombie is to pick up any weapon on the ground. If it already has a weapon, then it will throw
+	 * its current weapon on a random adjacent location then swap for the new weapon on the ground.
+	 * If there is no weapons on the ground, then Zombie will try to attack. 
+	 * If it cannot attack, it will chase any human within 10 spaces.  
 	 * If no humans are close enough it will wander randomly.
 	 * 
 	 * @param actions list of possible Actions
@@ -129,7 +151,7 @@ public class Zombie extends ZombieActor {
 		for (Behaviour behaviour : behaviours) {
 			Action action = behaviour.getAction(this, map);
 			
-			if (lastAction instanceof PickUpItemAction && action instanceof PickUpItemAction) {
+			if (action instanceof PickUpItemAction && !this.hasArm()) {
 				action = null;
 			}
 			
@@ -143,22 +165,47 @@ public class Zombie extends ZombieActor {
 		return new DoNothingAction();	
 	}
 	
+	/**
+	 * Gets the number of arms remaining
+	 * 
+	 * @return number of arms remaining
+	 */
 	public int armCount() {
 		return arms.size();
 	}
 	
+	/**
+	 * Gets the number of legs remaining
+	 * 
+	 * @return number of legs remaining
+	 */
 	public int legCount() {
 		return legs.size();
 	}
 	
+	/**
+	 * Checks if the zombie has at least one arm
+	 * 
+	 * @return true if the zombie has at least one arm, false otherwise
+	 */
 	public boolean hasArm() {
 		return arms.size() > 0;
 	}
 	
+	/**
+	 * Checks if the zombie has at least one leg
+	 * 
+	 * @return true if the zombie has at least one leg, false otherwise
+	 */
 	public boolean hasLeg() {
 		return legs.size() > 0;
 	}
 	
+	/**
+	 * Checks if the zombie has a weapon in its inventory. The zombie is only allowed to hold one weapon at a time and nothing else
+	 * 
+	 * @return true if the zombie is holding a weapon
+	 */
 	private boolean hasWeapon() {
 		List<Item> zombieInventory = getInventory(); //zombie can only pick up one item at a time
 		if (zombieInventory.isEmpty()) {
@@ -167,6 +214,13 @@ public class Zombie extends ZombieActor {
 		return true;
 	}
 	
+	/**
+	 * Calls superclass hurt to deal damage to zombie
+	 * Special hurt method for Zombie only so that it can return the dropped legs, arms and weapons when the zombie is damaged
+	 * 
+	 * @param points number of hitpoints to deduct
+	 * @return the legs, arms and weapons that the zombie drops due to losing limbs
+	 */
 	public ArrayList<Item> zombieHurt(int points) {
 		hurt(points);
 		
@@ -174,45 +228,31 @@ public class Zombie extends ZombieActor {
 		return droppedLimbsAndWeapons;
 	}
 	
+	/**
+	 * Gives the zombie a 25% chance to lose each limb type, if it has at least one of that particular limb type left.
+	 * 
+	 * @return the legs, arms and weapons that the zombie drops due to losing limbs
+	 */
 	private ArrayList<Item> loseLimbs() {
-		double rollLoseLimb = rand.nextDouble();
+		double rollLoseArm = rand.nextDouble();
+		double rollLoseLeg = rand.nextDouble();
 		ArrayList<Item> droppedLimbsAndWeapons = null;
 		
-		if (rollLoseLimb <= 0.95) {
-			boolean loseArm = false;
-			boolean loseLeg = false;
+		boolean loseArm = hasArm() && rollLoseArm < this.loseLimbChance;
+		boolean loseLeg = hasLeg() && rollLoseLeg < this.loseLimbChance;
 			
-			if (hasArm() && hasLeg()) { //If zombie has at least one arm and one leg, then it has chance to lose both an arm and a leg
-				boolean rollArmOrLeg = rand.nextBoolean();
-				boolean loseArmAndLeg;
-				
-				if (rollArmOrLeg) {
-					loseArm = true;
-					loseArmAndLeg = rand.nextDouble() < 0.25;
-					if (loseArmAndLeg) { //25% chance to lose leg also 
-						loseLeg = true;
-					}
-				}
-				else {
-					loseLeg = true;
-					loseArmAndLeg = rand.nextDouble() < 0.25;
-					if (loseArmAndLeg) { //25% chance to lose arm also
-						loseArm = true;
-					}
-				}
-			}
-			else if (hasArm()) { //If zombie has arm only then it can't lose any legs, can only lose arm
-				loseArm = true;
-			}
-			else if (hasLeg()) { //If zombie has leg only then it can't lose any arm, can only lose leg
-				loseLeg = true;
-			}
-			
-			droppedLimbsAndWeapons = removeLimbs(loseArm, loseLeg);
-		}
+		droppedLimbsAndWeapons = removeLimbs(loseArm, loseLeg);
+		
 		return droppedLimbsAndWeapons;
 	}
 	
+	/**
+	 * Gives the zombie a 25% chance to lose two of the limb type that it is losing, instead of one.
+	 * 
+	 * @param loseArm whether the zombie will be losing any arms
+	 * @param loseLeg whether the zombie will be losing any legs
+	 * @return the legs, arms and weapons that the zombie drops due to losing limbs
+	 */
 	private ArrayList<Item> removeLimbs(boolean loseArm, boolean loseLeg) {
 		ArrayList<Item> droppedLimbsAndWeapons = new ArrayList<Item>();
 		ArrayList<Item> droppedArmsAndWeapons = new ArrayList<Item>();
@@ -248,6 +288,16 @@ public class Zombie extends ZombieActor {
 		return droppedLimbsAndWeapons;
 	}
 	
+	/**
+	 * Removes the specified number of arms and returns the lost arms. 
+	 * If one arm is removed and there is one arm remaining, then the Zombie has a 50% chance of dropping
+	 * the weapon it is holding, and the chance for it to punch is halved
+	 * If it has zero arms remaining, then it will definitely drop the weapon it is holding and the chance
+	 * for it to punch is set to 0%
+	 * 
+	 * @param numOfArmLost number of arms to be removed
+	 * @return the ZombieArm objects that are removed and the weapon object that is dropped, if any
+	 */
 	private ArrayList<Item> removeArm(int numOfArmLost) {
 		ArrayList<Item> lostArmsAndWeapons = new ArrayList<Item>(numOfArmLost);
 		
@@ -272,6 +322,7 @@ public class Zombie extends ZombieActor {
 		}
 		if (dropWeapon) {
 			Item zombieWeapon = inventory.get(0);
+			inventory.remove(0);
 			lostArmsAndWeapons.add(zombieWeapon);
 			System.out.println(this + " dropped its " + zombieWeapon);
 		}
@@ -280,6 +331,12 @@ public class Zombie extends ZombieActor {
 		return lostArmsAndWeapons;
 	}
 	
+	/**
+	 * Removes the specified number of legs and returns the lost legs
+	 * 
+	 * @param numOfLegLost number of legs to be removed
+	 * @return the ZombieLeg objects that are removed
+	 */
 	private ArrayList<ZombieLeg> removeLeg(int numOfLegLost) {
 		ArrayList<ZombieLeg> lostLegs = new ArrayList<ZombieLeg>(numOfLegLost);
 		
@@ -292,6 +349,13 @@ public class Zombie extends ZombieActor {
 		return lostLegs;
 	}
 	
+	/**
+	 * Checks if the zombie is prohibited from doing any movements. If the zombie has no legs, or only has one leg and 
+	 * already moved in the last turn, then it is not allowed to move
+	 * 
+	 * @param lastAction previous action, to check if it is a MoveActorAction
+	 * @return true if the zombie is not allowed to move
+	 */
 	private boolean cannotMove(Action lastAction) {
 		boolean stopMovement = false;
 		boolean oneLegMovement = legCount() == 1 && lastAction instanceof MoveActorAction;
