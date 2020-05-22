@@ -20,14 +20,21 @@ public class Farmer extends Human {
 	/**
 	 * Constructor.
 	 *
-	 * @param name        Name to call the player in the UI
-	 * @param displayChar Character to represent the player in the UI
-	 * @param hitPoints   Player's starting number of hitpoints
+	 * @param name        Name to call the farmer
 	 */
 	public Farmer(String name) {
 		super(name, 'F', 50);
 	}
 	
+	/**
+	 * Override method for farmer's turn to play.
+	 *
+	 * @param actions    collection of possible Actions for this Actor
+	 * @param lastAction The Action this Actor took last turn. Can do interesting things in conjunction with Action.getNextAction()
+	 * @param map        the map containing the Actor
+	 * @param display    the I/O object to which messages may be written
+	 * @return the Action to be performed
+	 */
 	@Override
 	public Action playTurn(Actions actions, Action lastAction, GameMap map, Display display) {
 		for (Behaviour behaviour : behaviours) {

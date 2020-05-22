@@ -12,13 +12,27 @@ import edu.monash.fit2099.engine.GameMap;
 import edu.monash.fit2099.engine.Ground;
 import edu.monash.fit2099.engine.Location;
 
+/**
+ * Returns a HarvestAction that will make the Actor harvest a crop for food.
+ */
 public class HarvestBehaviour implements Behaviour {
 	private Random rand = new Random();
 
+	/**
+	 * Constructor.
+	 * 
+	 */
 	public HarvestBehaviour() {
 		// TODO Auto-generated constructor stub
 	}
 
+	/**
+	 * Override method to get the action.
+	 *
+	 * @param  actor The actor performing the action.
+	 * @param  map   The map the actor is on.
+	 * @return the HarvestAction to be performed.
+	 */
 	@Override
 	public Action getAction(Actor actor, GameMap map) {
 		// TODO Auto-generated method stub
@@ -33,6 +47,13 @@ public class HarvestBehaviour implements Behaviour {
 		return null;
 	}
 	
+	/**
+	 * Returns a collection of HarvestAction to be performed.
+	 *
+	 * @param  player The player performing the action.
+	 * @param  map    The map the player is on.
+	 * @return the HarvestAction to be performed.
+	 */
 	public Actions getAction(Player player, GameMap map) {
 		Actor playerAsActor = (Actor) player;
 		Actions harvestActions = new Actions();
@@ -49,6 +70,12 @@ public class HarvestBehaviour implements Behaviour {
 		return null;
 	}
 
+	/**
+	 * Checks if a crop is ripe.
+	 *
+	 * @param  location Location of the crop.
+	 * @return true if the crop is ripe or false if else.
+	 */
 	private boolean isRipeCrop(Location location) {
 		Ground ground = location.getGround();
 		if(ground instanceof Crop) {
@@ -60,6 +87,13 @@ public class HarvestBehaviour implements Behaviour {
 		return false;
 	}
 	
+	/**
+	 * Finds ripe crops.
+	 *
+	 * @param  actor The actor performing the action.
+	 * @param  map   The map the actor is on.
+	 * @return ripe crops.
+	 */
 	private ArrayList<Location> findRipeCrops(Actor actor, GameMap map) {
 		Location actorLocation = map.locationOf(actor);
 		List<Exit> allAdjacentLocations = actorLocation.getExits();
