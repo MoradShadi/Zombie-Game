@@ -19,7 +19,7 @@ public class FertilizeBehaviour implements Behaviour {
 	}
 	
 	/**
-	 * Override method to get the action.
+	 * Check if there is an unripe crop at the actor's location and return a fertilize action if there is.
 	 *
 	 * @param  actor The actor performing the action.
 	 * @param  map   The map the actor is on.

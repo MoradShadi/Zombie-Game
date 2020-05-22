@@ -21,7 +21,7 @@ public class FertilizeAction extends Action {
 	}
 	
 	/**
-	 * Override method to perform the action.
+	 * Perform the fertilizing action.
 	 *
 	 * @param actor The actor performing the action.
 	 * @param map The map the actor is on.
