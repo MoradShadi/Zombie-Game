@@ -129,7 +129,7 @@ public class Zombie extends ZombieActor {
 		for (Behaviour behaviour : behaviours) {
 			Action action = behaviour.getAction(this, map);
 			
-			if (lastAction instanceof PickUpItemAction && action instanceof PickUpItemAction) {
+			if (action instanceof PickUpItemAction && !this.hasArm()) {
 				action = null;
 			}
 			
@@ -272,6 +272,7 @@ public class Zombie extends ZombieActor {
 		}
 		if (dropWeapon) {
 			Item zombieWeapon = inventory.get(0);
+			inventory.remove(0);
 			lostArmsAndWeapons.add(zombieWeapon);
 			System.out.println(this + " dropped its " + zombieWeapon);
 		}
