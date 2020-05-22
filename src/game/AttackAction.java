@@ -64,7 +64,7 @@ public class AttackAction extends Action {
 			Zombie targetZombie = (Zombie) target;
 			ArrayList<Item> droppedZombieLimbsAndWeapons = targetZombie.zombieHurt(damage);
 			if (droppedZombieLimbsAndWeapons != null) {
-				dropWeaponOnMap(targetZombie, droppedZombieLimbsAndWeapons, map);
+				dropItemOnMap(targetZombie, droppedZombieLimbsAndWeapons, map);
 			}	
 		}
 		else {
@@ -108,7 +108,7 @@ public class AttackAction extends Action {
 	 * @param droppedLimbsAndWeapons the limbs and weapons that are dropped
 	 * @param map the map that the zombie is on
 	 */
-	private void dropWeaponOnMap(Zombie targetZombie, ArrayList<Item> droppedLimbsAndWeapons, GameMap map) {
+	private void dropItemOnMap(Zombie targetZombie, ArrayList<Item> droppedLimbsAndWeapons, GameMap map) {
 		Location zombieLocation = map.locationOf(targetZombie);
 		List<Exit> allAdjacentLocations = zombieLocation.getExits();
 		ArrayList<Location> validAdjacentLocations = new ArrayList<Location>();
