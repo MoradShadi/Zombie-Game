@@ -60,7 +60,7 @@ public class HarvestAction extends Action {
 	 * @param locationOfCrop The location to drop the food.
 	 */
 	private void dropFoodHarvest(Location locationOfCrop) {
-		locationOfCrop.addItem(new Food());
+		locationOfCrop.addItem(new Food(10));
 	}
 	
 	/**
@@ -69,6 +69,6 @@ public class HarvestAction extends Action {
 	 * @param actor The actor performing the action.
 	 */
 	private void addInventoryHarvest(Actor actor) {
-		actor.addItemToInventory(new Food());
+		actor.addItemToInventory(new Food(10));
 	}
 }
