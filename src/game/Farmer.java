@@ -33,10 +33,10 @@ public class Farmer extends Human {
 	 * If there are no crops to fertilize, then it will try to sow a crop at an adjacent dirt ground.
 	 * If it does not sow a crop, then it will wander around.
 	 *
-	 * @param actions collection of possible Actions for this Actor
+	 * @param actions    collection of possible Actions for this Actor
 	 * @param lastAction The Action this Actor took last turn. Can do interesting things in conjunction with Action.getNextAction()
-	 * @param map the map containing the Actor
-	 * @param display the I/O object to which messages may be written
+	 * @param map        the map containing the Actor
+	 * @param display    the I/O object to which messages may be written
 	 * @return the Action to be performed
 	 */
 	@Override
