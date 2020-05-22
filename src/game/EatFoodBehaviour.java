@@ -7,6 +7,12 @@ import edu.monash.fit2099.engine.Actor;
 import edu.monash.fit2099.engine.GameMap;
 import edu.monash.fit2099.engine.Item;
 
+/**
+ * Returns an eating food action that will allow the actor to comsume the food if it is damaged
+ * 
+ * @author User
+ *
+ */
 public class EatFoodBehaviour implements Behaviour {
 
 	public EatFoodBehaviour() {
@@ -26,6 +32,12 @@ public class EatFoodBehaviour implements Behaviour {
 		return null;
 	}
 	
+	/**
+	 * Get the first Food in the actors inventory
+	 * 
+	 * @param inventory the actor's inventory
+	 * @return the first Food in the actors inventory
+	 */
 	private Food getFood(List<Item> inventory) {
 		for (Item item : inventory) {
 			if (item instanceof Food) {
