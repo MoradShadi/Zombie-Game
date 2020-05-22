@@ -29,6 +29,8 @@ public class Zombie extends ZombieActor {
 	
 	private double punchChance;
 	
+	private double loseLimbChance;
+	
 	private Behaviour[] behaviours = {
 			new PickUpWeaponBehaviour(),
 			new AttackBehaviour(ZombieCapability.ALIVE),
@@ -43,6 +45,7 @@ public class Zombie extends ZombieActor {
 	public Zombie(String name) {
 		super(name, 'Z', 100, ZombieCapability.UNDEAD);
 		setPunchChance(0.5);
+		loseLimbChance = 0.95;
 		legs.add(new ZombieLeg());
 		legs.add(new ZombieLeg());
 		arms.add(new ZombieArm());
@@ -174,45 +177,31 @@ public class Zombie extends ZombieActor {
 		return droppedLimbsAndWeapons;
 	}
 	
+	/**
+	 * Gives the zombie a 25% chance to lose each limb type.
+	 * 
+	 * @return
+	 */
 	private ArrayList<Item> loseLimbs() {
-		double rollLoseLimb = rand.nextDouble();
+		double rollLoseArm = rand.nextDouble();
+		double rollLoseLeg = rand.nextDouble();
 		ArrayList<Item> droppedLimbsAndWeapons = null;
 		
-		if (rollLoseLimb <= 0.95) {
-			boolean loseArm = false;
-			boolean loseLeg = false;
+		boolean loseArm = hasArm() && rollLoseArm < this.loseLimbChance;
+		boolean loseLeg = hasLeg() && rollLoseLeg < this.loseLimbChance;
 			
-			if (hasArm() && hasLeg()) { //If zombie has at least one arm and one leg, then it has chance to lose both an arm and a leg
-				boolean rollArmOrLeg = rand.nextBoolean();
-				boolean loseArmAndLeg;
-				
-				if (rollArmOrLeg) {
-					loseArm = true;
-					loseArmAndLeg = rand.nextDouble() < 0.25;
-					if (loseArmAndLeg) { //25% chance to lose leg also 
-						loseLeg = true;
-					}
-				}
-				else {
-					loseLeg = true;
-					loseArmAndLeg = rand.nextDouble() < 0.25;
-					if (loseArmAndLeg) { //25% chance to lose arm also
-						loseArm = true;
-					}
-				}
-			}
-			else if (hasArm()) { //If zombie has arm only then it can't lose any legs, can only lose arm
-				loseArm = true;
-			}
-			else if (hasLeg()) { //If zombie has leg only then it can't lose any arm, can only lose leg
-				loseLeg = true;
-			}
-			
-			droppedLimbsAndWeapons = removeLimbs(loseArm, loseLeg);
-		}
+		droppedLimbsAndWeapons = removeLimbs(loseArm, loseLeg);
+		
 		return droppedLimbsAndWeapons;
 	}
 	
+	/**
+	 * Gives the zombie a 25% chance to lose two of the limb type that it is losing, instead of one.
+	 * 
+	 * @param loseArm whether the zombie will be losing any arms
+	 * @param loseLeg whether the zombie will be losing any legs
+	 * @return the legs, arms and weapons that the zombie drops
+	 */
 	private ArrayList<Item> removeLimbs(boolean loseArm, boolean loseLeg) {
 		ArrayList<Item> droppedLimbsAndWeapons = new ArrayList<Item>();
 		ArrayList<Item> droppedArmsAndWeapons = new ArrayList<Item>();
@@ -248,6 +237,14 @@ public class Zombie extends ZombieActor {
 		return droppedLimbsAndWeapons;
 	}
 	
+	/**
+	 * Removes the specified number of arms and returns the lost arms. Also gives the zombie a 50% chance of dropping
+	 * its weapon when it has one arm remaining, meaning it lost one arm in this turn. If the zombie has zero arms remaining,
+	 * then it definitely loses its weapon.
+	 * 
+	 * @param numOfArmLost number of arms to be removed
+	 * @return the ZombieArm objects that are removed and the weapon object that is dropped, if any
+	 */
 	private ArrayList<Item> removeArm(int numOfArmLost) {
 		ArrayList<Item> lostArmsAndWeapons = new ArrayList<Item>(numOfArmLost);
 		
@@ -281,6 +278,12 @@ public class Zombie extends ZombieActor {
 		return lostArmsAndWeapons;
 	}
 	
+	/**
+	 * Removes the specified number of legs and returns the lost legs
+	 * 
+	 * @param numOfLegLost number of legs to be removed
+	 * @return the ZombieLeg objects that are removed
+	 */
 	private ArrayList<ZombieLeg> removeLeg(int numOfLegLost) {
 		ArrayList<ZombieLeg> lostLegs = new ArrayList<ZombieLeg>(numOfLegLost);
 		
@@ -293,6 +296,13 @@ public class Zombie extends ZombieActor {
 		return lostLegs;
 	}
 	
+	/**
+	 * Checks if the zombie is prohibited from doing any movements. If the zombie has no legs, or only has one leg and 
+	 * already moved in the last turn, then it is not allowed to move
+	 * 
+	 * @param lastAction previous action, to check if it is a MoveActorAction
+	 * @return true if the zombie is not allowed to move
+	 */
 	private boolean cannotMove(Action lastAction) {
 		boolean stopMovement = false;
 		boolean oneLegMovement = legCount() == 1 && lastAction instanceof MoveActorAction;
