@@ -20,19 +20,23 @@ public class Farmer extends Human {
 	/**
 	 * Constructor.
 	 *
-	 * @param name        Name to call the farmer
+	 * @param name Name of the farmer
 	 */
 	public Farmer(String name) {
 		super(name, 'F', 50);
 	}
 	
 	/**
-	 * Override method for farmer's turn to play.
+	 * The precedence for zombie actions can be seen in the order of arrangement for its behaviours.
+	 * First priority is to harvest any ripe crops if it can.
+	 * If it cannot harvest anything, then it will try to fertilize the crop it is standing on.
+	 * If there are no crops to fertilize, then it will try to sow a crop at an adjacent dirt ground.
+	 * If it does not sow a crop, then it will wander around.
 	 *
-	 * @param actions    collection of possible Actions for this Actor
+	 * @param actions collection of possible Actions for this Actor
 	 * @param lastAction The Action this Actor took last turn. Can do interesting things in conjunction with Action.getNextAction()
-	 * @param map        the map containing the Actor
-	 * @param display    the I/O object to which messages may be written
+	 * @param map the map containing the Actor
+	 * @param display the I/O object to which messages may be written
 	 * @return the Action to be performed
 	 */
 	@Override
