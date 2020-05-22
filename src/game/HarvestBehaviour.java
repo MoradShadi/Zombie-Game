@@ -27,7 +27,8 @@ public class HarvestBehaviour implements Behaviour {
 	}
 
 	/**
-	 * Override method to get the action.
+	 * Overload getAction. If a normal Actor gets action, then it will check if there is any adjacent ripe crops to harvest
+	 * and choose a random ripe crop and return a harvest action for that chosen crop.
 	 *
 	 * @param  actor The actor performing the action.
 	 * @param  map   The map the actor is on.
@@ -48,7 +49,8 @@ public class HarvestBehaviour implements Behaviour {
 	}
 	
 	/**
-	 * Returns a collection of HarvestAction to be performed.
+	 * Overload getAction. If a Player gets action, then it will check for all adjacent ripe crops to harvest and
+	 * return the harvest actions for all the crops, so the PLayer can choose which crop to harvest.
 	 *
 	 * @param  player The player performing the action.
 	 * @param  map    The map the player is on.
@@ -74,7 +76,7 @@ public class HarvestBehaviour implements Behaviour {
 	 * Checks if a crop is ripe.
 	 *
 	 * @param  location Location of the crop.
-	 * @return true if the crop is ripe or false if else.
+	 * @return true if the crop is ripe or false otherwise.
 	 */
 	private boolean isRipeCrop(Location location) {
 		Ground ground = location.getGround();
@@ -92,7 +94,7 @@ public class HarvestBehaviour implements Behaviour {
 	 *
 	 * @param  actor The actor performing the action.
 	 * @param  map   The map the actor is on.
-	 * @return ripe crops.
+	 * @return all ripe crops adjacent to actor or below actor.
 	 */
 	private ArrayList<Location> findRipeCrops(Actor actor, GameMap map) {
 		Location actorLocation = map.locationOf(actor);

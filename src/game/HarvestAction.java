@@ -14,7 +14,7 @@ public class HarvestAction extends Action {
 	/**
 	 * Constructor.
 	 * 
-	 * @param initLocation the location to harvest
+	 * @param initLocation the location of the crop to harvest
 	 */
 	public HarvestAction(Location initLocation) {
 		// TODO Auto-generated constructor stub
@@ -22,7 +22,7 @@ public class HarvestAction extends Action {
 	}
 
 	/**
-	 * Override method to perform the action.
+	 * Override method to perform the harvest action.
 	 *
 	 * @param actor The actor performing the action.
 	 * @param map The map the actor is on.
