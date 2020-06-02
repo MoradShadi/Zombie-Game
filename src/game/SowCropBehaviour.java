@@ -11,7 +11,7 @@ import edu.monash.fit2099.engine.Ground;
 import edu.monash.fit2099.engine.Location;
 
 /**
- * Returns a SowCropAction that will make the Actor sows a crop.
+ * Returns a SowCropAction that will make the Actor sow a crop.
  */
 public class SowCropBehaviour implements Behaviour {
 	double sowCropChance;
@@ -27,7 +27,7 @@ public class SowCropBehaviour implements Behaviour {
 	}
 
 	/**
-	 * Override method to get the action.
+	 * Has a 33% chance to return a sow crop action for the actor to sow a crop at a valid adjacent location
 	 *
 	 * @param  actor The actor performing the action.
 	 * @param  gameMap   The map the actor is on.

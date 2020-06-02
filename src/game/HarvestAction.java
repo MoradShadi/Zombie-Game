@@ -14,7 +14,7 @@ public class HarvestAction extends Action {
 	/**
 	 * Constructor.
 	 * 
-	 * @param initLocation the location to harvest
+	 * @param initLocation the location of the crop to harvest
 	 */
 	public HarvestAction(Location initLocation) {
 		// TODO Auto-generated constructor stub
@@ -22,7 +22,7 @@ public class HarvestAction extends Action {
 	}
 
 	/**
-	 * Override method to perform the action.
+	 * Override method to perform the harvest action.
 	 *
 	 * @param actor The actor performing the action.
 	 * @param map The map the actor is on.
@@ -32,9 +32,12 @@ public class HarvestAction extends Action {
 	public String execute(Actor actor, GameMap map) {
 		// TODO Auto-generated method stub
 		locationOfCrop.setGround(new Dirt());
+		
+		//farmer will drop food on ground after harvesting
 		if (actor instanceof Farmer) {
 			dropFoodHarvest(locationOfCrop);
 		}
+		//all other actors, including humans, will add food to inventory for them to eat after harvesting
 		else {
 			addInventoryHarvest(actor);
 		}

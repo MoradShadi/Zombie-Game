@@ -7,8 +7,9 @@ public class Food extends PortableItem {
 	private int healAmount;
 	
 	/**
-	 * Constructor.
+	 * Constructor
 	 * 
+	 * @param initHealAmount amount of healing if this food is eaten
 	 */
 	public Food(int initHealAmount) {
 		super("food", 'o');

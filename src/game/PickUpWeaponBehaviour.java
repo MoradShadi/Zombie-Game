@@ -13,11 +13,23 @@ import edu.monash.fit2099.engine.Location;
 import edu.monash.fit2099.engine.PickUpItemAction;
 import edu.monash.fit2099.engine.WeaponItem;
 
-
+/**
+ * Returns an action that will make actor pick up weapon from the ground
+ * @author User
+ *
+ */
 public class PickUpWeaponBehaviour implements Behaviour {
 	private Random rand = new Random();
 
-	
+	/**
+	 * Check if there is a weapon on the ground, and return a PickUpItemAction for the first weapon on the ground. 
+	 * If the actor is already holding a weapon, then it will throw that weapon onto an adjacent location and swap
+	 * for the new weapon on the ground below.
+	 *
+	 * @param  actor The actor performing the action.
+	 * @param  map   The map the actor is on.
+	 * @return the FertilizeAction to be performed.
+	 */
 	@Override
 	public Action getAction(Actor actor, GameMap map) {
 		List<Item> items = map.locationOf(actor).getItems();
@@ -26,8 +38,10 @@ public class PickUpWeaponBehaviour implements Behaviour {
 		for (Item groundItem: items) {
 			if (groundItem instanceof WeaponItem) 
 				for(Item inventoryItem: inventory) {
-					if(inventoryItem instanceof WeaponItem)
-						  dropWeaponOnRandomLocation(actor, map, inventoryItem);
+					if(inventoryItem instanceof WeaponItem) {
+						dropWeaponOnRandomLocation(actor, map, inventoryItem);
+						actor.removeItemFromInventory(inventoryItem);
+					}
 				}
 				return new PickUpItemAction(groundItem);
 		}
@@ -35,6 +49,13 @@ public class PickUpWeaponBehaviour implements Behaviour {
 		return null;
 	}
 	
+	/**
+	 * Drop the weapon on an adjacent location beside the actor
+	 * 
+	 * @param actor the actor whose weapon is dropped
+	 * @param map the map the actor is on
+	 * @param weapon the weapon that is dropped.
+	 */
 	private void dropWeaponOnRandomLocation(Actor actor, GameMap map, Item weapon) {
 		Location actorLocation = map.locationOf(actor);
 		List<Exit> allAdjacentLocations = actorLocation.getExits();

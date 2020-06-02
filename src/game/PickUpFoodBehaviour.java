@@ -8,6 +8,12 @@ import edu.monash.fit2099.engine.GameMap;
 import edu.monash.fit2099.engine.Item;
 import edu.monash.fit2099.engine.PickUpItemAction;
 
+/**
+ * Returns an action that will make actor pick up food on the ground
+ * 
+ * @author User
+ *
+ */
 public class PickUpFoodBehaviour implements Behaviour {
 
 	public PickUpFoodBehaviour() {

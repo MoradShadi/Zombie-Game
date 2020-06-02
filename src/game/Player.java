@@ -57,6 +57,8 @@ public class Player extends Human {
 	@Override
 	public Action playTurn(Actions actions, Action lastAction, GameMap map, Display display) {
 		// Handle multi-turn Actions
+		
+		//Check if any of the inventory weapons is craftable and add the craft actions to the Actions list.
 		List<Item> items = this.getInventory();	
 		for (Item item: items) {
 			if (item.hasCapability(CraftableWeaponCapability.CRAFTABLE)) {
@@ -64,6 +66,7 @@ public class Player extends Human {
 			}
 		}
 		
+		//Get eat food and harvest crop actions
 		for (Behaviour behaviour : behaviours) {
 			Action action = behaviour.getAction(this, map);
 			if (action != null) {

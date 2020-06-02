@@ -41,6 +41,18 @@ public class Human extends ZombieActor {
 		super(name, displayChar, hitPoints, ZombieCapability.ALIVE);
 	}
 
+	/**
+	 * The precedence for human actions can be seen in the order of arrangement for its behaviours.
+	 * First priority is to try to eat food. If it doesn't eat any food, then it will try
+	 * to pick up any Food that is below it. If there is no food for it to pick up, then it
+	 * will wander randomly.
+	 * 
+	 * @param actions    collection of possible Actions for this Actor
+	 * @param lastAction The Action this Actor took last turn. Can do interesting things in conjunction with Action.getNextAction()
+	 * @param map        the map containing the Actor
+	 * @param display    the I/O object to which messages may be written
+	 * @return the Action to be performed
+	 */
 	@Override
 	public Action playTurn(Actions actions, Action lastAction, GameMap gameMap, Display display) {
 		// FIXME humans are pretty dumb, maybe they should at least run away from zombies?
