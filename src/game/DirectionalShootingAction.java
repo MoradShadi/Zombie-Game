@@ -17,13 +17,13 @@ public class DirectionalShootingAction extends Action {
 	@Override
 	public String execute(Actor actor, GameMap map) {
 		// TODO Auto-generated method stub
-		return "LOLOL";
+		return this.menuDescription(actor);
 	}
 
 	@Override
 	public String menuDescription(Actor actor) {
 		// TODO Auto-generated method stub
-		return actor + " shoots toward " + direction;
+		return actor + " shoots towards " + direction;
 	}
 
 }

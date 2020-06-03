@@ -24,21 +24,23 @@ public class ShootingSubmenu extends Action {
 	@Override
 	public String execute(Actor actor, GameMap map) {
 		// TODO Auto-generated method stub
-		Actions actions = new Actions();
-		Action chosenShot = null;
+		Actions possibleShots = new Actions();
+		Action chosenShot;
 		
 		if (gun.hasCapability(GunTargetCapability.DIRECTIONAL)) {
 			Location actorLocation = map.locationOf(actor);
 			for (Exit exit : actorLocation.getExits()) {
 				String direction = exit.getName();
 				int range = this.gun.getRange();
-				actions.add(new DirectionalShootingAction(range, direction));
+				possibleShots.add(new DirectionalShootingAction(range, direction));
 			}
 			
-			System.out.println(" Choose which direction to shoot: ");
-			chosenShot = this.submenu.showMenu(actor, actions, this.display);
+			System.out.println("+ Choose which direction to shoot + ");
+			chosenShot = this.submenu.showMenu(actor, possibleShots, this.display);
+			
+			return chosenShot.execute(actor, map);
 		}
-		return chosenShot.menuDescription(actor);
+		return null;
 	}
 
 	@Override
