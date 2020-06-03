@@ -1,6 +1,7 @@
 package game;
 
 import edu.monash.fit2099.engine.Action;
+import edu.monash.fit2099.engine.Display;
 
 public class Shotgun extends Gun {
 
@@ -9,7 +10,7 @@ public class Shotgun extends Gun {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Action getShootAction() {
+	public Action getShootAction(Display display) {
 		return null;
 	}
 }

@@ -64,6 +64,9 @@ public class Player extends Human {
 			if (item.hasCapability(CraftableWeaponCapability.CRAFTABLE)) {
 				actions.add(new CraftWeaponAction(item));
 			}
+			if (item.hasCapability(GunTargetCapability.DIRECTIONAL)) {
+				actions.add(new ShootingSubmenu((Gun) item, display));
+			}
 		}
 		
 		//Get eat food and harvest crop actions

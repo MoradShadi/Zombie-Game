@@ -1,6 +1,7 @@
 package game;
 
 import edu.monash.fit2099.engine.Action;
+import edu.monash.fit2099.engine.Display;
 import edu.monash.fit2099.engine.WeaponItem;
 
 public abstract class Gun extends WeaponItem {
@@ -29,5 +30,9 @@ public abstract class Gun extends WeaponItem {
 		}
 	}
 	
-	public abstract Action getShootAction();
+	public int getRange() {
+		return range;
+	}
+	
+	public abstract Action getShootAction(Display display);
 }
