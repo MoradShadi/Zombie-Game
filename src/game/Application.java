@@ -127,6 +127,7 @@ public class Application {
 		Location townCarLocation = townGameMap.at(45, 22);
 		compoundCarLocation.addItem(new Car(townCarLocation, "to town"));
 		townCarLocation.addItem(new Car(compoundCarLocation, "to compound"));
+	
 		
 		world.run();
 		
