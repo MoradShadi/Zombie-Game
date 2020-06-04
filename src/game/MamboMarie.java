@@ -8,20 +8,21 @@ import edu.monash.fit2099.engine.GameMap;
 
 public class MamboMarie extends ZombieActor {
 	
-	private static int MamboMarieturnCount;
+	private int MamboMarieturnCount;
 	private Behaviour[] behaviours = {
 			new ChantingBehaviour(),
 			new WanderBehaviour()
 	};
 	
-	public int getMamboMarieturnCount() {
-		return MamboMarieturnCount;
-	}
 
 	public MamboMarie(String name) {
 		super(name,'M',100, ZombieCapability.ALIVE);
 		MamboMarieturnCount = 0;
 		// TODO Auto-generated constructor stub
+	}
+	
+	public int getMamboMarieturnCount() {
+		return MamboMarieturnCount;
 	}
 	
 
