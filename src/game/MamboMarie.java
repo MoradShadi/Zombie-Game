@@ -20,6 +20,9 @@ public class MamboMarie extends ZombieActor {
 		// TODO Auto-generated constructor stub
 	}
 	
+	public int getCount() {
+		return turnCount;
+	}
 
 	@Override
 	public Action playTurn(Actions actions, Action lastAction, GameMap map, Display display) {
