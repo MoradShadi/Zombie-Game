@@ -5,9 +5,11 @@ import java.util.Random;
 
 import edu.monash.fit2099.engine.Action;
 import edu.monash.fit2099.engine.Actions;
+import edu.monash.fit2099.engine.Actor;
 import edu.monash.fit2099.engine.Display;
 import edu.monash.fit2099.engine.GameMap;
 import edu.monash.fit2099.engine.Item;
+import edu.monash.fit2099.engine.Location;
 import edu.monash.fit2099.engine.Menu;
 import edu.monash.fit2099.engine.Weapon;
 
@@ -15,6 +17,7 @@ import edu.monash.fit2099.engine.Weapon;
  * Class representing the Player.
  */
 public class Player extends Human {
+	Actor VodooPriestess = new MamboMarie("Vodoo Priestess");
 	private Random rand = new Random();
 
 	private Menu menu = new Menu();
@@ -57,6 +60,7 @@ public class Player extends Human {
 	@Override
 	public Action playTurn(Actions actions, Action lastAction, GameMap map, Display display) {
 		// Handle multi-turn Actions
+
 		
 		//Check if any of the inventory weapons is craftable and add the craft actions to the Actions list.
 		List<Item> items = this.getInventory();	
