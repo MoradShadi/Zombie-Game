@@ -37,6 +37,9 @@ public class DirectionalShootingAction extends Action {
 		if (directionName.length() > 0 && directionName.length() <= 5) { // if direction name length <= 5, means it can be north, south, east or west only
 			shotMessage = this.cardinalDirectionShot(shooter, this.gun, initialX, initialY, xChange, yChange, map);
 		}
+		else {
+			shotMessage = this.intercardinalDirectionShot(shooter, this.gun, initialX, initialY, xChange, yChange, map);
+		}
 		return this.menuDescription(shooter) + shotMessage;
 	}
 
@@ -46,9 +49,8 @@ public class DirectionalShootingAction extends Action {
 		return actor + " shoots towards " + this.direction.getName();
 	}
 	
-
-
-	private String cardinalDirectionShot(Actor shooter, Gun gun, int initialX, int initialY, int xChange, int yChange, GameMap map) {
+	
+	private String cardinalDirectionShot(Actor shooter, Gun gun, int initialX, int initialY, int xChange, int yChange, GameMap map) { // N, S, E, W
 		int range = this.gun.getRange();
 		ArrayList<String> resultsLst = new ArrayList<String>();
 		
@@ -110,6 +112,70 @@ public class DirectionalShootingAction extends Action {
 			}
 		}
 		
+		return this.generateShotResult(resultsLst);
+		
+//		String appendedResult = "";
+//		for (int i = 0; i < resultsLst.size(); i++) {
+//			if (i == 0) {
+//				appendedResult += System.lineSeparator();
+//			}
+//			
+//			if (i == resultsLst.size() - 1) {
+//				appendedResult += resultsLst.get(i);
+//			}
+//			else {
+//				appendedResult += resultsLst.get(i) + System.lineSeparator();
+//			}
+//		}
+//		return appendedResult;
+	}
+	
+	private String intercardinalDirectionShot(Actor shooter, Gun gun, int initialX, int initialY, int xChange, int yChange, GameMap map) { // NE, NW, SE, SW
+		int range = this.gun.getRange();
+		ArrayList<String> resultsLst = new ArrayList<String>();
+		
+		int yLayer = initialY;
+		NumberRange yRange = map.getYRange();
+		NumberRange xRange = map.getXRange();
+		
+		for (int yCounter = 0; yCounter < range + 1; yCounter++) {
+			int innerX;
+			int xCounterLimit;
+			
+			if (yCounter == 0) {
+				innerX = initialX + xChange;
+				xCounterLimit = range;
+			}
+			else {
+				innerX = initialX;
+				xCounterLimit = range + 1;
+			}
+			
+			for (int innerCounter = 0; innerCounter < xCounterLimit; innerCounter++) {
+				if (!xRange.contains(innerX)) {
+					break;
+				}
+				
+				Location shotLocation = map.at(innerX, yLayer);
+				if (shotLocation.containsAnActor()) {
+					Actor target = map.getActorAt(shotLocation);
+					AttackAction shootTarget = new AttackAction(target);
+					
+					resultsLst.add(shootTarget.gunShotExecute(shooter, map, this.gun.getShotDamage(), this.gun.getHitChance()));
+				}
+				innerX += xChange;
+			}
+			
+			yLayer += yChange;
+			if (!yRange.contains(yLayer)) {
+				break;
+			}
+		}
+		
+		return this.generateShotResult(resultsLst);
+	}
+	
+	private String generateShotResult(ArrayList<String> resultsLst) {
 		String appendedResult = "";
 		for (int i = 0; i < resultsLst.size(); i++) {
 			if (i == 0) {
