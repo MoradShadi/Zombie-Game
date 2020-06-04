@@ -128,7 +128,7 @@ public class Application {
 		compoundCarLocation.addItem(new Car(townCarLocation, "to town"));
 		townCarLocation.addItem(new Car(compoundCarLocation, "to compound"));
 		
-		new MamboMarie("Vodoo Priestess");
+		Actor VodooPriestess = new MamboMarie("Vodoo Priestess");
 		
 		world.run();
 		
