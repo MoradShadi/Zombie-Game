@@ -60,7 +60,17 @@ public class Player extends Human {
 	@Override
 	public Action playTurn(Actions actions, Action lastAction, GameMap map, Display display) {
 		// Handle multi-turn Actions
-
+		if (rand.nextFloat() < 0.05) {
+			int[] edgeXcoordinates = {map.getXRange().min(),map.getXRange().max()};
+			int[] edgeYcoordinates = {map.getYRange().min(),map.getYRange().max()};
+			int randomX = edgeXcoordinates[rand.nextInt()];
+			int randomY = edgeYcoordinates[rand.nextInt()];
+			while (!map.at(randomX, randomY).canActorEnter(this)){
+				randomX = edgeXcoordinates[rand.nextInt()];
+				randomY = edgeYcoordinates[rand.nextInt()];
+			}
+			map.at(randomX, randomY).addActor(VodooPriestess);
+		}
 		
 		//Check if any of the inventory weapons is craftable and add the craft actions to the Actions list.
 		List<Item> items = this.getInventory();	
