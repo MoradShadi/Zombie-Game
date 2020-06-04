@@ -10,27 +10,29 @@ public class MamboMarie extends Human {
 	
 	private int turnCount;
 	private Behaviour[] behaviours = {
-			new WanderBehaviour(),
-			new ChantingBehaviour()
+			new ChantingBehaviour(),
+			new WanderBehaviour()
 	};
-	
+
 	public MamboMarie(String name) {
 		super(name,'M',100);
 		turnCount = 0;
 		// TODO Auto-generated constructor stub
 	}
-
+	
 
 	@Override
 	public Action playTurn(Actions actions, Action lastAction, GameMap map, Display display) {
-		if (turnCount%10 == 0 && turnCount != 30) {
-			
-		}
-		for (Behaviour behaviour : behaviours) {
-			Action action = behaviour.getAction(this, map);
+		turnCount++;
+		if (turnCount % 10 == 0 && turnCount != 30) {
+			Action action = behaviours[0].getAction(this, map);
 			if (action != null) {
 				return action;
 			}
+		}
+		Action action = behaviours[1].getAction(this, map);
+		if (action != null) {
+			return action;
 		}
 		return new DoNothingAction();
 	}
