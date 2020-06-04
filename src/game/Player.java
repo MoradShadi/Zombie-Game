@@ -66,8 +66,8 @@ public class Player extends Human {
 				int randomX = edgeXcoordinates[Math.round(rand.nextFloat())];
 				int randomY = edgeYcoordinates[Math.round(rand.nextFloat())];
 				while (!map.at(randomX, randomY).canActorEnter(this)){
-					randomX = edgeXcoordinates[rand.nextInt()];
-					randomY = edgeYcoordinates[rand.nextInt()];
+					randomX = edgeXcoordinates[Math.round(rand.nextFloat())];
+					randomY = edgeYcoordinates[Math.round(rand.nextFloat())];
 				}
 				map.at(randomX, randomY).addActor(VodooPriestess);
 			}
