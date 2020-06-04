@@ -31,7 +31,7 @@ public class MamboMarie extends ZombieActor {
 		if (map.contains(this)){
 			MamboMarieturnCount++;
 		}
-		if (MamboMarieturnCount % 10 == 0 && MamboMarieturnCount != 30) {
+		if (MamboMarieturnCount % 10 == 0) {
 			Action action = behaviours[0].getAction(this, map);
 			if (action != null) {
 				return action;
