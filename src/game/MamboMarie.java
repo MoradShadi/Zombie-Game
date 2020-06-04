@@ -13,6 +13,10 @@ public class MamboMarie extends ZombieActor {
 			new ChantingBehaviour(),
 			new WanderBehaviour()
 	};
+	
+	public int getMamboMarieturnCount() {
+		return MamboMarieturnCount;
+	}
 
 	public MamboMarie(String name) {
 		super(name,'M',100, ZombieCapability.ALIVE);
