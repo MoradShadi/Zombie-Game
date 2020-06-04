@@ -17,7 +17,8 @@ import edu.monash.fit2099.engine.Weapon;
  * Class representing the Player.
  */
 public class Player extends Human {
-	Actor VodooPriestess = new MamboMarie("Vodoo Priestess");
+	MamboMarie VodooPriestess = new MamboMarie("Vodoo Priestess");
+	
 	private Random rand = new Random();
 
 	private Menu menu = new Menu();
@@ -64,14 +65,18 @@ public class Player extends Human {
 			if (rand.nextFloat() < 0.05) {
 				int[] edgeXcoordinates = {map.getXRange().min(),map.getXRange().max()};
 				int[] edgeYcoordinates = {map.getYRange().min(),map.getYRange().max()};
-				int randomX = edgeXcoordinates[rand.nextInt()];
-				int randomY = edgeYcoordinates[rand.nextInt()];
+				int randomX = edgeXcoordinates[Math.round(rand.nextFloat())];
+				int randomY = edgeYcoordinates[Math.round(rand.nextFloat())];
 				while (!map.at(randomX, randomY).canActorEnter(this)){
 					randomX = edgeXcoordinates[rand.nextInt()];
 					randomY = edgeYcoordinates[rand.nextInt()];
 				}
 				map.at(randomX, randomY).addActor(VodooPriestess);
 			}
+		}
+		if (VodooPriestess.getMamboMarieturnCount()==30) {
+			map.removeActor(VodooPriestess);
+			VodooPriestess = null;
 		}
 		
 		//Check if any of the inventory weapons is craftable and add the craft actions to the Actions list.
