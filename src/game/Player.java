@@ -74,7 +74,8 @@ public class Player extends Human {
 				map.at(randomX, randomY).addActor(VodooPriestess);
 			}
 		}
-		if (VodooPriestess.getMamboMarieturnCount()==30) {
+		
+		if ((VodooPriestess.getMamboMarieturnCount()==30)||(!VodooPriestess.isConscious())) {
 			map.removeActor(VodooPriestess);
 			VodooPriestess = null;
 		}
