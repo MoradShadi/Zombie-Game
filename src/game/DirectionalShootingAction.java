@@ -51,35 +51,61 @@ public class DirectionalShootingAction extends Action {
 	private String cardinalDirectionShot(Actor shooter, Gun gun, int initialX, int initialY, int xChange, int yChange, GameMap map) {
 		int range = this.gun.getRange();
 		ArrayList<String> resultsLst = new ArrayList<String>();
-		NumberRange xRange = map.getXRange();
-		NumberRange yRange = map.getYRange();
+		
+		// When shooting north / south, it will iterate through each row (layer) in range, then loop through each location in that row
+		// When shooting east / west, it will iterate through each column (layer) in range, then loop through each location in that column
+		int layerCoordinate; // Layer coordinate is the x coordinate when shooting east / west, y coordinate when shooting north/south
+		int innerCoordinate; // inner coordinate is the y coordinate when shooting east / west, x coordinate when shooting north/south
+		int locationsInLayer = 1;
+		int layerDirection;
+		boolean horizontalShot;
+		NumberRange layerRange;
+		NumberRange innerRange;
 		
 		if (xChange != 0) { // shot direction is east or west
-			int xLayer = initialX;
-			int topY = initialY;;
-			int locationsInLayer = 1;
+			layerCoordinate = initialX;
+			innerCoordinate = initialY;
+			layerDirection = xChange;
+			horizontalShot = true;
+			layerRange = map.getXRange();
+			innerRange = map.getXRange();
+		}
+		else {
+			layerCoordinate = initialY;
+			innerCoordinate = initialX;
+			layerDirection = yChange;
+			horizontalShot = false;
+			layerRange = map.getXRange();
+			innerRange = map.getXRange();
+		}
 			
-			for (int i = 0; i < range; i++) { //This will loop from one vertical column to the next column in the gun range
-				xLayer += xChange;
-				if (!xRange.contains(xLayer)) {
-					break;
-				}
-				topY += 1;
-				
-				int currentY = topY;
-				locationsInLayer += 2;
-				
-				for (int yCounter = 0; yCounter < locationsInLayer; yCounter++) { // This will loop from the top Y coordinate within the gun range to the bottom in each column
-					if (yRange.contains(currentY)) {
-						Location shotLocation = map.at(xLayer, currentY);
-						if (shotLocation.containsAnActor()) {
-							Actor target = map.getActorAt(shotLocation);
-							AttackAction shootTarget = new AttackAction(target);
-							
-							resultsLst.add(shootTarget.gunShotExecute(shooter, map, this.gun.getShotDamage(), this.gun.getHitChance()));
-						}
-						currentY -= 1;
+		for (int i = 0; i < range; i++) {
+			layerCoordinate += layerDirection;
+			if (!layerRange.contains(layerCoordinate)) {
+				break;
+			}
+			innerCoordinate += 1;
+			
+			int currentInner = innerCoordinate;
+			locationsInLayer += 2;
+			
+			for (int innerCounter = 0; innerCounter < locationsInLayer; innerCounter++) { 
+				if (innerRange.contains(currentInner)) {
+					Location shotLocation;
+					if (horizontalShot) {
+						shotLocation = map.at(layerCoordinate, currentInner);
 					}
+					else {
+						shotLocation = map.at(currentInner, layerCoordinate);
+					}
+					
+					if (shotLocation.containsAnActor()) {
+						Actor target = map.getActorAt(shotLocation);
+						AttackAction shootTarget = new AttackAction(target);
+						
+						resultsLst.add(shootTarget.gunShotExecute(shooter, map, this.gun.getShotDamage(), this.gun.getHitChance()));
+					}
+					currentInner -= 1;
 				}
 			}
 		}
