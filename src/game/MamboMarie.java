@@ -23,7 +23,9 @@ public class MamboMarie extends ZombieActor {
 
 	@Override
 	public Action playTurn(Actions actions, Action lastAction, GameMap map, Display display) {
-		MamboMarieturnCount++;
+		if (map.contains(this)){
+			MamboMarieturnCount++;
+		}
 		if (MamboMarieturnCount % 10 == 0 && MamboMarieturnCount != 30) {
 			Action action = behaviours[0].getAction(this, map);
 			if (action != null) {
