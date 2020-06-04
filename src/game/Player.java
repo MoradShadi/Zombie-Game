@@ -1,5 +1,6 @@
 package game;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -61,15 +62,33 @@ public class Player extends Human {
 		// Handle multi-turn Actions
 		if (!map.contains(VodooPriestess)) {
 			if (rand.nextFloat() < 0.05) {
-				int[] edgeXcoordinates = {map.getXRange().min(),map.getXRange().max()};
-				int[] edgeYcoordinates = {map.getYRange().min(),map.getYRange().max()};
-				int randomX = edgeXcoordinates[Math.round(rand.nextFloat())];
-				int randomY = edgeYcoordinates[Math.round(rand.nextFloat())];
-				while (!map.at(randomX, randomY).canActorEnter(this)){
-					randomX = edgeXcoordinates[Math.round(rand.nextFloat())];
-					randomY = edgeYcoordinates[Math.round(rand.nextFloat())];
+				List<ArrayList<Integer>> listOfLists = new ArrayList<ArrayList<Integer>>();
+				ArrayList<Integer> leftedgecoordinate =new ArrayList<Integer>();
+				leftedgecoordinate.add(map.getXRange().min());
+				leftedgecoordinate.add(rand.nextInt(map.getYRange().max()));
+				
+				ArrayList<Integer> rightedgecoordinate =new ArrayList<Integer>();
+				rightedgecoordinate.add(map.getXRange().max());
+				rightedgecoordinate.add(rand.nextInt(map.getYRange().max()));
+				
+				ArrayList<Integer> topedgecoordinate =new ArrayList<Integer>();
+				topedgecoordinate.add(rand.nextInt(map.getXRange().max()));
+				topedgecoordinate.add(map.getYRange().max());
+				
+				ArrayList<Integer> bottomedgecoordinate =new ArrayList<Integer>();
+				bottomedgecoordinate.add(rand.nextInt(map.getXRange().max()));
+				bottomedgecoordinate.add(map.getYRange().min());
+				
+				listOfLists.add(leftedgecoordinate);
+				listOfLists.add(rightedgecoordinate);
+				listOfLists.add(topedgecoordinate);
+				listOfLists.add(bottomedgecoordinate);
+				
+				int coordinates = rand.nextInt(listOfLists.size());
+				while (!map.at(listOfLists.get(coordinates).get(0),listOfLists.get(coordinates).get(1)).canActorEnter(this)){
+					coordinates = rand.nextInt(listOfLists.size());
 				}
-				map.at(randomX, randomY).addActor(VodooPriestess);
+				map.at(listOfLists.get(coordinates).get(0),listOfLists.get(coordinates).get(1)).addActor(VodooPriestess);
 			}
 		}
 		
