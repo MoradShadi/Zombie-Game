@@ -8,7 +8,7 @@ import edu.monash.fit2099.engine.GameMap;
 
 public class MamboMarie extends ZombieActor {
 	
-	private int turnCount;
+	private static int MamboMarieturnCount;
 	private Behaviour[] behaviours = {
 			new ChantingBehaviour(),
 			new WanderBehaviour()
@@ -16,18 +16,15 @@ public class MamboMarie extends ZombieActor {
 
 	public MamboMarie(String name) {
 		super(name,'M',100, ZombieCapability.ALIVE);
-		turnCount = 0;
+		MamboMarieturnCount = 0;
 		// TODO Auto-generated constructor stub
 	}
 	
-	public int getCount() {
-		return turnCount;
-	}
 
 	@Override
 	public Action playTurn(Actions actions, Action lastAction, GameMap map, Display display) {
-		turnCount++;
-		if (turnCount % 10 == 0 && turnCount != 30) {
+		MamboMarieturnCount++;
+		if (MamboMarieturnCount % 10 == 0 && MamboMarieturnCount != 30) {
 			Action action = behaviours[0].getAction(this, map);
 			if (action != null) {
 				return action;
