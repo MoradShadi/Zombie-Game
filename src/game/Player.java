@@ -73,6 +73,10 @@ public class Player extends Human {
 			}
 		}
 		
+		if (VodooPriestess.getMamboMarieturnCount()==30) {
+			map.removeActor(VodooPriestess);
+		}
+		
 		if (!VodooPriestess.isConscious()) {
 			map.removeActor(VodooPriestess);
 			VodooPriestess = null;
