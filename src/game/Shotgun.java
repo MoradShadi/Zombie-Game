@@ -6,7 +6,7 @@ import edu.monash.fit2099.engine.Display;
 public class Shotgun extends Gun {
 
 	public Shotgun() {
-		super("shotgun", 'S', 25, false, 3);
+		super("shotgun", 'S', 25, 35, false, 3, 0.75);
 		// TODO Auto-generated constructor stub
 	}
 

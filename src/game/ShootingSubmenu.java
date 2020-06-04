@@ -30,9 +30,7 @@ public class ShootingSubmenu extends Action {
 		if (gun.hasCapability(GunTargetCapability.DIRECTIONAL)) {
 			Location actorLocation = map.locationOf(actor);
 			for (Exit exit : actorLocation.getExits()) {
-				String direction = exit.getName();
-				int range = this.gun.getRange();
-				possibleShots.add(new DirectionalShootingAction(range, direction));
+				possibleShots.add(new DirectionalShootingAction(this.gun, exit));
 			}
 			
 			System.out.println("+ Choose which direction to shoot + ");

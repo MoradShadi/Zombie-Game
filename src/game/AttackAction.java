@@ -59,18 +59,52 @@ public class AttackAction extends Action {
 
 		int damage = weapon.damage();
 		String result = actor + " " + weapon.verb() + " " + target + " for " + damage + " damage.";
+		
+		this.hurtTarget(target, damage, map);
+		
+		result += this.checkAlive(target, map);
 
+		return result;
+	}
+	
+	public String gunShotExecute(Actor actor, GameMap map, int gunDmg, double hitChance) {
+		boolean shotHit = rand.nextDouble() < hitChance;
+		String result = "";
+		
+		if (shotHit) {
+			result = actor + " shoots " + target + " for " + gunDmg + " damage.";
+			
+			this.hurtTarget(target, gunDmg, map);
+			
+			result += this.checkAlive(target, map);
+		}
+		else {
+			result = "The shot misses " + target + ".";
+		}
+		return result;
+	}
+
+	@Override
+	public String menuDescription(Actor actor) {
+		return actor + " attacks " + target;
+	}
+	
+	private void hurtTarget(Actor target, int damage, GameMap map) {
 		if (target instanceof Zombie) {
 			Zombie targetZombie = (Zombie) target;
 			ArrayList<Item> droppedZombieLimbsAndWeapons = targetZombie.zombieHurt(damage);
 			if (droppedZombieLimbsAndWeapons != null) {
-				dropItemOnMap(targetZombie, droppedZombieLimbsAndWeapons, map);
+				dropItemOnMap(targetZombie , droppedZombieLimbsAndWeapons, map);
 			}	
 		}
+		
 		else {
 			target.hurt(damage);
 		}
-		
+	}
+	
+	private String checkAlive(Actor target, GameMap map) {
+		String result = "";
 		if (!target.isConscious()) {
 			if (target instanceof Human) {
 				Corpse humanCorpse = new Corpse(target + "'s corpse");
@@ -79,7 +113,6 @@ public class AttackAction extends Action {
 			else {
 				Item corpse = new PortableItem("dead " + target, '%');
 				map.locationOf(target).addItem(corpse);
-				
 			}
 			
 			Actions dropActions = new Actions();
@@ -89,15 +122,9 @@ public class AttackAction extends Action {
 				drop.execute(target, map);
 			map.removeActor(target);	
 			
-			result += System.lineSeparator() + target + " is killed.";
+			result = System.lineSeparator() + target + " is killed.";
 		}
-
 		return result;
-	}
-
-	@Override
-	public String menuDescription(Actor actor) {
-		return actor + " attacks " + target;
 	}
 	
 	/**
