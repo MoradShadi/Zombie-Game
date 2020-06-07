@@ -101,6 +101,9 @@ public class Application {
 		// place a shotgun
 		townGameMap.at(44, 22).addItem(new Shotgun());
 		
+		//place a sniper
+		compoundGameMap.at(42,16).addItem(new Sniper());
+		
 		// FIXME: Add more zombies!
 		compoundGameMap.at(30, 20).addActor(new Zombie("Groan"));
 		compoundGameMap.at(30,  18).addActor(new Zombie("Boo"));

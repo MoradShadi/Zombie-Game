@@ -108,7 +108,9 @@ public class Player extends Human {
 			if (item.hasCapability(CraftableWeaponCapability.CRAFTABLE)) {
 				actions.add(new CraftWeaponAction(item));
 			}
-			if (item.hasCapability(GunTargetCapability.DIRECTIONAL)) {
+			
+			boolean itemIsGun = item.hasCapability(GunTargetCapability.DIRECTIONAL) || item.hasCapability(GunTargetCapability.SINGLE_TARGET);
+			if (itemIsGun) {
 				actions.add(new ShootingSubmenu((Gun) item, display));
 			}
 		}

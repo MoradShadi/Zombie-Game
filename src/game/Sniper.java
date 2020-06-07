@@ -18,5 +18,13 @@ public class Sniper extends Gun {
 		else if (aimCount == 1 && aimTarget == target) {
 			this.aimCount += 1;
 		}
+	} 
+	
+	public int getAimCount() {
+		return aimCount;
+	}
+	
+	public Zombie getTarget() {
+		return aimTarget;
 	}
 }

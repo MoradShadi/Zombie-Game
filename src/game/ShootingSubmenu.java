@@ -43,7 +43,7 @@ public class ShootingSubmenu extends Action {
 			Sniper sniper = (Sniper) gun;
 			//Let player choose if he wants to aim or fire the gun
 			System.out.println("+ Choose aim or fire +");
-			System.out.println("1: Aim " + this.gun + System.lineSeparator() + "2: Fire" + this.gun);
+			System.out.println("1: Aim " + this.gun + System.lineSeparator() + "2: Fire " + this.gun);
 			char key;
 			do {
 				key = display.readChar();
@@ -54,7 +54,7 @@ public class ShootingSubmenu extends Action {
 			for (int x : map.getXRange()) {
 				for (int y : map.getYRange()) {
 					Actor target = map.getActorAt(map.at(x, y));
-					if (target.hasCapability(ZombieCapability.UNDEAD)) {
+					if (target != null && target.hasCapability(ZombieCapability.UNDEAD)) {
 						targetZombies.add((Zombie) target);
 					}
 				}
@@ -64,7 +64,9 @@ public class ShootingSubmenu extends Action {
 			Actions possibleActions = new Actions();
 			if (key == '1') {
 				for (Zombie targetZombie : targetZombies) {
-					possibleActions.add(new AimingAction(sniper, targetZombie));
+					if (!(sniper.getAimCount() == 2 && targetZombie == sniper.getTarget())) {
+						possibleActions.add(new AimingAction(sniper, targetZombie));
+					}		
 				}
 			}
 			
@@ -79,7 +81,7 @@ public class ShootingSubmenu extends Action {
 	@Override
 	public String menuDescription(Actor actor) {
 		// TODO Auto-generated method stub
-		return actor + " shoots using " + gun;
+		return actor + " uses " + gun;
 	}
 
 }
