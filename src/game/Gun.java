@@ -1,7 +1,5 @@
 package game;
 
-import edu.monash.fit2099.engine.Action;
-import edu.monash.fit2099.engine.Display;
 import edu.monash.fit2099.engine.WeaponItem;
 
 public abstract class Gun extends WeaponItem {
@@ -13,18 +11,17 @@ public abstract class Gun extends WeaponItem {
 		super(name, displayChar, meleeDamage, "strikes");
 		// TODO Auto-generated constructor stub
 		setTargetCapability(singleTarget);
-		this.range = -1;
-		this.hitChance = initHitChance;
-		this.shotDamage = shotDamage;
+		setHitChance(initHitChance);
+		setShotDamage(shotDamage);
 	}
 	
-	public Gun(String name, char displayChar, int meleeDamage, int shotDamage, boolean singleTarget, int initRange, double initHitChance) {
+	public Gun(String name, char displayChar, int meleeDamage, int shotDamage, boolean singleTarget, double initHitChance, int initRange) {
 		super(name, displayChar, meleeDamage, "strikes");
 		// TODO Auto-generated constructor stub
 		setTargetCapability(singleTarget);
 		this.range = initRange;
-		this.hitChance = initHitChance;
-		this.shotDamage = shotDamage;
+		setHitChance(initHitChance);
+		setShotDamage(shotDamage);
 	}
 
 	private void setTargetCapability(boolean singleTarget) {
@@ -44,9 +41,20 @@ public abstract class Gun extends WeaponItem {
 		return hitChance;
 	}
 	
+	public void setHitChance(double newHitChance) {
+		if (newHitChance <= 100 && newHitChance >= 0) {
+			this.hitChance = newHitChance;
+		}
+	}
+	
 	public int getShotDamage() {
 		return shotDamage;
 	}
 	
-	public abstract Action getShootAction(Display display);
+	public void setShotDamage(int newDamage) {
+		if (newDamage > 0) {
+			this.shotDamage = newDamage;
+		}
+	}
+	
 }

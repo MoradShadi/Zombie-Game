@@ -114,20 +114,6 @@ public class DirectionalShootingAction extends Action {
 		
 		return this.generateShotResult(resultsLst);
 		
-//		String appendedResult = "";
-//		for (int i = 0; i < resultsLst.size(); i++) {
-//			if (i == 0) {
-//				appendedResult += System.lineSeparator();
-//			}
-//			
-//			if (i == resultsLst.size() - 1) {
-//				appendedResult += resultsLst.get(i);
-//			}
-//			else {
-//				appendedResult += resultsLst.get(i) + System.lineSeparator();
-//			}
-//		}
-//		return appendedResult;
 	}
 	
 	private String intercardinalDirectionShot(Actor shooter, Gun gun, int initialX, int initialY, int xChange, int yChange, GameMap map) { // NE, NW, SE, SW
