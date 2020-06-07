@@ -368,4 +368,8 @@ public class Zombie extends ZombieActor {
 		return stopMovement;
 	}
 	
+	public int getMaxHP() {
+		return this.maxHitPoints;
+	}
+	
 }

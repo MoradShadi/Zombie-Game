@@ -56,6 +56,18 @@ public class Player extends Human {
 		}
 		return super.getWeapon();
 	}
+	
+	@Override
+	public void hurt(int points) {
+		super.hurt(points);
+		List<Item> items = this.getInventory();	
+		for (Item item: items) {
+			if (item.hasCapability(GunTargetCapability.SINGLE_TARGET)) {
+				Sniper sniper = (Sniper) item;
+				sniper.resetAim();
+			}
+		}
+	}
 
 	@Override
 	public Action playTurn(Actions actions, Action lastAction, GameMap map, Display display) {
