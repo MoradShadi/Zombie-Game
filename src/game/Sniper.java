@@ -63,7 +63,7 @@ public class Sniper extends Gun {
 		aimTarget = null;
 		System.out.println("AAAAAAAAAAA");
 	}
-	
+
 	public int getAimCount() {
 		return aimCount;
 	}
