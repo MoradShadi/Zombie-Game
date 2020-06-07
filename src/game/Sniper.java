@@ -18,7 +18,31 @@ public class Sniper extends Gun {
 		else if (aimCount == 1 && aimTarget == target) {
 			this.aimCount += 1;
 		}
-	} 
+	}
+	
+	public int getShotDamage(Zombie target) {
+		if (aimCount == 1 && target == this.aimTarget) {
+			return super.getShotDamage() * 2;
+		}
+		else if (aimCount == 2 && target == this.aimTarget) {
+			return 2000;
+		}
+		else {
+			return super.getShotDamage();
+		}
+	}
+	
+	public double getHitChance(Zombie target) {
+		if (aimCount == 1 && target == this.aimTarget) {
+			return 0.9;
+		}
+		else if (aimCount == 2 && target == this.aimTarget) {
+			return 1;
+		}
+		else {
+			return super.getHitChance();
+		}
+	}
 	
 	public int getAimCount() {
 		return aimCount;

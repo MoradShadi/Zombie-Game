@@ -68,7 +68,7 @@ public class AttackAction extends Action {
 	}
 	
 	public String gunShotExecute(Actor actor, GameMap map, int gunDmg, double hitChance) {
-		boolean shotHit = rand.nextDouble() < hitChance;
+		boolean shotHit = rand.nextDouble() <= hitChance;
 		String result = "";
 		
 		if (shotHit) {

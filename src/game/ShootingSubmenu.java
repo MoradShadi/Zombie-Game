@@ -69,6 +69,11 @@ public class ShootingSubmenu extends Action {
 					}		
 				}
 			}
+			else if (key == '2') {
+				for (Zombie targetZombie : targetZombies) {
+					possibleActions.add(new SingleTargetShootingAction(sniper, targetZombie));	
+				}
+			}
 			
 			System.out.println("+ Choose which zombie +");
 			chosenAction = this.submenu.showMenu(actor, possibleActions, display);
