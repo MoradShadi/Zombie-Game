@@ -73,7 +73,7 @@ public class Player extends Human {
 	public Action playTurn(Actions actions, Action lastAction, GameMap map, Display display) {
 		// Handle multi-turn Actions
 		
-		if (!map.contains(VodooPriestess) && !(VodooPriestess == null) && (VodooPriestess.getOnMap() == false)) {
+		if ((VodooPriestess.getOnMap() == false) && !(VodooPriestess == null)) {
 			if (rand.nextFloat() <= 0.05) {
 				List<ArrayList<Integer>> listOfLists = new ArrayList<ArrayList<Integer>>();
 				ArrayList<Integer> leftedgecoordinate =new ArrayList<Integer>();
