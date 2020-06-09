@@ -36,7 +36,7 @@ public class PickUpWeaponBehaviour implements Behaviour {
 		List<Item> inventory = actor.getInventory();
 
 		for (Item groundItem: items) {
-			if (groundItem instanceof WeaponItem) 
+			if (groundItem instanceof WeaponItem) {
 				for(Item inventoryItem: inventory) {
 					if(inventoryItem instanceof WeaponItem) {
 						dropWeaponOnRandomLocation(actor, map, inventoryItem);
@@ -44,6 +44,7 @@ public class PickUpWeaponBehaviour implements Behaviour {
 					}
 				}
 				return new PickUpItemAction(groundItem);
+			}
 		}
 		
 		return null;

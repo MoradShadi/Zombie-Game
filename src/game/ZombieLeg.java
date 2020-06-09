@@ -10,7 +10,7 @@ import edu.monash.fit2099.engine.Item;
 public class ZombieLeg extends ZombieLimb {
 
 	public ZombieLeg() {
-		super("Leg", '[');
+		super("leg", '[');
 		// TODO Auto-generated constructor stub
 	}
 	

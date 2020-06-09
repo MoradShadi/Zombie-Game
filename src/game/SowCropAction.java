@@ -44,7 +44,7 @@ public class SowCropAction extends Action {
 	@Override
 	public String menuDescription(Actor actor) {
 		// TODO Auto-generated method stub
-		return actor + " planted a crop.";
+		return actor + " planted a crop";
 	}
 
 }
