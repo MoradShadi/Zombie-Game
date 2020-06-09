@@ -19,6 +19,16 @@ public class Car extends Item {
 		destinationMsg = initMessage;
 	}
 
+	// Getter for destination
+	public Location getDestination() {
+		return destination;
+	}
+	
+	//Getter for destinationMsg
+	public String getDestinationMsg() {
+		return destinationMsg;
+	}
+
 	public List<Action> getAllowableActions() {
 		Actions actionsList = new Actions();
 		actionsList.add(new DriveCarAction(destination, destinationMsg));
