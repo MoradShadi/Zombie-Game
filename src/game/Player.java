@@ -24,7 +24,8 @@ public class Player extends Human {
 	
 	private Behaviour[] behaviours = {
 			new EatFoodBehaviour(),
-			new HarvestBehaviour()
+			new HarvestBehaviour(),
+			new DriveCarBehaviour()
 	};
 	
 
