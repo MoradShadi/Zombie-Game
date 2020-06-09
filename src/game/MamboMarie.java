@@ -54,16 +54,17 @@ public class MamboMarie extends ZombieActor {
 		
 		if (onmap){
 			IterateMamboMarieturnCount();
-		}
-		if (MamboMarieturnCount % 10 == 0) {
-			Action action = behaviours[0].getAction(this, map);
+			if (MamboMarieturnCount % 10 == 0) {
+				Action action = behaviours[0].getAction(this, map);
+				if (action != null) {
+					return action;
+				}
+			}
+	
+			Action action = behaviours[1].getAction(this, map);
 			if (action != null) {
 				return action;
 			}
-		}
-		Action action = behaviours[1].getAction(this, map);
-		if (action != null) {
-			return action;
 		}
 		return new DoNothingAction();
 	}
