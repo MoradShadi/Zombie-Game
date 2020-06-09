@@ -70,14 +70,14 @@ public class DirectionalShootingAction extends Action {
 			layerDirection = xChange;
 			horizontalShot = true;
 			layerRange = map.getXRange();
-			innerRange = map.getXRange();
+			innerRange = map.getYRange();
 		}
 		else {
 			layerCoordinate = initialY;
 			innerCoordinate = initialX;
 			layerDirection = yChange;
 			horizontalShot = false;
-			layerRange = map.getXRange();
+			layerRange = map.getYRange();
 			innerRange = map.getXRange();
 		}
 			

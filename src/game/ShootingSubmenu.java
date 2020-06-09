@@ -60,6 +60,10 @@ public class ShootingSubmenu extends Action {
 				}
 			}
 			
+			if (targetZombies.size() == 0) {
+				return "No zombie targets available";
+			}
+			
 			//Use another submenu to let player choose which zombie as target
 			Actions possibleActions = new Actions();
 			if (key == '1') {

@@ -9,7 +9,7 @@ public class Sniper extends Gun {
 	private int resetTracker;
 	
 	public Sniper() {
-		super("sniper", '1', 25, 30, true, 0.75);
+		super("sniper", 'R', 25, 30, true, 0.75);
 		aimCount = 0;
 	}
 	
@@ -54,7 +54,7 @@ public class Sniper extends Gun {
 			if (resetTracker > aimCount) {
 				this.resetAim();
 			}
-		}	
+		}
 	}
 	
 	public void resetAim() {
@@ -71,4 +71,5 @@ public class Sniper extends Gun {
 	public Zombie getTarget() {
 		return aimTarget;
 	}
+
 }

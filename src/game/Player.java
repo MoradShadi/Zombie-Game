@@ -71,6 +71,8 @@ public class Player extends Human {
 
 	@Override
 	public Action playTurn(Actions actions, Action lastAction, GameMap map, Display display) {
+		// Reload guns at the start of every turn
+		this.reloadAllGuns();
 		// Handle multi-turn Actions
 		
 		if ((VodooPriestess.getOnMap() == false) && !(VodooPriestess == null)) {
@@ -119,7 +121,11 @@ public class Player extends Human {
 			
 			boolean itemIsGun = item.hasCapability(GunTargetCapability.DIRECTIONAL) || item.hasCapability(GunTargetCapability.SINGLE_TARGET);
 			if (itemIsGun) {
-				actions.add(new ShootingSubmenu((Gun) item, display));
+				Gun gun = (Gun) item;
+				Action shootingAction = gun.getShootingAction(display);
+				if (shootingAction != null) {
+					actions.add(shootingAction);
+				}
 			}
 		}
 		
@@ -137,4 +143,30 @@ public class Player extends Human {
 		return menu.showMenu(this, actions, display);
 	}
 	
+	private void reloadAllGuns() {
+		List<Item> items = this.getInventory();
+		List<Gun> allGuns = new ArrayList<Gun>();
+		List<Ammo> allAmmo = new ArrayList<Ammo>();
+		for (Item item : items) {
+			boolean itemIsGun = item.hasCapability(GunTargetCapability.DIRECTIONAL) || item.hasCapability(GunTargetCapability.SINGLE_TARGET);
+			if (itemIsGun) {
+				allGuns.add((Gun) item);
+			}
+			else if (item instanceof Ammo) {
+				allAmmo.add((Ammo) item);
+			}
+		}
+		
+		if (allAmmo.size() > 0) {
+			for (Ammo ammo : allAmmo) {
+				for (Gun gun : allGuns) {
+					if (ammo.getGun() == gun.toString()) {
+						gun.reload(ammo.getReloadAmount());
+						this.removeItemFromInventory(ammo);
+						System.out.println("Reloaded " + gun + " with " + ammo.getReloadAmount() + " ammo");
+					}
+				}
+			}
+		}
+	}
 }
