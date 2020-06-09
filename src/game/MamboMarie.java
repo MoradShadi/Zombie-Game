@@ -10,6 +10,7 @@ public class MamboMarie extends ZombieActor {
 	
 	private int MamboMarieturnCount;
 	private boolean onmap = false;
+	
 	private Behaviour[] behaviours = {
 			new ChantingBehaviour(),
 			new WanderBehaviour()
@@ -22,6 +23,13 @@ public class MamboMarie extends ZombieActor {
 		// TODO Auto-generated constructor stub
 	}
 	
+	public boolean getOnMap() {
+		return onmap;
+	}
+	
+	public void setOnMap(boolean input) {
+		onmap = input;
+	}
 	public int getMamboMarieturnCount() {
 		return MamboMarieturnCount;
 	}
