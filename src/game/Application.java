@@ -17,7 +17,7 @@ import edu.monash.fit2099.engine.World;
 public class Application {
 
 	public static void main(String[] args) {
-		World world = new World(new Display());
+		World world = new MyWorld(new Display());
 
 		FancyGroundFactory groundFactory = new FancyGroundFactory(new Dirt(), new Fence(), new Tree());
 		
@@ -107,12 +107,12 @@ public class Application {
 		townGameMap.at(46, 23).addItem(new SniperAmmo());
 		
 		// FIXME: Add more zombies!
-		compoundGameMap.at(30, 20).addActor(new Zombie("Groan"));
-		compoundGameMap.at(30,  18).addActor(new Zombie("Boo"));
-		compoundGameMap.at(10,  4).addActor(new Zombie("Uuuurgh"));
+//		compoundGameMap.at(30, 20).addActor(new Zombie("Groan"));
+//		compoundGameMap.at(30,  18).addActor(new Zombie("Boo"));
+//		compoundGameMap.at(10,  4).addActor(new Zombie("Uuuurgh"));
 		compoundGameMap.at(50, 18).addActor(new Zombie("Mortalis"));
-		compoundGameMap.at(1, 10).addActor(new Zombie("Gaaaah"));
-		compoundGameMap.at(62, 12).addActor(new Zombie("Aaargh"));
+//		compoundGameMap.at(1, 10).addActor(new Zombie("Gaaaah"));
+//		compoundGameMap.at(62, 12).addActor(new Zombie("Aaargh"));
 		
 		// adding farmers
 		Actor farmer1 = new Farmer("Farmer 1");
