@@ -106,16 +106,8 @@ public class Player extends Human {
 			}
 		}
 		
-		if (VodooPriestess.getMamboMarieturnCount()%30 ==0) {
-			map.removeActor(VodooPriestess);
-			VodooPriestess.IterateMamboMarieturnCount();
-			VodooPriestess.setOnMap(false);
-		}
-		
 		if (!VodooPriestess.isConscious()) {
-			map.removeActor(VodooPriestess);
 			VodooPriestess = null;
-			VodooPriestess.setOnMap(false);
 		}
 		
 		//Check if any of the inventory weapons is craftable and add the craft actions to the Actions list.
