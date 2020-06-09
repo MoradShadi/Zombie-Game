@@ -9,6 +9,7 @@ import edu.monash.fit2099.engine.GameMap;
 public class MamboMarie extends ZombieActor {
 	
 	private int MamboMarieturnCount;
+	private boolean onmap = false;
 	private Behaviour[] behaviours = {
 			new ChantingBehaviour(),
 			new WanderBehaviour()
