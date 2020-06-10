@@ -103,7 +103,7 @@ public class Application {
 		townGameMap.at(44, 23).addItem(new ShotgunAmmo());
 		
 		//place a sniper and ammo
-		townGameMap.at(46,22).addItem(new Sniper());
+		townGameMap.at(46, 22).addItem(new Sniper());
 		townGameMap.at(46, 23).addItem(new SniperAmmo());
 		
 		// FIXME: Add more zombies!

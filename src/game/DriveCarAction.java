@@ -37,7 +37,8 @@ public class DriveCarAction extends Action {
 	@Override
 	public String execute(Actor actor, GameMap map) {
 		// TODO Auto-generated method stub
-		return new MoveActorAction(destination, displayMsg).execute(actor, map);
+		new MoveActorAction(destination, displayMsg).execute(actor, map);
+		return menuDescription(actor);
 	}
 
 	@Override

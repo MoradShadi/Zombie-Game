@@ -16,7 +16,7 @@ import edu.monash.fit2099.engine.Weapon;
  * Class representing the Player.
  */
 public class Player extends Human {
-	MamboMarie VodooPriestess = new MamboMarie("Vodoo Priestess");
+	MamboMarie voodooPriestess = new MamboMarie("Vodoo Priestess");
 	
 	private Random rand = new Random();
 
@@ -76,41 +76,38 @@ public class Player extends Human {
 		this.reloadAllGuns();
 		// Handle multi-turn Actions
 		
-		if ((VodooPriestess.getOnMap() == false) && !(VodooPriestess == null)) {
-			if (rand.nextFloat() <= 0.05) {
-				List<ArrayList<Integer>> listOfLists = new ArrayList<ArrayList<Integer>>();
-				ArrayList<Integer> leftedgecoordinate =new ArrayList<Integer>();
-				leftedgecoordinate.add(map.getXRange().min());
-				leftedgecoordinate.add(rand.nextInt(map.getYRange().max()));
+		if (!voodooPriestess.getOnMap() && !(voodooPriestess == null)) {
+			if (rand.nextDouble() <= 0.05) {
+				double edgeToSpawn = rand.nextDouble();
+				int xMax = map.getXRange().max();
+				int yMax = map.getYRange().max();
+				int xCoordinate;
+				int yCoordinate;
 				
-				ArrayList<Integer> rightedgecoordinate =new ArrayList<Integer>();
-				rightedgecoordinate.add(map.getXRange().max());
-				rightedgecoordinate.add(rand.nextInt(map.getYRange().max()));
-				
-				ArrayList<Integer> topedgecoordinate =new ArrayList<Integer>();
-				topedgecoordinate.add(rand.nextInt(map.getXRange().max()));
-				topedgecoordinate.add(map.getYRange().max());
-				
-				ArrayList<Integer> bottomedgecoordinate =new ArrayList<Integer>();
-				bottomedgecoordinate.add(rand.nextInt(map.getXRange().max()));
-				bottomedgecoordinate.add(map.getYRange().min());
-				
-				listOfLists.add(leftedgecoordinate);
-				listOfLists.add(rightedgecoordinate);
-				listOfLists.add(topedgecoordinate);
-				listOfLists.add(bottomedgecoordinate);
-				
-				int coordinates = rand.nextInt(listOfLists.size());
-				while (!map.at(listOfLists.get(coordinates).get(0),listOfLists.get(coordinates).get(1)).canActorEnter(this)){
-					coordinates = rand.nextInt(listOfLists.size());
+				if (edgeToSpawn < 0.25) { // spawn on left edge (edgeToSpawn is between 0 and 0.25)
+					xCoordinate = 0;
+					yCoordinate = rand.nextInt(yMax + 1);
 				}
-				map.at(listOfLists.get(coordinates).get(0),listOfLists.get(coordinates).get(1)).addActor(VodooPriestess);
-				VodooPriestess.setOnMap(true);
+				else if (edgeToSpawn < 0.5) { // spawn on right edge (edgeToSpawn is between 0.25 and 0.5)
+					xCoordinate = xMax;
+					yCoordinate = rand.nextInt(yMax + 1);
+				}
+				else if (edgeToSpawn < 0.75) { // spawn on top edge (edgeToSpawn is between 0.5 and 0.75)
+					xCoordinate = rand.nextInt(xMax + 1);
+					yCoordinate = 0;
+				}
+				else { // spawn on bottom edge (edgeToSpawn is between 0.75 and 1)
+					xCoordinate = rand.nextInt(xMax + 1);
+					yCoordinate = yMax;
+				}
+				
+				map.at(xCoordinate, yCoordinate).addActor(voodooPriestess);
+				this.voodooPriestess.setOnMap(true);
 			}
 		}
 		
-		if (!VodooPriestess.isConscious()) {
-			VodooPriestess = null;
+		if (!voodooPriestess.isConscious()) {
+			voodooPriestess = null;
 		}
 		
 		//Check if any of the inventory weapons is craftable and add the craft actions to the Actions list.

@@ -28,21 +28,7 @@ public class Car extends Item {
 	}
 
 	/**
-	 * Getter for getDestination
-	 */
-	public Location getDestination() {
-		return destination;
-	}
-	
-	/**
-	 * Getter for getDestinationMsg
-	 */
-	public String getDestinationMsg() {
-		return destinationMsg;
-	}
-
-	/**
-	 * Gets a list of unmodifiable actions
+	 * Returns a 
 	 * 
 	 * @return a list of unmodifiable actions
 	 */
