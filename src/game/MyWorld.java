@@ -16,7 +16,7 @@ public class MyWorld extends World {
 		boolean playerAlive = actorLocations.contains(player);
 		boolean zombiesRemaining = false;
 		for (Actor actor : actorLocations) {
-			if (actor instanceof Zombie || actor instanceof MamboMarie) {
+			if (actor.hasCapability(ZombieCapability.UNDEAD)) {
 				zombiesRemaining = true;
 			}
 		}
