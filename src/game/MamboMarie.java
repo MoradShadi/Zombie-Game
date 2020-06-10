@@ -18,7 +18,7 @@ public class MamboMarie extends ZombieActor {
 	
 
 	public MamboMarie(String name) {
-		super(name,'M',100, ZombieCapability.ALIVE);
+		super(name,'M',100, ZombieCapability.UNDEAD);
 		MamboMarieturnCount = 0;
 		// TODO Auto-generated constructor stub
 	}
