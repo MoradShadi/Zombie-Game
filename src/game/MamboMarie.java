@@ -50,12 +50,6 @@ public class MamboMarie extends ZombieActor {
 		
 		if (onmap){
 			IterateMamboMarieturnCount();
-			if (getMamboMarieturnCount()%30 == 0) {
-				map.removeActor(this);
-				IterateMamboMarieturnCount();
-				setOnMap(false);
-				return new DoNothingAction();
-			}
 			
 			if (getMamboMarieturnCount() % 10 == 0) {
 				Action action = behaviours[0].getAction(this, map);
@@ -63,6 +57,13 @@ public class MamboMarie extends ZombieActor {
 					return action;
 				}
 			}
+			
+			if (getMamboMarieturnCount() % 30 == 0) {
+				map.removeActor(this);
+				IterateMamboMarieturnCount();
+				setOnMap(false);
+				return new DoNothingAction();
+			}		
 	
 			Action action = behaviours[1].getAction(this, map);
 			if (action != null) {

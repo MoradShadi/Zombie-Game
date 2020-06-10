@@ -8,6 +8,7 @@ import edu.monash.fit2099.engine.GameMap;
 import edu.monash.fit2099.engine.GroundFactory;
 
 public class MyGameMap extends GameMap {
+	MamboMarie voodooPriestess = new MamboMarie("Vodoo Priestess");
 
 	public MyGameMap(GroundFactory groundFactory, char groundChar, int width, int height) {
 		super(groundFactory, groundChar, width, height);
@@ -27,4 +28,5 @@ public class MyGameMap extends GameMap {
 	public ActorLocations getAllActors() {
 		return this.actorLocations;
 	}
+	
 }

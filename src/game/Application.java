@@ -6,6 +6,7 @@ import java.util.List;
 import edu.monash.fit2099.engine.Actor;
 import edu.monash.fit2099.engine.Display;
 import edu.monash.fit2099.engine.FancyGroundFactory;
+import edu.monash.fit2099.engine.GameMap;
 import edu.monash.fit2099.engine.Location;
 import edu.monash.fit2099.engine.World;
 
@@ -46,7 +47,7 @@ public class Application {
 		".........................................................................++++...",
 		"..........................................................................++....",
 		"................................................................................");
-		MyGameMap compoundGameMap = new MyGameMap(groundFactory, compoundMap );
+		GameMap compoundGameMap = new GameMap(groundFactory, compoundMap);
 		world.addGameMap(compoundGameMap);
 		
 		List<String> townMap = Arrays.asList(
@@ -75,7 +76,7 @@ public class Application {
 		".......+.+.+.+.+.+..............................................................",
 		"................................................................................",
 		"................................................................................");
-		MyGameMap townGameMap = new MyGameMap(groundFactory, townMap );
+		GameMap townGameMap = new GameMap(groundFactory, townMap);
 		world.addGameMap(townGameMap);
 		
 		Actor player = new Player("Player", '@', 100);

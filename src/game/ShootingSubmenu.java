@@ -51,21 +51,14 @@ public class ShootingSubmenu extends Action {
 			
 			//Get a list of all zombies on the map
 			ArrayList<Actor> targetZombies = new ArrayList<Actor>();
-			MyGameMap customGameMap = (MyGameMap) map;
-			for (Actor target : customGameMap.getAllActors()) {
-				if (target.hasCapability(ZombieCapability.UNDEAD)) {
-					targetZombies.add(target);
+			for (int x : map.getXRange()) {
+				for (int y : map.getYRange()) {
+					Actor target = map.getActorAt(map.at(x, y));
+					if (target != null && target.hasCapability(ZombieCapability.UNDEAD)) {
+						targetZombies.add(target);
+					}
 				}
 			}
-			
-//			for (int x : map.getXRange()) {
-//				for (int y : map.getYRange()) {
-//					Actor target = map.getActorAt(map.at(x, y));
-//					if (target != null && target.hasCapability(ZombieCapability.UNDEAD)) {
-//						targetZombies.add((Zombie) target);
-//					}
-//				}
-//			}
 			
 			if (targetZombies.size() == 0) {
 				return "No zombie targets available";

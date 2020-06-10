@@ -16,8 +16,6 @@ import edu.monash.fit2099.engine.Weapon;
  * Class representing the Player.
  */
 public class Player extends Human {
-	MamboMarie voodooPriestess = new MamboMarie("Vodoo Priestess");
-	
 	private Random rand = new Random();
 
 	private Menu menu = new Menu();
@@ -75,42 +73,6 @@ public class Player extends Human {
 		// Reload guns at the start of every turn
 		this.reloadAllGuns();
 		// Handle multi-turn Actions
-		
-		if (voodooPriestess.isConscious() && !voodooPriestess.getOnMap()) {
-			if (rand.nextDouble() <= 0.5) {			
-				int xMax = map.getXRange().max();
-				int yMax = map.getYRange().max();
-				int xCoordinate;
-				int yCoordinate;
-				boolean locationIsOccupied;
-				
-				do {
-					double edgeToSpawn = rand.nextDouble();
-					// each edge has an equal 25% chance of spawning mambo marie
-					if (edgeToSpawn < 0.25) { // spawn on left edge (edgeToSpawn is between 0 and 0.25)
-						xCoordinate = 0;
-						yCoordinate = rand.nextInt(yMax + 1);
-					}
-					else if (edgeToSpawn < 0.5) { // spawn on right edge (edgeToSpawn is between 0.25 and 0.5)
-						xCoordinate = xMax;
-						yCoordinate = rand.nextInt(yMax + 1);
-					}
-					else if (edgeToSpawn < 0.75) { // spawn on top edge (edgeToSpawn is between 0.5 and 0.75)
-						xCoordinate = rand.nextInt(xMax + 1);
-						yCoordinate = 0;
-					}
-					else { // spawn on bottom edge (edgeToSpawn is between 0.75 and 1)
-						xCoordinate = rand.nextInt(xMax + 1);
-						yCoordinate = yMax;
-					}
-					locationIsOccupied = !map.at(xCoordinate, yCoordinate).canActorEnter(voodooPriestess);
-				}
-				while (locationIsOccupied);
-
-				map.at(xCoordinate, yCoordinate).addActor(voodooPriestess);
-				this.voodooPriestess.setOnMap(true);
-			}
-		}
 		
 		//Check if any of the inventory weapons is craftable and add the craft actions to the Actions list.
 		List<Item> items = this.getInventory();	
