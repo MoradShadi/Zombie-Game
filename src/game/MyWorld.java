@@ -39,7 +39,7 @@ public class MyWorld extends World {
 		if (voodooPriestess.isConscious() && !voodooPriestess.getOnMap()) {
 			GameMap map = this.gameMaps.get(rand.nextInt(2));
 			
-			if (rand.nextDouble() <= 0.5) {			
+			if (rand.nextDouble() <= 0.05) {			
 				int xMax = map.getXRange().max();
 				int yMax = map.getYRange().max();
 				int xCoordinate;
