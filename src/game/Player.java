@@ -84,6 +84,7 @@ public class Player extends Human {
 				int xCoordinate;
 				int yCoordinate;
 				
+				// each edge has an equal 25% chance of spawning mambo marie
 				if (edgeToSpawn < 0.25) { // spawn on left edge (edgeToSpawn is between 0 and 0.25)
 					xCoordinate = 0;
 					yCoordinate = rand.nextInt(yMax + 1);
