@@ -26,9 +26,8 @@ public class ExitAction extends Action {
 	@Override
 	public String execute(Actor actor, GameMap map) {
 		// TODO Auto-generated method stub
-		System.out.println("Thank you for playing our game. Goodbye!");
-		System.exit(0);
-		return menuDescription(actor);
+		map.removeActor(actor);
+		return "Player exits game.";
 	}
 
 	@Override

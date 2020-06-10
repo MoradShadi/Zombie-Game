@@ -81,8 +81,6 @@ public class Application {
 		
 		Actor player = new Player("Player", '@', 100);
 		world.addPlayer(player, compoundGameMap.at(42, 15));
-		player.addItemToInventory(new Sniper());
-		player.addItemToInventory(new SniperAmmo());
 		
 	    // Place some random humans
 		String[] humans = {"Carlton", "May", "Vicente", "Andrea", "Wendy",
@@ -109,12 +107,16 @@ public class Application {
 		townGameMap.at(46, 23).addItem(new SniperAmmo());
 		
 		// FIXME: Add more zombies!
-//		compoundGameMap.at(30, 20).addActor(new Zombie("Groan"));
-//		compoundGameMap.at(30,  18).addActor(new Zombie("Boo"));
-//		compoundGameMap.at(10,  4).addActor(new Zombie("Uuuurgh"));
+		compoundGameMap.at(30, 20).addActor(new Zombie("Groan"));
+		compoundGameMap.at(30,  18).addActor(new Zombie("Boo"));
+		compoundGameMap.at(10,  4).addActor(new Zombie("Uuuurgh"));
 		compoundGameMap.at(50, 18).addActor(new Zombie("Mortalis"));
-//		compoundGameMap.at(1, 10).addActor(new Zombie("Gaaaah"));
-//		compoundGameMap.at(62, 12).addActor(new Zombie("Aaargh"));
+		compoundGameMap.at(1, 10).addActor(new Zombie("Gaaaah"));
+		compoundGameMap.at(62, 12).addActor(new Zombie("Aaargh"));
+		
+		townGameMap.at(50, 12).addActor(new Zombie("Zeke"));
+		townGameMap.at(62, 12).addActor(new Zombie("Creeper"));
+		townGameMap.at(10, 4).addActor(new Zombie("Lurker"));
 		
 		// adding farmers
 		Actor farmer1 = new Farmer("Farmer 1");
