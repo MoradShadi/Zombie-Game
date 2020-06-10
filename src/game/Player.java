@@ -76,7 +76,7 @@ public class Player extends Human {
 		this.reloadAllGuns();
 		// Handle multi-turn Actions
 		
-		if (!voodooPriestess.getOnMap() && !(voodooPriestess == null)) {
+		if (voodooPriestess.isConscious() && !voodooPriestess.getOnMap()) {
 			if (rand.nextDouble() <= 0.5) {			
 				int xMax = map.getXRange().max();
 				int yMax = map.getYRange().max();
@@ -110,10 +110,6 @@ public class Player extends Human {
 				map.at(xCoordinate, yCoordinate).addActor(voodooPriestess);
 				this.voodooPriestess.setOnMap(true);
 			}
-		}
-		
-		if (!voodooPriestess.isConscious()) {
-			voodooPriestess = null;
 		}
 		
 		//Check if any of the inventory weapons is craftable and add the craft actions to the Actions list.

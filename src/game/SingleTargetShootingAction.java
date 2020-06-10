@@ -6,9 +6,9 @@ import edu.monash.fit2099.engine.GameMap;
 
 public class SingleTargetShootingAction extends Action {
 	Sniper sniper;
-	Zombie targetZombie;
+	Actor targetZombie;
 
-	public SingleTargetShootingAction(Sniper initSniper, Zombie initTarget) {
+	public SingleTargetShootingAction(Sniper initSniper, Actor initTarget) {
 		// TODO Auto-generated constructor stub
 		this.sniper = initSniper;
 		this.targetZombie = initTarget;

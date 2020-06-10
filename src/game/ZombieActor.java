@@ -31,4 +31,8 @@ public abstract class ZombieActor extends Actor {
 		}
 		return false;
 	}
+	
+	public int getMaxHp() {
+		return this.maxHitPoints;
+	}
 }

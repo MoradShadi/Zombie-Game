@@ -14,7 +14,7 @@ import edu.monash.fit2099.engine.Location;
  */
 public class Sniper extends Gun {
 	private int aimCount;
-	private Zombie aimTarget;
+	private Actor aimTarget;
 	private int resetTracker;
 	
 	public Sniper() {
@@ -29,7 +29,7 @@ public class Sniper extends Gun {
 	 * 
 	 * @param target target to aim at
 	 */
-	public void aimSniper(Zombie target) {
+	public void aimSniper(Actor target) {
 		if ((aimCount == 0) || (aimTarget != target)) {
 			this.aimCount = 1;
 			this.aimTarget = target;
@@ -48,12 +48,12 @@ public class Sniper extends Gun {
 	 * @param target target to fire at
 	 * @return damage that the shot deals
 	 */
-	public int getShotDamage(Zombie target) {
+	public int getShotDamage(Actor target) {
 		if (aimCount == 1 && target == this.aimTarget) {
 			return super.getShotDamage() * 2;
 		}
 		else if (aimCount == 2 && target == this.aimTarget) {
-			return target.getMaxHP();
+			return target.getMaxHp();
 		}
 		else {
 			return super.getShotDamage();
@@ -68,7 +68,7 @@ public class Sniper extends Gun {
 	 * @param target target to fire at
 	 * @return hit chance of the shot
 	 */
-	public double getHitChance(Zombie target) {
+	public double getHitChance(Actor target) {
 		if (aimCount == 1 && target == this.aimTarget) {
 			return 0.9;
 		}
@@ -109,7 +109,7 @@ public class Sniper extends Gun {
 		return aimCount;
 	}
 	
-	public Zombie getTarget() {
+	public Actor getTarget() {
 		return aimTarget;
 	}
 

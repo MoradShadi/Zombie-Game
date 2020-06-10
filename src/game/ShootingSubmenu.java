@@ -50,15 +50,22 @@ public class ShootingSubmenu extends Action {
 			} while (key != '1' && key != '2');
 			
 			//Get a list of all zombies on the map
-			ArrayList<Zombie> targetZombies = new ArrayList<Zombie>();
-			for (int x : map.getXRange()) {
-				for (int y : map.getYRange()) {
-					Actor target = map.getActorAt(map.at(x, y));
-					if (target != null && target.hasCapability(ZombieCapability.UNDEAD)) {
-						targetZombies.add((Zombie) target);
-					}
+			ArrayList<Actor> targetZombies = new ArrayList<Actor>();
+			MyGameMap customGameMap = (MyGameMap) map;
+			for (Actor target : customGameMap.getAllActors()) {
+				if (target.hasCapability(ZombieCapability.UNDEAD)) {
+					targetZombies.add(target);
 				}
 			}
+			
+//			for (int x : map.getXRange()) {
+//				for (int y : map.getYRange()) {
+//					Actor target = map.getActorAt(map.at(x, y));
+//					if (target != null && target.hasCapability(ZombieCapability.UNDEAD)) {
+//						targetZombies.add((Zombie) target);
+//					}
+//				}
+//			}
 			
 			if (targetZombies.size() == 0) {
 				return "No zombie targets available";
@@ -67,14 +74,14 @@ public class ShootingSubmenu extends Action {
 			//Use another submenu to let player choose which zombie as target
 			Actions possibleActions = new Actions();
 			if (key == '1') {
-				for (Zombie targetZombie : targetZombies) {
+				for (Actor targetZombie : targetZombies) {
 					if (!(sniper.getAimCount() == 2 && targetZombie == sniper.getTarget())) {
 						possibleActions.add(new AimingAction(sniper, targetZombie));
 					}		
 				}
 			}
 			else if (key == '2') {
-				for (Zombie targetZombie : targetZombies) {
+				for (Actor targetZombie : targetZombies) {
 					possibleActions.add(new SingleTargetShootingAction(sniper, targetZombie));	
 				}
 			}

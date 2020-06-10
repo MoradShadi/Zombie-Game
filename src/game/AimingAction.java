@@ -5,10 +5,10 @@ import edu.monash.fit2099.engine.Actor;
 import edu.monash.fit2099.engine.GameMap;
 
 public class AimingAction extends Action {
-	Zombie target;
+	Actor target;
 	Sniper sniper;
 
-	public AimingAction(Sniper initSniper, Zombie initTarget) {
+	public AimingAction(Sniper initSniper, Actor initTarget) {
 		// TODO Auto-generated constructor stub
 		this.target = initTarget;
 		this.sniper = initSniper;
@@ -18,7 +18,7 @@ public class AimingAction extends Action {
 	public String execute(Actor actor, GameMap map) {
 		// TODO Auto-generated method stub
 		this.sniper.aimSniper(target);
-		return menuDescription(actor);
+		return menuDescription(actor) + " for " + this.sniper.getAimCount() + " turn(s)";
 	}
 
 	@Override
