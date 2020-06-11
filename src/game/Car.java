@@ -8,7 +8,7 @@ import edu.monash.fit2099.engine.Item;
 import edu.monash.fit2099.engine.Location;
 
 /**
- * A class that represents a car.
+ * A class that represents a car for the player to use so that he can travel between different maps.
  */
 public class Car extends Item {
 	private Location destination;

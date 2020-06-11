@@ -28,7 +28,7 @@ public class DriveCarAction extends Action {
 	}
 
 	/**
-	 * Performs the driving action
+	 * Performs the driving action to move the actor to the destination map
 	 * 
 	 * @param actor The actor that is driving.
 	 * @param map The map the actor is on.
