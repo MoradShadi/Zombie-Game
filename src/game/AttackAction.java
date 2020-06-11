@@ -37,11 +37,7 @@ public class AttackAction extends Action {
 	}
 
 	/**
-	 * Perform the attacking Action on the target if the attack does not miss.
-	 * If the atack target is a human, hurt the target
-	 * If the attack target is a zombie, hurt the target then check if the zombie dropped any limbs or weapons and drop them on the map accordingly.
-	 * If a human is attacked and it dies, then turns the human into a Corpse that will turn into a zombie after some turns.
-	 * If a zombie is attacked and dies, create a normal corpse.
+	 * Perform the attacking Action on the target and determines if the attack misses or hits
 	 *
 	 * @param actor The actor performing the action.
 	 * @param map The map the actor is on.
@@ -67,6 +63,15 @@ public class AttackAction extends Action {
 		return result;
 	}
 	
+	/**
+	 * Special execute for gun shot attacks and calculates if the shot will hit the target
+	 * 
+	 * @param actor the shooter
+	 * @param map the map that the shooter is on
+	 * @param gunDmg the damage of the shot
+	 * @param hitChance the chance that the shot hits the target
+	 * @return
+	 */
 	public String gunShotExecute(Actor actor, GameMap map, int gunDmg, double hitChance) {
 		boolean shotHit = rand.nextDouble() <= hitChance;
 		String result = "";
@@ -89,6 +94,15 @@ public class AttackAction extends Action {
 		return actor + " attacks " + target;
 	}
 	
+	/**
+	 * Method to hurt the target according to what target it is
+	 * If the atack target is a human, hurt the target
+	 * If the attack target is a zombie, hurt the target then check if the zombie dropped any limbs or weapons and drop them on the map accordingly.
+	 * 
+	 * @param target target that will be hurt
+	 * @param damage damage dealt
+	 * @param map map that the target is on
+	 */
 	private void hurtTarget(Actor target, int damage, GameMap map) {
 		if (target instanceof Zombie) {
 			Zombie targetZombie = (Zombie) target;
@@ -103,10 +117,19 @@ public class AttackAction extends Action {
 		}
 	}
 	
+	/**
+	 * Method to check if the target is dead after the attack and handles the dying procedures according to the target class
+	 * If a human is attacked and it dies, then turns the human into a Corpse that will turn into a zombie after some turns.
+	 * If a zombie is attacked and dies, create a normal corpse.
+	 * 
+	 * @param target target to check
+	 * @param map map that the target is on
+	 * @return console message if the actor dies
+	 */
 	private String checkAlive(Actor target, GameMap map) {
 		String result = "";
 		if (!target.isConscious()) {
-			if (target instanceof Human) {
+			if (target.hasCapability(ZombieCapability.ALIVE)) {
 				Corpse humanCorpse = new Corpse(target + "'s corpse");
 				map.locationOf(target).addItem(humanCorpse);
 			}

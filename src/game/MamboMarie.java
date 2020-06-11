@@ -6,6 +6,12 @@ import edu.monash.fit2099.engine.Display;
 import edu.monash.fit2099.engine.DoNothingAction;
 import edu.monash.fit2099.engine.GameMap;
 
+/**
+ * A voodoo priestess that summons zombies and can vanish
+ * 
+ * @author User
+ *
+ */
 public class MamboMarie extends ZombieActor {
 	
 	private int turnCount;
@@ -45,6 +51,11 @@ public class MamboMarie extends ZombieActor {
 	}
 	
 
+	/**
+	 * Handles the turn for mambo marie if she is currently on the map and also keeps track of how many turns she has been on the map.
+	 * Every 10 turns on the map, she will spawn 5 zombies and if she is not killed after 30 turns then she vanishes from the map.
+	 * 
+	 */
 	@Override
 	public Action playTurn(Actions actions, Action lastAction, GameMap map, Display display) {
 		if (onMap){

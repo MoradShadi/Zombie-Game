@@ -17,7 +17,7 @@ public class ExitAction extends Action {
 	}
 
 	/**
-	 * Performs the exit game action
+	 * Performs the exit game action by removing the player from the map, which will trigger the end game condition
 	 * 
 	 * @param actor The actor exiting the game.
 	 * @param map The map the actor is on.

@@ -22,9 +22,8 @@ public class EatFoodBehaviour implements Behaviour {
 	@Override
 	public Action getAction(Actor actor, GameMap map) {
 		// TODO Auto-generated method stub
-		ZombieActor downcastActor = (ZombieActor) actor;
-		if (downcastActor.isDamaged()) {
-			Food food = this.getFood(downcastActor.getInventory());
+		if (actor.isDamaged()) {
+			Food food = this.getFood(actor.getInventory());
 			if (food != null) {
 				return new EatFoodAction(food);
 			}

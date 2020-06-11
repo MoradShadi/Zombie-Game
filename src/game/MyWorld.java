@@ -25,7 +25,8 @@ public class MyWorld extends World {
 	 * Run the game.
 	 *
 	 * On each iteration the gameloop does the following: - displays the player's
-	 * map - processes the actions of every Actor in the game, regardless of map
+	 * map - processes the actions of every Actor in the game, regardless of map - try to
+	 * spawn mambo marie
 	 *
 	 * We could either only process the actors on the current map, which would make
 	 * time stop on the other maps, or we could process all the actors. We chose to
@@ -64,6 +65,14 @@ public class MyWorld extends World {
 		display.println(endGameMessage());
 	}
 	
+	/**
+	 * Returns true if the game is still running.
+	 *
+	 * The game is considered to still be running if the player is still around and there are enemies on the map.
+	 * If all enemies are eliminated, then set gameWin to true to signify that the player has won.
+	 *
+	 * @return true if the player is still on the map.
+	 */
 	@Override
 	protected boolean stillRunning() { 		
 		boolean playerAlive= super.actorLocations.contains(player);
@@ -102,9 +111,13 @@ public class MyWorld extends World {
 		}
 	}
 	
+	/**
+	 * Method to try to spawn mambo marie on the map if she is still alive and if she is not currently spawned
+	 * 
+	 */
 	private void spawnMamboMarie() {
 		if (voodooPriestess.isConscious() && !voodooPriestess.getOnMap()) {
-			GameMap map = super.gameMaps.get(rand.nextInt(2));
+			GameMap map = super.gameMaps.get(rand.nextInt(2)); // choose a random map to spawn on
 			
 			if (rand.nextDouble() <= this.voodooPriestess.getSpawnChance()) {			
 				int xMax = map.getXRange().max();
