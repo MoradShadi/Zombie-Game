@@ -14,6 +14,9 @@ public class SingleTargetShootingAction extends Action {
 		this.targetZombie = initTarget;
 	}
 
+	/**
+	 * Executes the gunshot on the chosen target with the appropriate damage and accuracy
+	 */
 	@Override
 	public String execute(Actor actor, GameMap map) {
 		// TODO Auto-generated method stub

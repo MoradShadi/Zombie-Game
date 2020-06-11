@@ -16,6 +16,12 @@ public class ShootingSubmenu extends Action {
 	Menu submenu;
 	Display display;
 
+	/**
+	 * Constructor
+	 * 
+	 * @param initGun gun that is in the player inventory
+	 * @param initDisplay 
+	 */
 	public ShootingSubmenu(Gun initGun, Display initDisplay) {
 		// TODO Auto-generated constructor stub
 		this.gun = initGun;
@@ -23,11 +29,17 @@ public class ShootingSubmenu extends Action {
 		this.display = initDisplay;
 	}
 
+	/**
+	 * Generates a submenu for the player to choose which direction or target he wants to shoot the gun
+	 * 
+	 */
 	@Override
 	public String execute(Actor actor, GameMap map) {
 		// TODO Auto-generated method stub
 		Actions possibleShots = new Actions();
 		Action chosenAction;
+		
+		// Directional shooting guns
 		if (gun.hasCapability(GunTargetCapability.DIRECTIONAL)) {
 			Location actorLocation = map.locationOf(actor);
 			for (Exit exit : actorLocation.getExits()) {
@@ -39,8 +51,11 @@ public class ShootingSubmenu extends Action {
 			
 			return chosenAction.execute(actor, map);
 		}
+		
+		// Single target guns
 		else if (gun.hasCapability(GunTargetCapability.SINGLE_TARGET)) {
 			Sniper sniper = (Sniper) gun;
+			
 			//Let player choose if he wants to aim or fire the gun
 			System.out.println("+ Choose aim or fire +");
 			System.out.println("1: Aim " + this.gun + System.lineSeparator() + "2: Fire " + this.gun);
