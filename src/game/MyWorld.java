@@ -9,13 +9,16 @@ import edu.monash.fit2099.engine.GameMap;
 import edu.monash.fit2099.engine.World;
 
 public class MyWorld extends World {
-	MamboMarie voodooPriestess = new MamboMarie();
+	MamboMarie voodooPriestess;
+	boolean gameWin;
 	
 	Random rand = new Random();
 
 	public MyWorld(Display display) {
 		super(display);
 		// TODO Auto-generated constructor stub
+		this.voodooPriestess = new MamboMarie();
+		this.gameWin = false;
 	}
 	
 	/**
@@ -76,9 +79,27 @@ public class MyWorld extends World {
 			if (voodooPriestess.isConscious()) {
 				zombiesRemaining = true;
 			}
+			else {
+				this.gameWin = true;
+			}
 		}
 		
 		return playerAlive && zombiesRemaining;
+	}
+	
+	/**
+	 * Return a string that can be displayed when the game ends depending on whether the player loses or wins.
+	 *
+	 * @return the string "Victory!" if the player wins, "Game Over" if the player dies
+	 */
+	@Override
+	protected String endGameMessage() {
+		if (gameWin) {
+			return "Victory!";
+		}
+		else {
+			return "PLayer loses. Game Over";
+		}
 	}
 	
 	private void spawnMamboMarie() {
