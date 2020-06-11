@@ -68,6 +68,7 @@ public class ShootingSubmenu extends Action {
 			Actions possibleActions = new Actions();
 			if (key == '1') {
 				for (Actor targetZombie : targetZombies) {
+					//Check that the target has less than 2 turns of aim, so player cannot aim at target more than two times.
 					if (!(sniper.getAimCount() == 2 && targetZombie == sniper.getTarget())) {
 						possibleActions.add(new AimingAction(sniper, targetZombie));
 					}		

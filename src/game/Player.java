@@ -22,8 +22,7 @@ public class Player extends Human {
 	
 	private Behaviour[] behaviours = {
 			new EatFoodBehaviour(),
-			new HarvestBehaviour(),
-			new ExitBehaviour()
+			new HarvestBehaviour()
 	};
 	
 
@@ -98,10 +97,12 @@ public class Player extends Human {
 				actions.add(action);
 			}
 		}
-			
+		
+		actions.add(new ExitAction());
 		
 		if (lastAction.getNextAction() != null)
 			return lastAction.getNextAction();
+		
 		return menu.showMenu(this, actions, display);
 	}
 	

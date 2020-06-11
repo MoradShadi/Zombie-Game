@@ -8,8 +8,9 @@ import edu.monash.fit2099.engine.GameMap;
 
 public class MamboMarie extends ZombieActor {
 	
-	private int MamboMarieturnCount;
-	private boolean onmap = false;
+	private int turnCount;
+	private boolean onMap = false;
+	private double spawnChance;
 	
 	private Behaviour[] behaviours = {
 			new ChantingBehaviour(),
@@ -17,53 +18,52 @@ public class MamboMarie extends ZombieActor {
 	};
 	
 
-	public MamboMarie(String name) {
-		super(name,'M',100, ZombieCapability.UNDEAD);
-		MamboMarieturnCount = 0;
+	public MamboMarie() {
+		super("Vodoo Priestess",'M',100, ZombieCapability.UNDEAD);
+		turnCount = 0;
+		spawnChance = 0.05;
 		// TODO Auto-generated constructor stub
 	}
 	
 	public boolean getOnMap() {
-		return onmap;
+		return onMap;
 	}
 	
 	public void setOnMap(boolean input) {
-		onmap = input;
+		onMap = input;
 	}
 	public int getMamboMarieturnCount() {
-		return MamboMarieturnCount;
+		return turnCount;
 	}
 	
-	public void IterateMamboMarieturnCount() {
-		MamboMarieturnCount++;
+	public void incrementMamboMarieturnCount() {
+		turnCount++;
+	}
+	
+	public double getSpawnChance() {
+		return this.spawnChance;
 	}
 	
 
 	@Override
 	public Action playTurn(Actions actions, Action lastAction, GameMap map, Display display) {
-		if (this.getClass() == null) {
-			map.removeActor(this);
-			setOnMap(false);
-		}
-		
+		if (onMap){
+			incrementMamboMarieturnCount();
 
-		
-		if (onmap){
-			IterateMamboMarieturnCount();
-			
 			if (getMamboMarieturnCount() % 10 == 0) {
 				Action action = behaviours[0].getAction(this, map);
+				
+				if (getMamboMarieturnCount() % 30 == 0) {
+					map.removeActor(this);
+					this.turnCount = 0;
+					setOnMap(false);
+					System.out.println("Voodoo priestess has vanished");
+				}
+				
 				if (action != null) {
 					return action;
 				}
 			}
-			
-			if (getMamboMarieturnCount() % 30 == 0) {
-				map.removeActor(this);
-				IterateMamboMarieturnCount();
-				setOnMap(false);
-				return new DoNothingAction();
-			}		
 	
 			Action action = behaviours[1].getAction(this, map);
 			if (action != null) {

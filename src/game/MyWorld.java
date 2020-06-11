@@ -4,11 +4,12 @@ import java.util.Random;
 
 import edu.monash.fit2099.engine.Actor;
 import edu.monash.fit2099.engine.Display;
+import edu.monash.fit2099.engine.DoNothingAction;
 import edu.monash.fit2099.engine.GameMap;
 import edu.monash.fit2099.engine.World;
 
 public class MyWorld extends World {
-	MamboMarie voodooPriestess = new MamboMarie("Vodoo Priestess");
+	MamboMarie voodooPriestess = new MamboMarie();
 	
 	Random rand = new Random();
 
@@ -17,12 +18,52 @@ public class MyWorld extends World {
 		// TODO Auto-generated constructor stub
 	}
 	
+	/**
+	 * Run the game.
+	 *
+	 * On each iteration the gameloop does the following: - displays the player's
+	 * map - processes the actions of every Actor in the game, regardless of map
+	 *
+	 * We could either only process the actors on the current map, which would make
+	 * time stop on the other maps, or we could process all the actors. We chose to
+	 * process all the actors.
+	 *
+	 * @throws IllegalStateException if the player doesn't exist
+	 */
 	@Override
-	protected boolean stillRunning() { 
-		// stillRunning() is called at the start of every turn, so we use this to spawn mambo marie
-		this.spawnMamboMarie();
-		
-		boolean playerAlive= actorLocations.contains(player);
+	public void run() {
+		if (player == null)
+			throw new IllegalStateException();
+
+		// initialize the last action map to nothing actions;
+		for (Actor actor : super.actorLocations) {
+			lastActionMap.put(actor, new DoNothingAction());
+		}
+
+		// This loop is basically the whole game
+		while (this.stillRunning()) {
+			GameMap playersMap = super.actorLocations.locationOf(player).map();
+			playersMap.draw(display);
+
+			// Process all the actors.
+			for (Actor actor : super.actorLocations) {
+				if (this.stillRunning())
+					processActorTurn(actor);
+			}
+
+			// Tick over all the maps. For the map stuff.
+			for (GameMap gameMap : super.gameMaps) {
+				gameMap.tick();
+			}
+
+			this.spawnMamboMarie();
+		}
+		display.println(endGameMessage());
+	}
+	
+	@Override
+	protected boolean stillRunning() { 		
+		boolean playerAlive= super.actorLocations.contains(player);
 		
 		boolean zombiesRemaining = false;
 		for (Actor actor : actorLocations) {
@@ -31,15 +72,20 @@ public class MyWorld extends World {
 				break;
 			}
 		}
+		if (!zombiesRemaining) {
+			if (voodooPriestess.isConscious()) {
+				zombiesRemaining = true;
+			}
+		}
 		
 		return playerAlive && zombiesRemaining;
 	}
 	
 	private void spawnMamboMarie() {
 		if (voodooPriestess.isConscious() && !voodooPriestess.getOnMap()) {
-			GameMap map = this.gameMaps.get(rand.nextInt(2));
+			GameMap map = super.gameMaps.get(rand.nextInt(2));
 			
-			if (rand.nextDouble() <= 0.05) {			
+			if (rand.nextDouble() <= this.voodooPriestess.getSpawnChance()) {			
 				int xMax = map.getXRange().max();
 				int yMax = map.getYRange().max();
 				int xCoordinate;
