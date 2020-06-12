@@ -39,7 +39,8 @@ public abstract class Ammo extends PortableItem {
 	}
 	
 	/**
-     * Inform a carried Item of the passage of time.
+     * This method is called every turn when the Ammo has been picked up by a player. It checks if the player inventory has a compatible gun and
+     * reloads the gun if it is compatible.
      * 
      * This method is called once per turn, if the Item is being carried.
      * @param currentLocation The location of the actor carrying this Item.
