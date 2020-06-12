@@ -119,7 +119,7 @@ public class Application {
 		townGameMap.at(50, 12).addActor(new Zombie("Walker"));
 		townGameMap.at(62, 12).addActor(new Zombie("Creeper"));
 		townGameMap.at(10, 4).addActor(new Zombie("Rotter"));
-		
+//		
 		// adding farmers
 		Actor farmer1 = new Farmer("Farmer 1");
 		compoundGameMap.at(5, 20).addActor(farmer1);

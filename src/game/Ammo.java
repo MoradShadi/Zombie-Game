@@ -57,6 +57,7 @@ public abstract class Ammo extends PortableItem {
 					gun.reload(this.getReloadAmount());
 					actor.removeItemFromInventory(this);
 					System.out.println(actor + " reloads " + gun.toString() + " with " + this.getReloadAmount() + " ammo");
+					break;
 				}
 			}
 		}
