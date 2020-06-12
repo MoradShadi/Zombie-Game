@@ -95,8 +95,9 @@ public class Application {
 			compoundGameMap.at(x,  y).addActor(new Human(name));	
 		}
 		
-		// place a simple weapon
+		// place a simple weapon and axe
 		compoundGameMap.at(45, 20).addItem(new Plank());
+		compoundGameMap.at(45, 19).addItem(new Axe());
 		
 		// place a shotgun and ammo
 		townGameMap.at(44, 22).addItem(new Shotgun());

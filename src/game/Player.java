@@ -21,7 +21,8 @@ public class Player extends Human {
 	
 	private Behaviour[] behaviours = {
 			new EatFoodBehaviour(),
-			new HarvestBehaviour()
+			new HarvestBehaviour(),
+			new CutTreeBehaviour()
 	};
 	
 
@@ -70,7 +71,7 @@ public class Player extends Human {
 	public Action playTurn(Actions actions, Action lastAction, GameMap map, Display display) {
 		// Handle multi-turn Actions
 		
-		//Check if any of the inventory weapons is craftable and add the craft actions to the Actions list.
+		//Check if any of the inventory weapons is craftable or is a gun and add the craft actions or shooting action to the Actions list.
 		List<Item> items = this.getInventory();	
 		for (Item item: items) {
 			if (item.hasCapability(CraftableWeaponCapability.CRAFTABLE)) {
