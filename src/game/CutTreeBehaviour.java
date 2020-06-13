@@ -12,6 +12,10 @@ public class CutTreeBehaviour implements Behaviour {
 		// TODO Auto-generated constructor stub
 	}
 
+	/**
+	 * Checks whether the actor can cut the tree by checking if he is currently standing on a tree and has an axe in his inventory
+	 * and the tree is old enough
+	 */
 	@Override
 	public Action getAction(Actor actor, GameMap map) {
 		// TODO Auto-generated method stub

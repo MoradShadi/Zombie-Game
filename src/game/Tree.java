@@ -27,6 +27,11 @@ public class Tree extends Ground {
 			displayChar = 'T';
 	}
 	
+	/**
+	 * Checks if the tree is old enough to be chopped for planks
+	 * 
+	 * @return true if the tree is old enough
+	 */
 	public boolean canCut() {
 		if (this.age >= 20) {
 			return true;
