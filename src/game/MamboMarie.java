@@ -27,7 +27,7 @@ public class MamboMarie extends ZombieActor {
 	public MamboMarie() {
 		super("Vodoo Priestess",'M',100, ZombieCapability.UNDEAD);
 		turnCount = 0;
-		spawnChance = 0.5;
+		spawnChance = 0.05;
 		// TODO Auto-generated constructor stub
 	}
 	
