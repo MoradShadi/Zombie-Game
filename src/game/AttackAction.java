@@ -73,6 +73,9 @@ public class AttackAction extends Action {
 	 * @return
 	 */
 	public String gunShotExecute(Actor actor, GameMap map, int gunDmg, double hitChance) {
+		if (gunDmg < 0 || hitChance < 0) {
+			throw new IllegalArgumentException("Damage or hit chance cannot be negative");
+		}
 		boolean shotHit = rand.nextDouble() <= hitChance;
 		String result = "";
 		

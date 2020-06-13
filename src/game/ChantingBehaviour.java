@@ -15,11 +15,15 @@ public class ChantingBehaviour implements Behaviour {
 	private MamboMarie mambo;
 	
 	public ChantingBehaviour(MamboMarie initMambo) {
+		if (initMambo == null) {
+			throw new IllegalArgumentException("Instance of mambo marie is needed to create chanting behaviour");
+		}
+		
 		this.mambo = initMambo;
 	}
 
 	/**
-	 * If mambo is on the map, thenvery 10 turns on the map, she will spawn 5 zombies and if she is not killed after 30 turns 
+	 * If mambo is on the map, then every 10 turns on the map, she will spawn 5 zombies and if she is not killed after 30 turns 
 	 * then she vanishes from the map.
 	 */
 	@Override
