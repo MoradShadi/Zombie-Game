@@ -19,7 +19,7 @@ public class MamboMarie extends ZombieActor {
 	private double spawnChance;
 	
 	private Behaviour[] behaviours = {
-			new ChantingBehaviour(),
+			new ChantingBehaviour(this),
 			new WanderBehaviour()
 	};
 	
@@ -27,7 +27,7 @@ public class MamboMarie extends ZombieActor {
 	public MamboMarie() {
 		super("Vodoo Priestess",'M',100, ZombieCapability.UNDEAD);
 		turnCount = 0;
-		spawnChance = 0.05;
+		spawnChance = 0.5;
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -38,12 +38,16 @@ public class MamboMarie extends ZombieActor {
 	public void setOnMap(boolean input) {
 		onMap = input;
 	}
-	public int getMamboMarieturnCount() {
+	public int getTurnCount() {
 		return turnCount;
 	}
 	
-	public void incrementMamboMarieturnCount() {
+	public void incrementTurnCount() {
 		turnCount++;
+	}
+	
+	public void resetTurnCount() {
+		turnCount = 0;
 	}
 	
 	public double getSpawnChance() {
@@ -52,35 +56,22 @@ public class MamboMarie extends ZombieActor {
 	
 
 	/**
-	 * Handles the turn for mambo marie if she is currently on the map and also keeps track of how many turns she has been on the map.
-	 * Every 10 turns on the map, she will spawn 5 zombies and if she is not killed after 30 turns then she vanishes from the map.
-	 * 
+	 * Handles the actions for mambo marie when she is on the map. She will try to chant and summon zombies if possible. If not, she will just 
+	 * wander randomly like other zombies.
 	 */
 	@Override
 	public Action playTurn(Actions actions, Action lastAction, GameMap map, Display display) {
 		if (onMap){
-			incrementMamboMarieturnCount();
-
-			if (getMamboMarieturnCount() % 10 == 0) {
-				Action action = behaviours[0].getAction(this, map);
-				
-				if (getMamboMarieturnCount() % 30 == 0) {
-					map.removeActor(this);
-					this.turnCount = 0;
-					setOnMap(false);
-					System.out.println("Voodoo priestess has vanished");
-				}
-				
+			incrementTurnCount();
+			
+			for (Behaviour behaviour : behaviours) {
+				Action action = behaviour.getAction(this, map);
 				if (action != null) {
 					return action;
 				}
 			}
-	
-			Action action = behaviours[1].getAction(this, map);
-			if (action != null) {
-				return action;
-			}
 
+			return new DoNothingAction();
 		}
 		return new DoNothingAction();
 	}

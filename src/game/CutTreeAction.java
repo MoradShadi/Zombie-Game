@@ -10,6 +10,12 @@ import edu.monash.fit2099.engine.Exit;
 import edu.monash.fit2099.engine.GameMap;
 import edu.monash.fit2099.engine.Location;
 
+/**
+ * Action for the actor to cut down trees to get 3 planks
+ * 
+ * @author User
+ *
+ */
 public class CutTreeAction extends Action {
 	Random rand = new Random();
 
@@ -17,6 +23,9 @@ public class CutTreeAction extends Action {
 		// TODO Auto-generated constructor stub
 	}
 
+	/**
+	 * Cuts down the tree at the actors location and drops three planks at random locations adjacent to the actor
+	 */
 	@Override
 	public String execute(Actor actor, GameMap map) {
 		// TODO Auto-generated method stub
