@@ -125,8 +125,8 @@ public class Application {
 		Actor farmer1 = new Farmer("Farmer 1");
 		compoundGameMap.at(5, 20).addActor(farmer1);
 		
-		Actor farmer4 = new Farmer("Farmer 2");
-		compoundGameMap.at(40, 13).addActor(farmer4);
+		Actor farmer2 = new Farmer("Farmer 2");
+		compoundGameMap.at(40, 13).addActor(farmer2);
 		
 		// placing car in compound map and town map to connect them
 		Location compoundCarLocation = compoundGameMap.at(43, 23);
