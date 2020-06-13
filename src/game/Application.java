@@ -110,16 +110,16 @@ public class Application {
 		townGameMap.at(46, 21).addItem(new SniperAmmo());
 		
 		// FIXME: Add more zombies!
-//		compoundGameMap.at(30, 20).addActor(new Zombie("Groan"));
-//		compoundGameMap.at(30,  18).addActor(new Zombie("Boo"));
-//		compoundGameMap.at(10,  4).addActor(new Zombie("Uuuurgh"));
-//		compoundGameMap.at(50, 18).addActor(new Zombie("Mortalis"));
-//		compoundGameMap.at(1, 10).addActor(new Zombie("Gaaaah"));
-//		compoundGameMap.at(62, 12).addActor(new Zombie("Aaargh"));
-//		
-//		townGameMap.at(50, 12).addActor(new Zombie("Walker"));
-//		townGameMap.at(62, 12).addActor(new Zombie("Creeper"));
-//		townGameMap.at(10, 4).addActor(new Zombie("Rotter"));
+		compoundGameMap.at(30, 20).addActor(new Zombie("Groan"));
+		compoundGameMap.at(30,  18).addActor(new Zombie("Boo"));
+		compoundGameMap.at(10,  4).addActor(new Zombie("Uuuurgh"));
+		compoundGameMap.at(50, 18).addActor(new Zombie("Mortalis"));
+		compoundGameMap.at(1, 10).addActor(new Zombie("Gaaaah"));
+		compoundGameMap.at(62, 12).addActor(new Zombie("Aaargh"));
+		
+		townGameMap.at(50, 12).addActor(new Zombie("Walker"));
+		townGameMap.at(62, 12).addActor(new Zombie("Creeper"));
+		townGameMap.at(10, 4).addActor(new Zombie("Rotter"));
 		
 		// adding farmers
 		Actor farmer1 = new Farmer("Farmer 1");
